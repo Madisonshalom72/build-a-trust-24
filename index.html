@@ -481,9 +481,31 @@
         .print-area{color:#000}
       }
       @media (max-width:760px){ .ben-row{grid-template-columns:1fr 1fr} .cert-inner{padding:24px 16px} .cert .c-foot{flex-direction:column} }
+      /* ---- moving ticker (Madison's standing ticker feature) ---- */
+      .ttk{overflow:hidden;background:#0d0a04;border-top:1px solid var(--gold-deep);border-bottom:1px solid var(--gold-deep)}
+      .ttk-track{display:flex;width:max-content;animation:ttkScroll 30s linear infinite}
+      .ttk:hover .ttk-track{animation-play-state:paused}
+      .ttk-seq{display:flex;align-items:center;flex-shrink:0;white-space:nowrap;padding:8px 0;font-family:ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace;font-size:12.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+      .ttk-item{padding:0 14px}
+      .ttk-item.hot{color:var(--gold2);font-weight:700}
+      .ttk-sep{color:var(--gold);opacity:.85}
+      @keyframes ttkScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+      @media (prefers-reduced-motion: reduce){.ttk-track{animation:none}}
+      /* ---- content generation ---- */
+      .cg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:14px}
+      .cg-out{display:none;background:#0d0a04;border:1px solid var(--gold-deep);border-radius:12px;padding:18px;margin-top:16px;white-space:pre-wrap;word-break:break-word;font:400 .94rem/1.6 var(--sans);color:var(--ink);max-height:520px;overflow:auto}
+      .cg-out.open{display:block}
+      .cg-note{color:var(--faint);font-size:.85rem;margin-top:10px}
     </style>
 
     <div class="sb24-bar"><div class="wrap">Starting a business of your own? <a href="https://madisonshalom72.github.io/startbusiness24-site/" target="_blank" rel="noopener">StartBusiness24 &mdash; form your LLC or company, get your EIN, and launch right &rarr;</a></div></div>
+
+    <div class="ttk" id="trustTicker" aria-hidden="true">
+      <div class="ttk-track" id="trustTickerTrack">
+        <div class="ttk-seq"><span class="ttk-item">HOW TO SET UP A TRUST FUND</span><span class="ttk-sep">✦</span><span class="ttk-item">16 TRUST TYPES</span><span class="ttk-sep">✦</span><span class="ttk-item hot">SIGN UP FREE</span><span class="ttk-sep">✦</span><span class="ttk-item hot">FULL ACCESS $50/MO OR $299/YR</span><span class="ttk-sep">✦</span><span class="ttk-item">BUILD YOUR TRUST INDENTURE AGREEMENT</span><span class="ttk-sep">✦</span><span class="ttk-item">CERTIFICATES OF BENEFICIAL INTEREST ON BOND PAPER</span><span class="ttk-sep">✦</span><span class="ttk-item">GROW THROUGH CONTRACTS — THE CONTRACTS ENGINE</span><span class="ttk-sep">✦</span><span class="ttk-item">LAND TRUSTS &amp; REAL ESTATE</span><span class="ttk-sep">✦</span><span class="ttk-item">TRUSTEE · BENEFICIARY · GUARDIAN TRAINING</span><span class="ttk-sep">✦</span><span class="ttk-item hot">THE SECRET TO MILLION DOLLAR TRUST FUNDS — EXPOSED</span><span class="ttk-sep">✦</span></div>
+        <div class="ttk-seq"><span class="ttk-item">HOW TO SET UP A TRUST FUND</span><span class="ttk-sep">✦</span><span class="ttk-item">16 TRUST TYPES</span><span class="ttk-sep">✦</span><span class="ttk-item hot">SIGN UP FREE</span><span class="ttk-sep">✦</span><span class="ttk-item hot">FULL ACCESS $50/MO OR $299/YR</span><span class="ttk-sep">✦</span><span class="ttk-item">BUILD YOUR TRUST INDENTURE AGREEMENT</span><span class="ttk-sep">✦</span><span class="ttk-item">CERTIFICATES OF BENEFICIAL INTEREST ON BOND PAPER</span><span class="ttk-sep">✦</span><span class="ttk-item">GROW THROUGH CONTRACTS — THE CONTRACTS ENGINE</span><span class="ttk-sep">✦</span><span class="ttk-item">LAND TRUSTS &amp; REAL ESTATE</span><span class="ttk-sep">✦</span><span class="ttk-item">TRUSTEE · BENEFICIARY · GUARDIAN TRAINING</span><span class="ttk-sep">✦</span><span class="ttk-item hot">THE SECRET TO MILLION DOLLAR TRUST FUNDS — EXPOSED</span><span class="ttk-sep">✦</span></div>
+      </div>
+    </div>
 
     <header class="hero">
     <img class="hero-bg" src="assets/hero-web.jpg" alt="Golden scales of justice with a family silhouette, gavel, house and trust document at a mahogany desk — the golden age of trust funds" fetchpriority="high" />
@@ -500,6 +522,7 @@
           <button class="btn" data-goto="#compare">Compare Trusts Side by Side</button>
           <button class="btn ghost" id="heroSpec">Ask the AI Trust Specialist</button>
           <button class="btn ghost" id="heroPortal">Open Grantor Portal</button>
+          <button class="btn" data-goto="#content-generator">Generate Trust Content</button>
           <button class="btn" data-goto="#trust-business">Trusts &amp; Businesses</button>
           <button class="btn" data-goto="#land-trust">Land Trusts &amp; Real Estate</button>
           <a class="btn ghost" href="https://madisonshalom72.github.io/startbusiness24-site/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">StartBusiness24 &mdash; Start Your Company</a>
@@ -732,6 +755,37 @@
         <p class="sec-sub">Lessons from the Gold Series lane on how trusts are really structured &mdash; including the private-side structures the mainstream lists leave out. New lessons are added to this library over time.</p>
         <div class="article-grid" id="articleGrid"></div>
         <div class="reader" id="reader"></div>
+      </section>
+
+      <!-- ================= CONTENT GENERATION ================= -->
+      <section id="content-generator">
+        <div class="sec-head"><h2>Trust Content Generator &mdash; Posts, Captions, Ads &amp; Scripts in Seconds</h2><div class="rule"></div></div>
+        <p class="sec-sub">Teaching trusts is how families find this page. Pick a trust type, a format, and an angle &mdash; the generator writes ready-to-post content in the Build A Trust 24 voice, with the site link and the standing disclaimer already in it. Generate again for a fresh variation, then copy and post it.</p>
+        <div class="wizard">
+          <div class="cg-grid">
+            <div class="field"><label for="cgType">Trust type</label><select id="cgType"></select></div>
+            <div class="field"><label for="cgFormat">Format</label><select id="cgFormat">
+              <option value="fb">Facebook Post</option>
+              <option value="ig">Instagram Caption</option>
+              <option value="ad">Text Ad</option>
+              <option value="video">Video Hook + 30-Second Script</option>
+              <option value="email">Email / Message</option>
+            </select></div>
+            <div class="field"><label for="cgAngle">Angle</label><select id="cgAngle">
+              <option value="probate">Avoid Probate</option>
+              <option value="privacy">Privacy</option>
+              <option value="wealth">Generational Wealth</option>
+              <option value="contracts">Grow Through Contracts</option>
+              <option value="control">Control the Distribution</option>
+            </select></div>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="cgGenerate" type="button">Generate Content</button>
+            <button class="btn" id="cgCopy" type="button" disabled>Copy Generated Content</button>
+          </div>
+          <pre class="cg-out" id="cgOut" aria-live="polite"></pre>
+          <p class="cg-note">Generated content is a starting point &mdash; read it before you post it. Every output carries the educational disclaimer: not legal advice, and consult a lawyer if you don&rsquo;t have the knowledge of a lawyer.</p>
+        </div>
       </section>
       <!-- ================= CONTRACTS ENGINE ================= -->
       <section id="contracts">
@@ -3461,6 +3515,95 @@
 })();
 </script>
 
+
+  <script>
+  /* ---- Trust Content Generator ---- */
+  (function(){
+    var LINK = "https://trust.privatemoneyrightsplaybook.xyz";
+    var DISCLAIMER = "Educational content from Build A Trust 24 \u2014 not legal advice. Consult a lawyer if you don\u2019t have the knowledge of a lawyer.";
+    var CTA = "Sign up free at Build A Trust 24 and learn how to set up a trust fund step by step. Full Access is $50/mo or $299/yr.";
+    var TYPES = [
+      {id:"family", name:"Family Trust Fund", benefit:"one structure to hold, protect, and grow what your family builds \u2014 with rules you write"},
+      {id:"revocable", name:"Revocable Living Trust", benefit:"keeps your assets out of probate while you stay in control \u2014 amend or revoke it anytime"},
+      {id:"irrevocable", name:"Irrevocable Trust", benefit:"moves assets out of your name for protection and tax positioning \u2014 permanent on purpose"},
+      {id:"testamentary", name:"Testamentary Trust", benefit:"is created through your will, so an inheritance is managed instead of handed over in one lump sum"},
+      {id:"spendthrift", name:"Spendthrift Trust", benefit:"protects a beneficiary\u2019s share from their own spending \u2014 and from most creditors"},
+      {id:"snt", name:"Special Needs Trust", benefit:"provides for a loved one with disabilities without replacing the public benefits they rely on"},
+      {id:"ilit", name:"Irrevocable Life Insurance Trust (ILIT)", benefit:"keeps life insurance proceeds out of the taxable estate and pays them into the trust by contract"},
+      {id:"dapt", name:"Domestic Asset Protection Trust (DAPT)", benefit:"is an asset-protection trust you can create for yourself in the states that allow it"},
+      {id:"mapt", name:"Medicaid Asset Protection Trust", benefit:"positions assets ahead of Medicaid\u2019s look-back clock \u2014 timing is everything"},
+      {id:"qtip", name:"QTIP Marital Trust", benefit:"provides for your spouse for life, then passes what remains to the beneficiaries you chose"},
+      {id:"bypass", name:"Bypass / Credit Shelter Trust", benefit:"uses both spouses\u2019 estate-tax exemptions instead of wasting one"},
+      {id:"slat", name:"Spousal Lifetime Access Trust (SLAT)", benefit:"moves assets out of the estate while your spouse can still access them during life"},
+      {id:"dynasty", name:"Dynasty Trust", benefit:"keeps wealth in the bloodline for generations, structured to skip estate tax at each generation where the law allows"},
+      {id:"grat", name:"Grantor Retained Annuity Trust (GRAT)", benefit:"passes appreciation to the next generation at a reduced gift-tax cost"},
+      {id:"qprt", name:"Qualified Personal Residence Trust (QPRT)", benefit:"moves your home\u2019s future appreciation out of your estate at a discounted gift value"},
+      {id:"crt", name:"Charitable Remainder Trust (CRT)", benefit:"pays income first, then leaves the remainder to charity \u2014 with tax benefits along the way"},
+      {id:"clt", name:"Charitable Lead Trust (CLT)", benefit:"pays charity first for a term, then returns what remains to your family"},
+      {id:"land", name:"Land Trust", benefit:"holds real estate title so ownership stays private and transfers happen by beneficial interest, not a public deed"}
+    ];
+    var ANGLES = {
+      probate: {hook:"Probate is the court process your family never signed up for.", line:"A trust passes assets by its own terms \u2014 privately, on the trustee\u2019s timeline, not the court\u2019s."},
+      privacy: {hook:"What you own in your own name is public record.", line:"What a trust owns is the trust\u2019s business \u2014 ownership by structure, not by headline."},
+      wealth: {hook:"Generational wealth is not luck. It is a structure.", line:"Built once, funded on purpose, and run by rules you write \u2014 that is how families keep what they build."},
+      contracts: {hook:"The fastest way to grow to a million dollars is through contracts.", line:"A trust can own contracts, be paid by contracts, and stand as beneficiary of contracts \u2014 the same way insurance works: a contract signed today pays tomorrow."},
+      control: {hook:"A lump-sum inheritance is a hope. A trust is instructions.", line:"Who gets what, when, and under what conditions \u2014 written by you, carried out by your trustee."}
+    };
+    var OPENERS = [
+      "Most people think trust funds are only for the rich. They are not \u2014 they are for families who plan.",
+      "Nobody is coming to set this up for your family. The good news: you can learn to do it yourself.",
+      "Your family does not need more luck. It needs a structure."
+    ];
+    var sel = document.getElementById("cgType");
+    var fmt = document.getElementById("cgFormat");
+    var ang = document.getElementById("cgAngle");
+    var out = document.getElementById("cgOut");
+    var gen = document.getElementById("cgGenerate");
+    var copy = document.getElementById("cgCopy");
+    if (!sel || !fmt || !ang || !out || !gen || !copy) return;
+    sel.innerHTML = TYPES.map(function(t){ return '<option value="' + t.id + '">' + t.name + "</option>"; }).join("");
+    var clicks = 0, lastText = "";
+    function typeById(id){ for (var i=0;i<TYPES.length;i++) if (TYPES[i].id===id) return TYPES[i]; return TYPES[0]; }
+    function hashtags(t){
+      var h = ["#HowToSetUpATrustFund","#TrustFund","#FamilyTrust","#EstatePlanning","#GenerationalWealth","#BuildATrust24"];
+      if (t.id === "land") h.splice(5,0,"#LandTrust");
+      return h.join(" ");
+    }
+    function build(){
+      var t = typeById(sel.value), a = ANGLES[ang.value] || ANGLES.probate;
+      var opener = OPENERS[clicks % OPENERS.length];
+      var art = /^[AEIOU]/i.test(t.name) ? "An " : "A ";
+      var what = art + t.name + " " + t.benefit + ".";
+      var f = fmt.value, text = "";
+      if (f === "fb") {
+        text = a.hook + "\n\n" + opener + "\n\n" + what + "\n" + a.line + "\n\n" + CTA + "\n" + LINK + "\n\n" + hashtags(t) + "\n\n" + DISCLAIMER;
+      } else if (f === "ig") {
+        text = a.hook + "\n\n" + what + "\n" + a.line + "\n\n" + CTA + "\n" + LINK + "\n.\n.\n" + hashtags(t) + "\n\n" + DISCLAIMER;
+      } else if (f === "ad") {
+        text = "HEADLINE: " + a.hook + "\nAD: " + art + t.name + " " + t.benefit + ". Learn how to set up a trust fund step by step \u2014 sign up free. Full Access $50/mo or $299/yr.\n" + LINK + "\n\n" + DISCLAIMER;
+      } else if (f === "video") {
+        text = "HOOK (0\u20133s, on camera): \u201C" + a.hook + "\u201D\n\nBODY (3\u201325s): \u201C" + opener + " " + art + t.name + " " + t.benefit + ". " + a.line + "\u201D\n\nCTA (25\u201330s): \u201C" + CTA + " Link: " + LINK + "\u201D\n\nCaption: " + a.hook + " " + hashtags(t) + "\n" + DISCLAIMER;
+      } else {
+        text = "Subject: " + a.hook + "\n\n" + opener + "\n\n" + what + "\n" + a.line + "\n\n" + CTA + "\n" + LINK + "\n\n\u2014 Build A Trust 24\n" + DISCLAIMER;
+      }
+      clicks++;
+      return text;
+    }
+    gen.addEventListener("click", function(){
+      lastText = build();
+      out.textContent = lastText;
+      out.classList.add("open");
+      copy.disabled = false;
+      copy.textContent = "Copy Generated Content";
+    });
+    copy.addEventListener("click", function(){
+      if (!lastText) return;
+      function done(){ copy.textContent = "Copied"; setTimeout(function(){ copy.textContent = "Copy Generated Content"; }, 1600); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lastText).then(done, done);
+      else done();
+    });
+  })();
+  </script>
   
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
