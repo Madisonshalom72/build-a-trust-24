@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="data:," />
+    <title>Admin — Build A Trust 24</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#0a0805; --panel:#17130a; --panel2:#1e190e; --line:#3a2f16;
+        --gold:#c9a227; --gold2:#e8cc6a; --gold-deep:#8a6d1c;
+        --ink:#f4ecd7; --muted:#c4b890; --faint:#9a8c66;
+        --serif:"Playfair Display", Georgia, serif;
+        --sans:"Public Sans", -apple-system, "Segoe UI", sans-serif;
+      }
+      *{box-sizing:border-box}
+      body{margin:0;background:radial-gradient(1200px 500px at 50% -80px,#241b08 0%,var(--bg) 55%);color:var(--ink);font-family:var(--sans);line-height:1.55;min-height:100vh}
+      .wrap{max-width:1080px;margin:0 auto;padding:22px 18px 60px}
+      h1{font-family:var(--serif);font-weight:900;font-size:clamp(1.6rem,4.5vw,2.3rem);margin:6px 0 2px}
+      h1 .gold{color:var(--gold2)}
+      .sub{color:var(--muted);margin:0 0 18px}
+      .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0}
+      .btn{appearance:none;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#2a2110,#1a1509);color:var(--gold2);font:600 .95rem var(--sans);padding:11px 18px;border-radius:10px;cursor:pointer}
+      .btn.primary{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#191204;border-color:var(--gold)}
+      .btn.small{padding:7px 12px;font-size:.85rem}
+      .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
+      .tab{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--muted);font:600 .9rem var(--sans);padding:9px 16px;border-radius:999px;cursor:pointer}
+      .tab[aria-selected="true"]{color:#191204;background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:var(--gold)}
+      table{width:100%;border-collapse:collapse;font-size:.9rem}
+      th,td{border-top:1px solid var(--line);padding:8px 8px;text-align:left;vertical-align:top}
+      th{color:var(--gold);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+      td{color:var(--ink)}
+      .meta{color:var(--faint);font-size:.82rem}
+      label{display:block;font:600 .85rem var(--sans);color:var(--gold2);margin:14px 0 6px}
+      input[type="text"],input[type="url"],textarea{width:100%;background:var(--bg2,#100d07);border:1px solid var(--line);border-radius:9px;color:var(--ink);font:400 .95rem var(--sans);padding:10px 12px}
+      textarea{min-height:74px;resize:vertical}
+      .check{display:flex;gap:9px;align-items:center;margin-top:14px;color:var(--ink);font-weight:500}
+      .check input{width:18px;height:18px;accent-color:var(--gold)}
+      .row-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+      .note{border:1px solid var(--gold-deep);background:rgba(201,162,39,.07);border-radius:10px;padding:12px 14px;color:var(--muted);font-size:.9rem}
+      .err{color:#e89a9a}
+      [hidden]{display:none !important}
+      .topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+      .topbar .spacer{flex:1}
+      .who{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem}
+      .who img{width:26px;height:26px;border-radius:50%;border:1px solid var(--gold-deep)}
+      pre.preview{white-space:pre-wrap;word-break:break-word;background:#100d07;border:1px solid var(--line);border-radius:9px;padding:10px;font-size:.8rem;color:var(--muted);max-height:180px;overflow:auto}
+      a{color:var(--gold2)}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div>
+          <h1>Build A Trust 24 <span class="gold">Admin</span></h1>
+          <p class="sub">Master-user console — sign-ups, users, records, and live site content.</p>
+        </div>
+        <div class="spacer"></div>
+        <span class="who" id="who" hidden></span>
+        <button class="btn small" id="signOutBtn" type="button" hidden>Sign out</button>
+      </div>
+
+      <div class="card" id="gateCard">
+        <p id="gateText">Checking your sign-in…</p>
+        <button class="btn primary" id="signInBtn" type="button" hidden>Sign in with Google</button>
+        <p class="meta" id="gateError"></p>
+      </div>
+
+      <div id="console" hidden>
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" data-tab="signups" aria-selected="true">Sign-ups</button>
+          <button class="tab" role="tab" data-tab="users" aria-selected="false">Users</button>
+          <button class="tab" role="tab" data-tab="records" aria-selected="false">Records</button>
+          <button class="tab" role="tab" data-tab="content" aria-selected="false">Site Content</button>
+        </div>
+
+        <section class="card" id="tab-signups">
+          <div class="topbar"><h2 style="margin:0">Free sign-ups</h2><div class="spacer"></div>
+            <button class="btn small" id="csvBtn" type="button">Download CSV</button>
+            <button class="btn small" id="refreshSignups" type="button">Refresh</button></div>
+          <p class="meta" id="signupsMeta">Loading…</p>
+          <div style="overflow:auto"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Tier</th><th>Source</th><th>When</th></tr></thead>
+            <tbody id="signupsBody"></tbody>
+          </table></div>
+        </section>
+
+        <section class="card" id="tab-users" hidden>
+          <div class="topbar"><h2 style="margin:0">Accounts</h2><div class="spacer"></div>
+            <button class="btn small" id="refreshUsers" type="button">Refresh</button></div>
+          <p class="meta" id="usersMeta">Loading…</p>
+          <div style="overflow:auto"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Last sign-in</th><th>Training progress</th></tr></thead>
+            <tbody id="usersBody"></tbody>
+          </table></div>
+        </section>
+
+        <section class="card" id="tab-records" hidden>
+          <div class="topbar"><h2 style="margin:0">Saved records &amp; snapshots</h2><div class="spacer"></div>
+            <button class="btn small" id="refreshRecords" type="button">Refresh</button></div>
+          <p class="meta" id="recordsMeta">Loading…</p>
+          <div id="recordsList"></div>
+        </section>
+
+        <section class="card" id="tab-content" hidden>
+          <h2 style="margin-top:0">Site content — changes go live without a redeploy</h2>
+          <p class="note">These fields are stored in the database and read by the public page on every visit.
+            Leave the checkout URLs empty until the Whop products exist — the payment pop-up's plan buttons
+            then run the honest placeholder (free sign-up + "checkout opens at launch") instead of a dead link.
+            The monthly/annual URLs win when set; the single checkout URL is the fallback for both.</p>
+          <form id="contentForm">
+            <label for="fHeadline">Hero headline (HTML — the gold span is markup)</label>
+            <textarea id="fHeadline"></textarea>
+            <label for="fSubtitle">Hero subtitle</label>
+            <textarea id="fSubtitle"></textarea>
+            <label for="fPrice">Full-access price display (monthly)</label>
+            <input type="text" id="fPrice" placeholder="$50/mo" />
+            <label for="fPriceAnnual">Full-access price display (annual)</label>
+            <input type="text" id="fPriceAnnual" placeholder="$299/yr" />
+            <label for="fCheckoutMonthly">Paid-tier checkout URL — Monthly (Whop — leave empty until it exists)</label>
+            <input type="url" id="fCheckoutMonthly" placeholder="https://whop.com/checkout/…" />
+            <label for="fCheckoutAnnual">Paid-tier checkout URL — Annual (Whop — leave empty until it exists)</label>
+            <input type="url" id="fCheckoutAnnual" placeholder="https://whop.com/checkout/…" />
+            <label for="fCheckout">Paid-tier checkout URL — fallback for both plans (Whop)</label>
+            <input type="url" id="fCheckout" placeholder="https://whop.com/checkout/…" />
+            <label for="fSb24">StartBusiness24 link</label>
+            <input type="url" id="fSb24" />
+            <label for="fBanner">Announcement banner text</label>
+            <input type="text" id="fBanner" placeholder="e.g. New: Trusts &amp; Businesses section is live" />
+            <label class="check"><input type="checkbox" id="fBannerOn" /> Show the announcement banner</label>
+            <div class="row-actions">
+              <button class="btn primary" type="submit">Save site content</button>
+              <span class="meta" id="contentSaved"></span>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <p class="meta"><a href="/">← Back to Build A Trust 24</a></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+    <script src="trust-config.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>

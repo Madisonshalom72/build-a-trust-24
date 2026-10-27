@@ -1,0 +1,374 @@
+/* =====================================================================
+ * firestore.rules — alice-ai-office-hub (shared Alice + Build A Trust 24).
+ *
+ * Base: the Alice merged ruleset of 2026-10-18, verbatim, PLUS the
+ * Build A Trust 24 blocks added 2026-10-26:
+ *   - isTrustAdmin() — master-user allowlist by auth email
+ *     (capital7logistics@gmail.com, capital7lllc@gmail.com,
+ *      gutterprotectpro@gmail.com)
+ *   - /trustSignups   — public create via validator; admin read only
+ *   - /trustUsers     — owner read/write of profile (paidAccess is
+ *     admin-write-only) + builds subcollection; admin read
+ *   - /trustRecords   — owner create/read/delete of own snapshots;
+ *     admin read
+ *   - /trustSiteContent — public read; admin write only (this is what
+ *     makes the /admin content editor change the live site)
+ * Publish: Firebase Console -> Firestore Database -> Rules -> select-all
+ * REPLACE with this entire file -> Publish. Nothing else changes.
+ * ===================================================================== */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /businesses/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && request.auth.token.email == 'gutterprotectpro@gmail.com';
+    }
+
+    /* Legacy ping target — untouched. */
+    match /admin/{document=**} {
+      allow read: if request.auth != null && request.auth.token.email == 'gutterprotectpro@gmail.com';
+    }
+
+    match /subdomains/{name} {
+      allow read: if true;
+      allow create: if request.auth != null && !exists(/databases/$(database)/documents/subdomains/$(name)) && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
+    match /subdomains/{name}/gallery/{photoId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/subdomains/$(name)).data.uid == request.auth.uid;
+    }
+
+    match /customDomains/{domain} {
+      allow read: if true;
+      allow create: if request.auth != null && !exists(/databases/$(database)/documents/customDomains/$(domain)) && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
+    /* Tenant lead inbox. Create = the fixed validator (every client
+     * writer funnels through buildLeadPayload in subdomain-router.js).
+     * Reads: the page owner (live rule, unchanged) OR a granted admin
+     * whose active record names this page (ADMIN-LOGIN-SETUP.md). */
+    match /businessInquiries/{sub}/items/{itemId} {
+      allow create: if isValidInquiry();
+      allow read: if request.auth != null && get(/databases/$(database)/documents/subdomains/$(sub)).data.uid == request.auth.uid;
+      allow get, list: if request.auth != null
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true
+        && (sub in get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.slugs
+            || sub in get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.surfaces);
+      allow update, delete: if false;
+    }
+
+    // Estimator sessions v2 (2026-10-18) — estimator-agent-spec.md
+    // §11.10 (supersedes the §8 block): granted admins keep full
+    // access; an active estimator may CREATE sessions stamped with
+    // their own uid and read back ONLY their own (list queries must
+    // carry the createdBy equality filter).
+    match /businessInquiries/{slug}/estimates/{estimate} {
+      allow create, get, list, update: if request.auth != null
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true
+        && (slug in get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.slugs
+            || slug in get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.surfaces);
+      allow create: if request.auth != null
+        && get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.active == true
+        && slug in get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.slugs
+        && request.resource.data.createdBy == request.auth.uid;
+      allow get: if request.auth != null
+        && resource.data.createdBy == request.auth.uid
+        && get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.active == true
+        && slug in get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.slugs;
+      allow list: if request.auth != null
+        && get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.active == true
+        && slug in get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.slugs
+        && request.query.limit <= 50;
+      allow delete: if false;
+    }
+
+    match /funnelLeads/{leadId} {
+      allow create: if isValidFunnelLead();
+      allow read: if request.auth != null && request.auth.token.email == 'gutterprotectpro@gmail.com';
+      allow update, delete: if false;
+    }
+
+    // Admin logins (2026-10-18, ADMIN-LOGIN-SETUP.md): username aliases
+    // + admin records. A single usernames doc is read to resolve a
+    // typed username at the sign-in form — that read happens BEFORE
+    // sign-in (it is how the form learns the account email), in both
+    // admin-auth.js and subdomain-router.js, so the get cannot require
+    // auth. The collection can never be listed/browsed, and nothing
+    // here is client-writable.
+    match /usernames/{alias} {
+      allow get: if true;
+      allow list: if false;
+      allow write: if false;
+    }
+
+    // An admin record can be read only by its own signed-in owner;
+    // changes happen in the console only.
+    match /admins/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow list, write: if false;
+    }
+
+    // Vision 7 AI staff (2026-10-18, estimator-agent-spec.md §11.10):
+    // invited estimators. A staff record grants the estimator surface
+    // ONLY — never owner powers. A user may read their own staff
+    // record; only a granted admin may list them or change one (the
+    // Estimators manager).
+    match /staff/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow list, update: if request.auth != null
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true;
+      // Creation is the invite CLAIM, and only that: an active invite
+      // addressed to the caller's own auth email must exist, and the
+      // new record may carry no slugs beyond the invite's. No invite =
+      // no staff record = no access, enforced here, not just in the
+      // panel.
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.role == 'estimator'
+        && request.resource.data.active == true
+        && get(/databases/$(database)/documents/staffInvites/$(request.auth.token.email)).data.active == true
+        && request.resource.data.slugs.hasOnly(
+             get(/databases/$(database)/documents/staffInvites/$(request.auth.token.email)).data.slugs);
+      allow delete: if false;
+    }
+
+    // Vision 7 AI invites (2026-10-18, §11.10): pending estimator
+    // invites keyed by normalized email. Admins of the page write them;
+    // the addressed signed-in user may read + claim their own invite
+    // (the claim is how staff/{uid} gets its slugs — the create rule
+    // above then binds the invite's slugs to that uid; the panel
+    // copies them from here).
+    match /staffInvites/{emailKey} {
+      allow get: if request.auth != null
+        && request.auth.token.email == emailKey;
+      allow list, create, update: if request.auth != null
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true;
+      allow delete: if false;
+      /* OPTIONAL, deliberately NOT enabled above (§11.10 as specced
+       * denies it; the panel tolerates the denial): at first sign-in
+       * the panel also stamps the invite {uid, activatedAt}. To let
+       * that stamp land, add exactly this line — it permits the
+       * addressed user to change ONLY those two fields, only to their
+       * own uid:
+       *   allow update: if request.auth != null
+       *     && request.auth.token.email == emailKey
+       *     && request.resource.data.uid == request.auth.uid
+       *     && request.resource.data.diff(resource.data).affectedKeys()
+       *          .hasOnly(['uid', 'activatedAt']);
+       */
+    }
+
+
+    /* ---------------- Build A Trust 24 (2026-10-26) ---------------- */
+
+    // Master users for the trust site (also the /admin allowlist).
+    function isTrustAdmin() {
+      return request.auth != null
+        && request.auth.token.email in ['capital7logistics@gmail.com',
+                                        'capital7lllc@gmail.com',
+                                        'gutterprotectpro@gmail.com'];
+    }
+
+    // Free sign-up capture from buildatrust24.aliceaihub.xyz. Public
+    // create through the fixed validator; only master users can read.
+    match /trustSignups/{signupId} {
+      allow create: if isValidTrustSignup();
+      allow get, list: if isTrustAdmin();
+      allow update, delete: if false;
+    }
+
+    // Accounts: profile doc (name/email/photo, training progress) and
+    // the builds subcollection. Owner reads/writes their own; admins read.
+    // paidAccess is ADMIN-WRITE-ONLY: it is the flag the site's freemium
+    // gate reads, so an owner may never create it or change its value on
+    // their own profile (that would be a self-unlock). Master users set
+    // it when a payment is confirmed. request.resource.data is the
+    // post-write (merged) document, so the equality checks below hold
+    // for both full writes and merge writes like upsertProfile's.
+    match /trustUsers/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow read: if isTrustAdmin();
+      allow create: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.get('paidAccess', false) == false;
+      allow update: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.get('paidAccess', false)
+           == resource.data.get('paidAccess', false);
+      allow create, update: if isTrustAdmin();
+      allow delete: if false;
+    }
+
+    // Saved trust builds under the account. No entitlement fields live
+    // here — the gate reads paidAccess from the profile doc only.
+    match /trustUsers/{userId}/builds/{buildId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if isTrustAdmin();
+    }
+
+    // Vault / CRM snapshots saved from the account panel.
+    match /trustRecords/{recordId} {
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid
+        && isValidTrustRecord();
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow read: if isTrustAdmin();
+      allow update: if false;
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
+    // Live site content for Build A Trust 24 — the /admin editor writes
+    // trustSiteContent/main; the public page reads it on every visit.
+    match /trustSiteContent/{docId} {
+      allow read: if true;
+      allow write: if isTrustAdmin();
+    }
+
+    /* ---------------- validators ----------------
+     * Rewritten 2026-10-18 from the actual client writers (see the
+     * header). Field caps are the writers' own truncations where the
+     * writer truncates, and generous sanity caps where it does not —
+     * never tighter than a real write the code can produce. */
+
+    /* businessInquiries/{sub}/items — subdomain-router.js
+     * buildLeadPayload() is the ONLY writer (message form, paperwork,
+     * review form, affiliate sign-up, concierge agent sign-up). It
+     * always sends name + customerEmail + message (validateLead
+     * requires all three; the sign-up forms synthesize message), plus
+     * serverTimestamp createdAt; phone/service ride along only when
+     * non-empty, refCode/type only when present + well-formed. */
+    function isValidInquiry() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['name', 'customerEmail', 'phone', 'service', 'message', 'refCode', 'type', 'createdAt'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 120
+        && d.customerEmail is string && d.customerEmail.size() <= 160
+        && d.customerEmail.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && d.message is string && d.message.size() > 0 && d.message.size() <= 2000
+        && (!('phone' in d) || d.phone is string)
+        && (!('phone' in d) || d.phone.size() <= 40)
+        && (!('service' in d) || d['service'] is string)
+        && (!('service' in d) || d['service'].size() <= 120)
+        && (!('refCode' in d) || d.refCode is string)
+        && (!('refCode' in d) || d.refCode.size() >= 3)
+        && (!('refCode' in d) || d.refCode.size() <= 40)
+        && (!('refCode' in d) || d.refCode.matches('^[A-Z0-9][A-Z0-9-]*[A-Z0-9]$'))
+        && (!('type' in d) || d.type is string)
+        && (!('type' in d) || d.type.size() <= 40)
+        && (!('type' in d) || d.type.matches('^[a-z0-9][a-z0-9-]*$'))
+        && d.createdAt == request.time;
+    }
+
+    /* funnelLeads — four writer families, one per shape. Branching is
+     * per type because the shapes genuinely differ (field names, and
+     * createdAt vs ts). */
+    function isValidFunnelLead() {
+      let d = request.resource.data;
+      return d.type is string
+        && (funnelFormLead(d) || subscribeIntentLead(d)
+            || agentHireLead(d) || siteGenerationLead(d));
+    }
+
+    /* funnel.js saveLead() — types audit, demo-call, workshop,
+     * dfy-setup — and app.js sendPublishRequest() — type
+     * site-publish-request. One fixed key set, every key always sent:
+     * answers is a map (audit answers, or the publish fallback's
+     * JSON-carrying map), estimatedMonthlyLoss is always a number
+     * (0 for the publish fallback), email may be '' on the publish
+     * fallback (its phone rides along instead). */
+    function funnelFormLead(d) {
+      return d.type in ['audit', 'demo-call', 'workshop', 'dfy-setup', 'site-publish-request']
+        && d.keys().hasOnly(['name', 'phone', 'email', 'trade', 'answers', 'estimatedMonthlyLoss', 'type', 'preferredTime', 'createdAt'])
+        && d.keys().hasAll(['name', 'phone', 'email', 'trade', 'answers', 'estimatedMonthlyLoss', 'type', 'preferredTime', 'createdAt'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 200
+        && d.phone is string && d.phone.size() <= 60
+        && d.email is string && d.email.size() <= 160
+        && (d.email == '' || d.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$'))
+        && d.trade is string && d.trade.size() <= 160
+        && d.answers is map
+        && d.estimatedMonthlyLoss is number
+        && d.preferredTime is string && d.preferredTime.size() <= 200
+        && d.createdAt == request.time;
+    }
+
+    /* app.js saveSubscribeIntent() — type subscribe-intent. The only
+     * funnel writer with business/plan keys, and the only one whose
+     * createdAt can arrive as null (the client's serverTimestamp call
+     * is try/caught; a null timestamp is its degraded shape, not an
+     * attack — the lead matters more than the stamp). */
+    function subscribeIntentLead(d) {
+      return d.type == 'subscribe-intent'
+        && d.keys().hasOnly(['type', 'name', 'phone', 'email', 'business', 'plan', 'createdAt'])
+        && d.keys().hasAll(['type', 'name', 'phone', 'email', 'business', 'plan'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 200
+        && d.phone is string && d.phone.size() <= 60
+        && d.email is string && d.email.size() <= 160
+        && (d.email == '' || d.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$'))
+        && d.business is string && d.business.size() <= 200
+        && d.plan is string && d.plan.size() <= 80
+        && (!('createdAt' in d) || d.createdAt == request.time || d.createdAt == null);
+    }
+
+    /* agents.html claim form — type agent-hire. Uses `contact`
+     * (phone OR email, form-validated) and `ts`, not createdAt. */
+    function agentHireLead(d) {
+      return d.type == 'agent-hire'
+        && d.keys().hasOnly(['type', 'agent', 'corp', 'role', 'price', 'agentName', 'business', 'name', 'contact', 'notes', 'page', 'ts'])
+        && d.keys().hasAll(['type', 'agent', 'corp', 'role', 'price', 'agentName', 'business', 'name', 'contact', 'notes', 'page', 'ts'])
+        && d.agent is string && d.agent.size() <= 40
+        && d.corp is string && d.corp.size() <= 120
+        && d.role is string && d.role.size() <= 120
+        && d.price is string && d.price.size() <= 40
+        && d.agentName is string && d.agentName.size() <= 120
+        && d.business is string && d.business.size() > 0 && d.business.size() <= 200
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 200
+        && d.contact is string && d.contact.size() > 0 && d.contact.size() <= 200
+        && d.notes is string && d.notes.size() <= 2000
+        && d.page is string && d.page.size() <= 40
+        && d.ts == request.time;
+    }
+
+    /* getsite.html form — type site-generation. Same ts convention;
+     * email is optional (may be ''). */
+    function siteGenerationLead(d) {
+      return d.type == 'site-generation'
+        && d.keys().hasOnly(['type', 'name', 'phone', 'email', 'business', 'trade', 'notes', 'page', 'ts'])
+        && d.keys().hasAll(['type', 'name', 'phone', 'email', 'business', 'trade', 'notes', 'page', 'ts'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 200
+        && d.phone is string && d.phone.size() > 0 && d.phone.size() <= 60
+        && d.email is string && d.email.size() <= 160
+        && (d.email == '' || d.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$'))
+        && d.business is string && d.business.size() > 0 && d.business.size() <= 200
+        && d.trade is string && d.trade.size() > 0 && d.trade.size() <= 160
+        && d.notes is string && d.notes.size() <= 2000
+        && d.page is string && d.page.size() <= 40
+        && d.ts == request.time;
+    }
+    /* Build A Trust 24 validators (2026-10-26) — shapes match the
+     * client writers in trust-app.js exactly. */
+    function isValidTrustSignup() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['name', 'email', 'tierInterest', 'uid', 'source', 'createdAt'])
+        && d.keys().hasAll(['name', 'email', 'tierInterest', 'source', 'createdAt'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 200
+        && d.email is string && d.email.size() > 0 && d.email.size() <= 160
+        && d.email.matches('^[^@\s]+@[^@\s]+\.[^@\s]+$')
+        && d.tierInterest is string && d.tierInterest.size() <= 40
+        && (!('uid' in d) || d.uid == null || (d.uid is string && d.uid.size() <= 128))
+        && d.source is string && d.source.size() <= 80
+        && d.createdAt == request.time;
+    }
+
+    function isValidTrustRecord() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['uid', 'kind', 'label', 'payload', 'createdAt'])
+        && d.keys().hasAll(['uid', 'kind', 'label', 'payload', 'createdAt'])
+        && d.uid is string && d.uid.size() > 0 && d.uid.size() <= 128
+        && d.kind is string && d.kind.size() <= 40
+        && d.label is string && d.label.size() <= 200
+        && d.payload is map
+        && d.createdAt == request.time;
+    }
+
+  }
+}
