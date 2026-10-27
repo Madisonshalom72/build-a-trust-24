@@ -664,6 +664,7 @@
   }
 
   function onAccessChange() {
+    try { if (window.Badges && Badges.refresh) Badges.refresh(); } catch (e) {}
     if (!hasAccess()) return;
     if (gate.timerId) { clearTimeout(gate.timerId); gate.timerId = null; }
     if (gate.open) closeGate();
@@ -755,8 +756,11 @@
             if (k in state.progress) b.checked = !!state.progress[k];
           });
         }
+        try { if (window.Badges && Badges.refresh) Badges.refresh(); } catch (e) {}
       })
-      .catch(function () { /* best-effort sync */ });
+      .catch(function () {
+        try { if (window.Badges && Badges.refresh) Badges.refresh(); } catch (e) {}
+      });
   }
 
   /* ---------------- init ---------------- */
@@ -770,6 +774,7 @@
     wireCheckout();
     applyConfig(state.config);
     document.addEventListener("click", onGateClick, true);
+    try { if (window.Badges && Badges.refresh) Badges.refresh(); } catch (e) {}
     armGateTimer();
     if (typeof firebase === "undefined" || !window.TRUST_FIREBASE_CONFIG) {
       renderAuthUI();

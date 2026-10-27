@@ -234,6 +234,102 @@
       .lt-ben-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:rgba(0,0,0,.18)}
       .lesson-group{font-family:var(--serif);color:var(--gold2);font-size:1.25rem;margin:24px 0 2px;border-top:1px solid var(--gold-deep);padding-top:18px}
       .lesson-group-sub{color:var(--muted);font-size:.92rem;margin:0 0 6px}
+      /* AI Teacher (baseline training script) */
+      .teacherbtn{flex:none;display:flex;align-items:center;gap:8px;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#2a2110,#1a1509);color:var(--gold2);border-radius:999px;padding:7px 13px;font:600 .78rem var(--sans);cursor:pointer}
+      .teacherbtn:hover{border-color:var(--gold)}
+      #teacherOverlay{position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;background:rgba(5,4,2,.88);padding:14px}
+      #teacherOverlay[hidden]{display:none !important}
+      .tchr-card{position:relative;background:linear-gradient(180deg,#241c0d,#14100a);border:1px solid var(--gold);border-radius:16px;max-width:760px;width:100%;max-height:94vh;overflow:auto;padding:22px 22px 18px;box-shadow:0 24px 70px rgba(0,0,0,.75)}
+      .tchr-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+      .tchr-brand{font:700 .8rem var(--sans);letter-spacing:.16em;color:var(--gold);text-transform:uppercase}
+      .tchr-where{color:var(--muted);font-size:.85rem;margin-right:auto}
+      .tchr-x{appearance:none;background:none;border:none;color:var(--gold2);font-size:1.6rem;line-height:1;cursor:pointer;padding:4px 6px}
+      .tchr-progress{height:6px;background:rgba(201,162,39,.15);border-radius:99px;margin:12px 0 4px;overflow:hidden}
+      .tchr-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold2));transition:width .25s}
+      .tchr-slide{min-height:300px;padding:10px 2px}
+      .tchr-kicker{color:var(--gold);font:700 .72rem var(--sans);letter-spacing:.18em;text-transform:uppercase;margin:0 0 8px}
+      .tchr-title{font-family:var(--serif);color:var(--gold2);font-size:1.7rem;line-height:1.2;margin:0 0 14px}
+      .tchr-head{font-family:var(--serif);color:var(--gold2);font-size:1.4rem;line-height:1.25;margin:0 0 12px}
+      .tchr-term{font-family:var(--serif);color:var(--gold2);font-size:1.5rem;letter-spacing:.02em;margin:0 0 12px}
+      .tchr-learn{font-weight:700;color:var(--ink);margin:0 0 8px}
+      .tchr-bullets{margin:0 0 10px;padding-left:22px;color:var(--ink)}
+      .tchr-bullets li{margin:6px 0}
+      .tchr-body{color:var(--ink);font-size:1.05rem;line-height:1.65;margin:0 0 12px}
+      .tchr-deal{border:1px solid var(--gold-deep);background:rgba(201,162,39,.07);border-radius:10px;padding:11px 13px;color:var(--ink);margin:0 0 12px}
+      .tchr-script{border-top:1px solid var(--line);padding-top:12px;color:var(--gold2);font-size:.98rem;line-height:1.55;margin:14px 0 0}
+      .tchr-q{font-weight:600;color:var(--ink);font-size:1.05rem;margin:0 0 12px}
+      .tchr-opts{display:flex;flex-direction:column;gap:8px}
+      .tchr-opt{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:11px 13px;text-align:left;cursor:pointer;font:400 .95rem var(--sans)}
+      .tchr-opt.correct{border-color:#7ba05b;background:rgba(123,160,91,.15)}
+      .tchr-opt.wrong{border-color:#a05b5b;background:rgba(160,91,91,.13)}
+      .tchr-feedback{font-size:.92rem;color:var(--muted);margin-top:11px;line-height:1.55}
+      .tchr-done{appearance:none;border:1px solid var(--gold);background:linear-gradient(180deg,var(--gold2),var(--gold));color:#191204;font:700 .95rem var(--sans);padding:11px 18px;border-radius:10px;cursor:pointer;margin-top:8px}
+      .tchr-done-note{color:#a9c98d;font-weight:600;margin-top:10px}
+      .tchr-ask{border-top:1px solid var(--line);padding-top:14px;margin-top:6px}
+      .tchr-ask label{display:block;color:var(--gold2);font:600 .85rem var(--sans);margin-bottom:8px}
+      .tchr-askrow{display:flex;gap:8px}
+      .tchr-askrow input{flex:1;background:#100d07;border:1px solid var(--line);border-radius:9px;color:var(--ink);font:400 .95rem var(--sans);padding:10px 12px;min-width:0}
+      .tchr-askrow button{appearance:none;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#2a2110,#1a1509);color:var(--gold2);font:600 .9rem var(--sans);padding:10px 18px;border-radius:9px;cursor:pointer}
+      .tchr-answer{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:11px 13px;color:var(--ink);font-size:.93rem;line-height:1.55;background:rgba(0,0,0,.25)}
+      .tchr-answer.miss{color:var(--muted)}
+      .tchr-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
+      .tchr-nav{appearance:none;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#2a2110,#1a1509);color:var(--gold2);font:600 .9rem var(--sans);padding:10px 16px;border-radius:9px;cursor:pointer}
+      .tchr-nav[disabled]{opacity:.4;cursor:default}
+      .tchr-nav.on{border-color:var(--gold);background:linear-gradient(180deg,var(--gold2),var(--gold));color:#191204}
+      .tchr-count{color:var(--muted);font-size:.88rem;margin:0 auto}
+      /* ---- 4K section art (assets/*-web.jpg) ---- */
+      header.hero{position:relative;overflow:hidden}
+      .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
+      header.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,8,5,.55) 0%,rgba(10,8,5,.78) 55%,rgba(10,8,5,.93) 100%);z-index:1}
+      header.hero .wrap{position:relative;z-index:2}
+      .sec-art{margin:0 0 20px;border:1px solid var(--gold-deep);border-radius:14px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.45);background:#0d0a04;line-height:0}
+      .sec-art img{display:block;width:100%;height:100%;object-fit:cover}
+      .sec-art.banner{aspect-ratio:21/9}
+      .sec-art.card{aspect-ratio:3/2;max-width:640px}
+      .sec-art.track-art{aspect-ratio:21/9;margin:14px 0 8px}
+      .p-card .sec-art{margin-bottom:14px}
+      /* ---- stipulations ---- */
+      .prov-group{grid-column:1/-1;font:700 .8rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border-top:1px solid var(--line);padding-top:12px;margin-top:6px}
+      .stip-block{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);padding:22px;margin:0 0 22px}
+      .stip-block h3{font-family:var(--serif);color:var(--gold2);margin:0 0 6px;font-size:1.3rem}
+      .stip-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}
+      @media (max-width:760px){.stip-cols{grid-template-columns:1fr}}
+      .stip-col h4{font-family:var(--serif);color:var(--gold);margin:0 0 8px;font-size:1.05rem}
+      .stip-col ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.55;font-size:.93rem}
+      .stip-col li{margin:0 0 9px}
+      .stip-col li b{color:var(--ink)}
+      /* ---- badges ---- */
+      .badge-cheer{display:flex;gap:16px;align-items:center;border:1px solid var(--gold);background:linear-gradient(180deg,#2a2110,#171106);border-radius:var(--radius);padding:16px 18px;margin:0 0 18px}
+      .badge-cheer[hidden]{display:none}
+      .badge-cheer h3{font-family:var(--serif);color:var(--gold2);margin:0 0 4px}
+      .badge-cheer p{margin:0;color:var(--ink)}
+      .badge-wall{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);padding:18px 20px;margin:0 0 22px}
+      .badge-wall-head h3{font-family:var(--serif);color:var(--gold2);margin:0 0 4px}
+      .badge-wall-head p{margin:0 0 12px;color:var(--muted);font-size:.93rem;line-height:1.55}
+      .badge-grid{display:flex;flex-wrap:wrap;gap:14px}
+      .badge-cell{flex:1 1 150px;max-width:190px;text-align:center;border:1px solid var(--line);border-radius:12px;padding:14px 10px 12px;background:rgba(0,0,0,.22)}
+      .badge-cell .badge-seal{display:block;margin:0 auto 8px}
+      .badge-cell-name{font:600 .92rem var(--sans);color:var(--ink)}
+      .badge-cell .badge-state{color:var(--muted);font-size:.82rem;margin:4px 0 8px;line-height:1.4}
+      .badge-cell .badge-state.earned{color:var(--gold2);font-weight:700}
+      .badge-seal.just-earned{animation:badgePop .7s ease-out}
+      @keyframes badgePop{0%{transform:scale(.4) rotate(-14deg);opacity:0}60%{transform:scale(1.12) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+      .track-badge{display:flex;align-items:center;gap:10px;margin:2px 0 10px}
+      .track-badge-txt{color:var(--muted);font-size:.88rem}
+      /* ---- badge-gated areas ---- */
+      #crm.badge-area-locked > *:not(#badgeLockCrm){display:none}
+      #contracts.badge-area-locked > *:not(#badgeLockContracts){display:none}
+      .p-card.badge-area-locked > *:not(#badgeLockVault){display:none}
+      .badge-lock-card{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#1c160a,#100c05);border-radius:var(--radius);padding:18px;margin:0 0 18px}
+      .badge-lock-card .badge-seal{flex:none}
+      .badge-lock-txt h3{font-family:var(--serif);color:var(--gold2);margin:0 0 6px}
+      .badge-lock-txt p{margin:0 0 8px;color:var(--muted);line-height:1.55}
+      .badge-lock-txt p b{color:var(--ink)}
+      .badge-lock-txt .row{margin-top:10px}
+      .badge-lock-modal{position:fixed;inset:0;z-index:160;display:flex;align-items:center;justify-content:center;background:rgba(5,4,2,.88);padding:16px}
+      .badge-lock-modal[hidden]{display:none !important}
+      .badge-lock-modal .badge-lock-card{max-width:560px;margin:0;background:linear-gradient(180deg,#241b0d,#14100a)}
+      @media (max-width:640px){.badge-lock-card{flex-direction:column;align-items:center;text-align:center}}
     </style>
 
   </head>
@@ -390,6 +486,7 @@
     <div class="sb24-bar"><div class="wrap">Starting a business of your own? <a href="https://madisonshalom72.github.io/startbusiness24-site/" target="_blank" rel="noopener">StartBusiness24 &mdash; form your LLC or company, get your EIN, and launch right &rarr;</a></div></div>
 
     <header class="hero">
+    <img class="hero-bg" src="assets/hero-web.jpg" alt="Golden scales of justice with a family silhouette, gavel, house and trust document at a mahogany desk — the golden age of trust funds" fetchpriority="high" />
       <div class="wrap">
         <span class="series-tag">A Gold Series Product &middot; by Build A Trust 24</span>
         <h1 id="cfgHeadline">The Golden Age of <span class="gold">Million Dollar</span> Trust Funds</h1>
@@ -421,6 +518,7 @@
       <section id="library">
         <div class="sec-head"><h2>Set Up a Family Trust &mdash; Start With the Right Structure</h2><div class="rule"></div></div>
         <p class="sec-sub">Sixteen common trust structures, grouped by the job they do. Open any card for the full detail, its dropdown options (distribution style, funding sources, provision package, successor choices), and a one-tap path into the builder or the side-by-side comparison.</p>
+        <figure class="sec-art banner"><img src="assets/types-web.jpg" alt="Wall of golden-framed trust types with an open indenture and fountain pen — the library of sixteen trust types" loading="lazy" /></figure>
         <div class="lib-tools">
           <input type="search" id="libSearch" placeholder="Search trust types&hellip; e.g. Medicaid, charity, spouse, probate" aria-label="Search trust types" />
           <button class="chip" data-cat="all" aria-pressed="true">All 16</button>
@@ -491,6 +589,7 @@
         <div class="sec-head"><h2>How to Create a Trust &mdash; The Build A Trust 24 Builder</h2><div class="rule"></div></div>
         <p class="sec-sub">Five steps, like a professional trust specialist would run them: pick the structure and its dropdown options, name the people, set your state, divide the trust into beneficial units, and select the standard provisions. The builder drafts your <b>Trust Indenture Agreement</b>, your bond-paper Certificates of Beneficial Interest, and your units ledger.</p>
         <p class="sec-sub">There are two ways to build a trust on Build A Trust 24. Both end at the same place &mdash; a Trust Indenture Agreement, bond-paper certificates, a units ledger, and a funding checklist, all flowing into the CRM and your Grantor Portal.</p>
+        <figure class="sec-art card"><img src="assets/builder-web.jpg" alt="Hands signing a trust indenture with a wax seal and fountain pen — the Trust Builder at work" loading="lazy" /></figure>
         <div class="path-grid">
           <div class="path-card">
             <p class="path-tag">Path 1 &middot; AI-Guided</p>
@@ -506,6 +605,21 @@
           </div>
         </div>
         <div style="border:1px solid var(--gold-deep);border-radius:12px;padding:14px 16px;margin-bottom:16px;background:rgba(201,162,39,.05)"><b style="color:var(--gold2)">DISCLAIMER:</b> <span style="color:var(--muted)">This site and its builder are educational tools. If you do not have the knowledge of a lawyer, consult a lawyer before implementing your trust. Nothing here is legal advice, and using this builder does not create an attorney-client relationship.</span></div>
+        <div class="stip-block" id="stipulations">
+          <h3>Stipulations — Conditions You Can Build Into the Trust</h3>
+          <p class="track-sub">Stipulations are conditions the Grantor writes into the trust itself — rules the Trustee must run by, and conditions a beneficiary’s interest carries. Every stipulation below is selectable in this builder’s standard-provisions library (Step 2), and the ones you pick print into the Trust Indenture Agreement as formal clauses.</p>
+          <div class="stip-cols">
+            <div class="stip-col">
+              <h4>Stipulations for Trustees</h4>
+              <ul><li><b>Earn the Trustee Badge first.</b> <span>No one serves as Trustee until they complete the Trustee Training track and earn the Trustee Badge — a grantor-set education condition, written into the trust.</span></li><li><b>Annual accounting.</b> <span>The Trustee delivers a full written accounting to every beneficiary each year, within 60 days of year-end.</span></li><li><b>No self-dealing.</b> <span>The Trustee may not buy from, sell to, lend to, or otherwise transact with the Trust for personal benefit.</span></li><li><b>Trustee bond (or waiver).</b> <span>The Trustee serves with a fiduciary bond protecting the beneficiaries — unless the bond is waived in writing.</span></li><li><b>Compensation cap / fee schedule.</b> <span>Trustee fees are capped to a schedule — no open-ended “reasonable fee” drift.</span></li><li><b>Dual signatures.</b> <span>Distributions above the set amount need two signatures — Trustee plus a co-signer.</span></li><li><b>Successor step-in on incapacity.</b> <span>If the Trustee cannot serve, the named successor steps in immediately and the records change hands fast.</span></li><li><b>Removal for cause.</b> <span>Beneficiaries or the Protector can remove a Trustee for cause — dishonesty, incapacity, or failure to account.</span></li></ul>
+            </div>
+            <div class="stip-col">
+              <h4>Stipulations for Beneficiaries</h4>
+              <ul><li><b>Spendthrift protection.</b> <span>A beneficiary’s interest cannot be sold, assigned, or pledged — by the beneficiary, or reached ahead of distribution.</span></li><li><b>Milestone distributions.</b> <span>Principal unlocks when a beneficiary hits milestones the Grantor sets — education, first home, business start.</span></li><li><b>HEMS-only distributions.</b> <span>Distributions for health, education, maintenance, and support — and for nothing else.</span></li><li><b>Withholding during substance abuse or legal trouble.</b> <span>The Trustee may pause a beneficiary’s distributions during addiction or serious legal trouble — and may pay for treatment directly.</span></li><li><b>No-contest stipulation.</b> <span>A beneficiary who contests the Trust and loses forfeits their share.</span></li><li><b>Earn the Beneficiary Badge first.</b> <span>Discretionary distributions begin after the beneficiary completes Beneficiary Training and earns the Beneficiary Badge.</span></li><li><b>Age-staged distributions.</b> <span>A beneficiary’s share releases in stages at set ages instead of all at once.</span></li></ul>
+            </div>
+          </div>
+          <p class="fine">Educational material only — not legal advice. Consult a lawyer if you don’t have the knowledge of a lawyer.</p>
+        </div>
         <div class="wizard" id="wizardTop">
           <div class="steps" id="wizSteps">
             <div class="step-pill on" data-pill="1">1 &middot; Trust Type &amp; Options</div>
@@ -546,6 +660,7 @@
           <!-- STEP 3 -->
           <div class="step-pane" data-pane="3">
             <p style="color:var(--muted);margin-top:0">Divide the trust into <b style="color:var(--ink)">units of beneficial interest</b> &mdash; the same unit structure used by classic trust indentures. Set the total, then allocate units to each beneficiary. Every beneficiary with units receives a numbered Certificate of Beneficial Interest, printed on bond paper.</p>
+              <figure class='sec-art card'><img src='assets/records-book-web.jpg' alt='Open leather trust records book with gold-embossed certificates of beneficial interest — print the trust record on bond paper' loading='lazy' /></figure>
             <div class="field" style="max-width:260px"><label for="fTotalUnits">Total beneficial units</label><input type="text" inputmode="numeric" id="fTotalUnits" value="100" /></div>
             <div class="units-bar">
               <div class="stat"><b id="uAllocated">0</b><span>Units Allocated</span></div>
@@ -605,6 +720,9 @@
       <section id="training">
         <div class="sec-head"><h2>Trust Training &mdash; What Does a Trustee Do, and What Are a Beneficiary&rsquo;s Rights?</h2><div class="rule"></div></div>
         <p class="sec-sub">A trust only works when the people in it know their jobs. Four tracks, plain language, check off each lesson as you finish it and take the quick check at the end of each track. Special needs trust: how it works, public vs. private trusts, and the private-side structures are all taught here too.</p>
+      <figure class="sec-art banner"><img src="assets/training-web.jpg" alt="Mentor teaching trustees and beneficiaries around a walnut table — trustee, beneficiary and guardian training tracks" loading="lazy" /></figure>
+        <div id="badgeCheer" class="badge-cheer" hidden></div>
+        <div id="badgeWall" class="badge-wall" aria-label="My badges"></div>
         <div id="trackList"></div>
       </section>
 
@@ -620,6 +738,7 @@
         <div class="sec-head"><h2>The Contracts Engine &mdash; Grow the Trust Through Contracts</h2><div class="rule"></div></div>
         <p class="secret-line" style="text-align:left;font-size:clamp(1.15rem,3vw,1.6rem)">The fastest way to grow to a million dollars is through CONTRACTS.</p>
         <p class="sec-sub">Savings alone crawl. Contracts move money in large, scheduled amounts. That is how insurance works &mdash; a contract signed today pays a benefit tomorrow &mdash; and a trust can be built the same way: the trust owns contracts, is paid by contracts, and stands as beneficiary of contracts. Four contract lanes feed a trust:</p>
+      <figure class="sec-art banner"><img src="assets/contracts-web.jpg" alt="Two partners shaking hands over a signed contract and trust document — growing a trust through contracts" loading="lazy" /></figure>
         <div class="grid">
           <div class="card"><h3>1 &middot; Life Insurance Contracts</h3><p><b>The ILIT pattern:</b> a trust owns life insurance policies, or stands as their beneficiary, so a policy&rsquo;s benefit funds the trust when it pays &mdash; contract money landing in the trust, not in probate hands. One policy can fund a trust at a level decades of saving would struggle to reach.</p></div>
           <div class="card"><h3>2 &middot; Contractual Income Streams</h3><p>Rents, royalties, service agreements, and payment contracts can be <b>assigned into the trust</b>, so the income the contract produces is paid to the trustee for the beneficiaries &mdash; month after month, by agreement, not by effort.</p></div>
@@ -634,6 +753,7 @@
       <section id="land-trust">
         <div class="sec-head"><h2>How to Put a House in a Land Trust &mdash; Privacy, Probate &amp; Clean Transfers</h2><div class="rule"></div></div>
         <p class="sec-sub">Learning <b style="color:var(--ink)">how to put a house in a land trust</b> starts with one idea: the trust holds the deed, you hold the benefit. A land trust for rental property keeps your name off the public title while the property itself stays exactly where it is &mdash; and when you put rental property in a trust this way, the beneficial interest becomes personal property you can assign on paper, with no new deed every time it changes hands. Below: the structure, the key parts, how a land trust deed transfer works, and the generator that splits the units.</p>
+      <figure class="sec-art banner"><img src="assets/land-trust-web.jpg" alt="Golden-hour aerial of a suburban home held in a land trust — privacy and clean transfers" loading="lazy" /></figure>
         <div class="grid">
           <div class="card"><h3>What a Land Trust Is</h3><p>A land trust is a <b>title-holding trust</b>: the trustee holds legal title to a piece of real estate, and the beneficiaries hold the <b>beneficial interest</b> &mdash; which the law treats as <b>personal property</b>, not real property. The property is managed, rented, and sold by direction of the beneficiaries, but the deed at the courthouse names the trustee, not you. That separation &mdash; title in the trust, benefit in your hands &mdash; is the whole machine.</p></div>
           <div class="card"><h3>What It&rsquo;s Used For</h3><p>Holding real estate <b>privately</b> &mdash; your name stays off the public record. <b>Avoiding probate</b> on the property: the beneficial interest passes under the trust agreement instead of through the court. <b>Cleaner transfers</b>: assign the beneficial interest on paper instead of recording a new deed. <b>Estate planning</b> for rentals and single properties &mdash; and the investor deal structures taught in the Real Estate &amp; Land Trusts training track: subject-to, seller financing, and lease options.</p></div>
@@ -777,6 +897,7 @@
       <section id="calculators">
         <div class="sec-head"><h2>Trust Calculators &mdash; Run the Numbers Before You Sign</h2><div class="rule"></div></div>
         <p class="sec-sub">Three working calculators framed for trust use, alongside the <a href="#instant-millionaire">Instant Millionaire Trust Fund Builder</a>. Results update as you type. Every figure is an educational estimate &mdash; not tax, legal, or financial advice.</p>
+        <figure class="sec-art card"><img src="assets/calculator-web.jpg" alt="Brass calculator and rising gold coins on a mahogany desk — the trust calculators and the Instant Millionaire Trust Fund Builder" loading="lazy" /></figure>
 
         <div class="res-block">
           <div class="reg-head"><h3>1 &middot; Trust Tax Estimator</h3></div>
@@ -969,6 +1090,7 @@
         <!-- THE TRUST FUND VAULT -->
         <div class="p-card" style="margin-top:14px">
           <h3 style="font-family:var(--serif);color:var(--gold2);margin-top:0">The Trust Fund Vault &mdash; Digitized Document Register</h3>
+          <figure class='sec-art banner'><img src='assets/vault-web.jpg' alt='Open bank vault door with golden light and trust certificates inside — the Trust Fund Vault document register' loading='lazy' /></figure>
           <p style="color:var(--muted);font-size:.92rem">The vault is the trust&rsquo;s digital storage home: a register of digitized copies of everything the trust generates and holds. <b style="color:var(--ink)">Originals on bond paper stay in the physical vault</b> &mdash; the Vault here is the digitized working-copy register, so you always know what exists, where the original lives, and whether it has been scanned and backed up.</p>
           <div class="crm-summary" id="vaultSummary"></div>
           <div style="overflow-x:auto"><table class="ledger" id="vaultTable">
@@ -1232,7 +1354,37 @@
    { id:"gratprov", name:"GRAT Annuity Payment Terms", desc:"How and when the retained annuity is paid.", def:true, app:"grat",
      clause:"Annuity Payments. The Trustee shall pay the retained annuity to the Grantor in the amount and pattern selected in this instrument (a fixed dollar amount or a fixed fraction of annually revalued assets, as elected), payable at least annually, in cash or in kind at fair market value. If the annuity is ever underpaid, the Trustee shall correct the shortfall in the following year. The annuity obligation is limited to trust assets." },
    { id:"charprov", name:"Charitable Terms (CRT / CLT)", desc:"The charitable beneficiary, payout compliance, and no private inurement.", def:true, app:"char",
-     clause:"Charitable Terms. The charitable beneficiary designated herein must, at all times, be an organization described in Internal Revenue Code sections 170(c), 2055(a), and 2522(a). Payouts shall be administered to satisfy section 664 (for a charitable remainder trust) or the guaranteed-annuity/unitrust rules applicable to a charitable lead trust. No amount may be paid to or for any non-charitable private person other than the stated annuity or unitrust amounts, and the Trustee shall not engage in any act of self-dealing as defined in section 4941." }
+     clause:"Charitable Terms. The charitable beneficiary designated herein must, at all times, be an organization described in Internal Revenue Code sections 170(c), 2055(a), and 2522(a). Payouts shall be administered to satisfy section 664 (for a charitable remainder trust) or the guaranteed-annuity/unitrust rules applicable to a charitable lead trust. No amount may be paid to or for any non-charitable private person other than the stated annuity or unitrust amounts, and the Trustee shall not engage in any act of self-dealing as defined in section 4941." },
+   { id:"stip-t-training", group:"stipT", name:"Trustee Training Condition \u2014 Earn the Trustee Badge", desc:"No one serves as Trustee until they complete the Trustee Training track and earn the Trustee Badge.", def:false, app:"all",
+     clause:"Trustee Training Condition. As a condition of serving, each person named as Trustee or Successor Trustee under this Indenture shall first complete the Trustee Training track of Build A Trust 24 (or training of equivalent scope approved by the Grantor in writing) and earn the Trustee Badge evidencing that completion. A named Trustee who has not satisfied this condition shall not act, and the next qualified Successor Trustee shall serve in the interim; administration shall not pause for want of a qualified Trustee. The Grantor may waive this condition for a named person by a signed writing delivered to the serving Trustee." },
+   { id:"stip-t-accounting", group:"stipT", name:"Annual Accounting \u2014 A Standing Stipulation", desc:"The Trustee delivers a full written accounting to every beneficiary each year, within 60 days of year-end.", def:false, app:"all",
+     clause:"Annual Accounting Stipulation. Within sixty (60) days after the close of each trust year, and again upon any change of Trustee, the Trustee shall deliver to each qualified beneficiary a complete written accounting of all receipts, disbursements, gains, losses, compensation taken, and holdings of the Trust for the period. A beneficiary may demand one interim statement in any twelve-month period, which the Trustee shall provide within thirty (30) days. Failure to account as required hereunder is cause for removal under this Indenture." },
+   { id:"stip-t-noself", group:"stipT", name:"No Self-Dealing", desc:"The Trustee may not buy from, sell to, lend to, or otherwise transact with the Trust for personal benefit.", def:false, app:"all",
+     clause:"No Self-Dealing. The Trustee shall not, directly or indirectly, buy property from the Trust, sell property to the Trust, borrow trust funds, lend personal funds to the Trust, or use trust property or trust information for personal advantage. Any transaction in violation of this section is voidable by any qualified beneficiary unless it was disclosed in writing in advance and consented to in writing by the Grantor (if living and competent) or by a majority of the qualified beneficiaries. This section does not prohibit compensation expressly authorized by this Indenture." },
+   { id:"stip-t-bond", group:"stipT", name:"Trustee Bond (or Written Waiver)", desc:"The Trustee serves with a fiduciary bond protecting the beneficiaries \u2014 unless the bond is waived in writing.", def:false, app:"all",
+     clause:"Trustee Bond. Before exercising any power under this Indenture, and annually thereafter while serving, the Trustee shall furnish a fiduciary bond (surety or court-approved equivalent) in an amount not less than the value of the trust property under the Trustee's control, for the protection of the beneficiaries, the premium payable from the Trust as an administration expense. This requirement is waived only if waived in a signed writing by the Grantor, or after the Grantor's death or incapacity by a majority of the qualified beneficiaries, or by court order in {S}." },
+   { id:"stip-t-comp", group:"stipT", name:"Trustee Compensation Cap & Fee Schedule", desc:"Trustee fees are capped to a schedule \u2014 no open-ended 'reasonable fee' drift.", def:false, app:"all",
+     clause:"Compensation Cap and Fee Schedule. Notwithstanding any other provision, a Trustee's aggregate compensation for any trust year shall not exceed the lesser of (a) one percent (1%) of the average value of the trust estate for that year, or (b) the amount produced by the fee schedule, if any, attached to this Indenture as an exhibit. Extraordinary services beyond ordinary administration require the prior written consent of a majority of the qualified beneficiaries. The Trustee shall itemize all compensation taken in the annual accounting." },
+   { id:"stip-t-dual", group:"stipT", name:"Dual Signatures for Large Distributions", desc:"Distributions above the set amount need two signatures \u2014 Trustee plus a co-signer.", def:false, app:"all",
+     clause:"Dual Signatures. No single distribution, transfer, or encumbrance of trust property exceeding Ten Thousand Dollars ($10,000) \u2014 or such other threshold as the Grantor sets by a signed writing delivered to the Trustee \u2014 shall be made on the signature of the Trustee alone. Each such transaction requires the countersignature of the Co-Trustee, the Successor Trustee, or the Trust Protector, if any is then serving and qualified. A transaction made without a required countersignature is voidable at the election of any qualified beneficiary." },
+   { id:"stip-t-successor", group:"stipT", name:"Successor Step-In on Incapacity", desc:"If the Trustee cannot serve, the named successor steps in immediately and the records change hands fast.", def:false, app:"all",
+     clause:"Successor Step-In on Incapacity. Upon the death, resignation, removal, or incapacity of a serving Trustee, the Successor Trustee named in this Indenture steps in immediately and automatically, without court order or gap in administration, upon written certification of the triggering event (for incapacity, as provided in this Indenture). The outgoing Trustee or the Trustee's representatives shall deliver all trust records, accountings, keys, credentials, and the Units Ledger to the successor within ten (10) days. The successor's authority relates back to the triggering event for acts necessary to preserve trust property." },
+   { id:"stip-t-removal", group:"stipT", name:"Removal for Cause", desc:"Beneficiaries or the Protector can remove a Trustee for cause \u2014 dishonesty, incapacity, or failure to account.", def:false, app:"all",
+     clause:"Removal for Cause. A Trustee may be removed for cause by a majority of the qualified beneficiaries, or by the Trust Protector if one is named and serving, upon written notice stating the cause. Cause includes: material breach of fiduciary duty; dishonesty or self-dealing; failure to deliver any accounting required by this Indenture within thirty (30) days after written demand; incapacity; or conviction of a crime involving fraud or dishonesty. A Trustee removed for cause forfeits compensation for the period of the breach and shall account and deliver all trust property and records to the successor within ten (10) days." },
+   { id:"stip-b-spend", group:"stipB", name:"Spendthrift Stipulation \u2014 No Assignment of Interest", desc:"A beneficiary's interest cannot be sold, assigned, or pledged \u2014 by the beneficiary, or reached ahead of distribution.", def:false, app:"all",
+     clause:"No Assignment \u2014 Spendthrift Stipulation. The interest of each beneficiary in this Trust is held on a strict spendthrift stipulation: no beneficiary may sell, assign, transfer, pledge, or anticipate any interest in income or principal, voluntarily or involuntarily, and any purported assignment is void from the beginning. No creditor, assignee, or trustee in bankruptcy of a beneficiary may compel a distribution, attach an undistributed interest, or reach trust property before the Trustee actually distributes it, to the fullest extent permitted by the law of {S}." },
+   { id:"stip-b-milestone", group:"stipB", name:"Milestone (Incentive) Distributions", desc:"Principal unlocks when a beneficiary hits milestones the Grantor sets \u2014 education, first home, business start.", def:false, app:"all",
+     clause:"Milestone Distributions. Beyond any standard stated elsewhere, the Trustee shall distribute principal to a beneficiary upon the beneficiary's achievement of a milestone set by the Grantor, including by way of example: completion of a degree or licensed trade program; purchase of a first primary residence; or the launch of a business supported by a written plan the Trustee approves as reasonable. The Grantor may record the milestones and amounts for each beneficiary in a signed memorandum filed with this Indenture; absent a memorandum, the Trustee may distribute up to one-fourth (1/4) of the beneficiary's presumptive share per milestone. The Trustee shall verify achievement on reasonable evidence before distributing." },
+   { id:"stip-b-hems", group:"stipB", name:"HEMS-Only Distributions", desc:"Distributions for health, education, maintenance, and support \u2014 and for nothing else.", def:false, app:"all",
+     clause:"HEMS Only. Notwithstanding any discretionary authority granted elsewhere in this Indenture, distributions to or for a beneficiary under this stipulation may be made solely for the beneficiary's health, education, maintenance, and support, in the beneficiary's accustomed manner of living. No distribution may be made for any other purpose, and the Trustee shall document the HEMS purpose of each distribution in the trust records. This stipulation controls over any broader discretionary language in this Indenture." },
+   { id:"stip-b-withhold", group:"stipB", name:"Withholding During Substance Abuse or Legal Trouble", desc:"The Trustee may pause a beneficiary's distributions during addiction or serious legal trouble \u2014 and may pay for treatment directly.", def:false, app:"all",
+     clause:"Withholding for Protection; Treatment Exception. If the Trustee reasonably determines that a beneficiary is abusing alcohol or drugs, is subject to addiction, or is facing criminal charges or other legal trouble such that a distribution would be dissipated or seized, the Trustee may withhold and accumulate distributions otherwise payable to that beneficiary. During any withholding period, the Trustee may pay directly to providers \u2014 and never to the beneficiary \u2014 amounts for treatment, rehabilitation, counseling, and legal defense the Trustee deems advisable. Distributions resume when the Trustee determines, on reasonable evidence (which may include a treatment professional's written certification), that the condition has been resolved." },
+   { id:"stip-b-nocontest", group:"stipB", name:"No-Contest Stipulation", desc:"A beneficiary who contests the Trust and loses forfeits their share.", def:false, app:"all",
+     clause:"No-Contest Stipulation. As a stipulation of their interest, if any beneficiary contests this Indenture, seeks to void or challenge any of its provisions or any distribution under it, or contests the Grantor's capacity or the validity of this instrument, and does not prevail in that contest, that beneficiary shall forfeit the entire interest granted hereunder and shall be treated as having predeceased the Grantor without descendants. The Trustee may defend any contest at the expense of the Trust. Enforceability of this stipulation is governed by the law of {S}." },
+   { id:"stip-b-training", group:"stipB", name:"Beneficiary Training Condition \u2014 Earn the Beneficiary Badge", desc:"Discretionary distributions begin after the beneficiary completes Beneficiary Training and earns the Beneficiary Badge.", def:false, app:"all",
+     clause:"Beneficiary Training Condition. As a condition the Grantor sets on discretionary distributions, a beneficiary shall complete the Beneficiary Training track of Build A Trust 24 (or training of equivalent scope approved by the Trustee) and earn the Beneficiary Badge before receiving discretionary distributions of principal under this Indenture. Until the condition is satisfied, the Trustee may still pay amounts for the beneficiary's health, education, maintenance, and support directly to the providers of those goods and services. The condition is a one-time education requirement, not a forfeiture: satisfaction at any time fully qualifies the beneficiary from that date." },
+   { id:"stip-b-agestage", group:"stipB", name:"Age-Staged Distributions", desc:"A beneficiary's share releases in stages at set ages instead of all at once.", def:false, app:"all",
+     clause:"Age-Staged Distributions. Unless the Trustee determines otherwise for a beneficiary's protection, each beneficiary's share shall be distributed in stages: one-third (1/3) of the then-remaining share at age twenty-five (25), one-half (1/2) of the remainder at age thirty (30), and the balance at age thirty-five (35). Before a stage is reached, the share is held in a separate trust for the beneficiary, administered under the standards of this Indenture. If a beneficiary dies before full distribution, the remaining share passes as provided in this Indenture." }
   ];
   const provById = id => PROVISIONS.find(p => p.id === id);
   function provApplies(p, typeId){
@@ -1455,7 +1607,14 @@
   }
   function renderProv(){
     const list = PROVISIONS.filter(p => provApplies(p, W.type));
-    $("#provList").innerHTML = list.map(p => "<button type='button' class='prov' data-p='" + p.id + "' aria-pressed='" + W.prov.has(p.id) + "'><span class='sw'></span><span><b>" + esc(p.name) + "</b><span>" + esc(p.desc) + "</span></span></button>").join("");
+    const PROV_GROUPS = { stipT: "Stipulations \u2014 Trustees", stipB: "Stipulations \u2014 Beneficiaries" };
+    let provHtml = ""; let seenProvGroup = "";
+    list.forEach(p => {
+      const g = p.group || "";
+      if(g && g !== seenProvGroup){ provHtml += "<div class='prov-group'>" + PROV_GROUPS[g] + "</div>"; seenProvGroup = g; }
+      provHtml += "<button type='button' class='prov' data-p='" + p.id + "' aria-pressed='" + W.prov.has(p.id) + "'><span class='sw'></span><span><b>" + esc(p.name) + "</b><span>" + esc(p.desc) + "</span></span></button>";
+    });
+    $("#provList").innerHTML = provHtml;
     $$("#provList .prov").forEach(b => b.addEventListener("click", () => { const id = b.dataset.p; if(W.prov.has(id)) W.prov.delete(id); else W.prov.add(id); renderProv(); }));
     const pct = list.length ? Math.round(W.prov.size / list.length * 100) : 0;
     $("#provMeter").style.width = pct + "%";
@@ -1667,7 +1826,9 @@
   let LASTDOC = null;
   function renderGenSummary(){
     const w = collectW(); const cs = casesFor(w.type.id);
+    const stips = PROVISIONS.filter(p => p.group && w.prov.has(p.id));
     $("#genSummary").innerHTML = "<p style='margin-top:0'><b style='color:var(--ink)'>" + esc(w.trustName) + "</b> — a " + esc(w.type.name) + (w.state ? " governed by " + esc(stateName(w.state)) + " law" : "") + ". Grantor: " + esc(w.grantor) + " · Trustee: " + esc(w.trustee) + " · Beneficiaries: " + w.bens.length + " · Assets scheduled: " + w.assets.length + " · Provisions selected: " + w.prov.size + ".</p>" +
+      (stips.length ? "<p><b style='color:var(--ink)'>Stipulations written into this trust:</b> " + stips.map(p => esc(p.name)).join(" · ") + ".</p>" : "") +
       (cs.length ? "<p><b style='color:var(--ink)'>Case law riding with this package:</b> " + cs.map(c => esc(c.name)).join(" · ") + " — attached as your Case Law Appendix.</p>" : "") +
       "<p style='font-size:.85rem'>" + esc(DISCLAIMER) + "</p>";
   }
@@ -1912,8 +2073,10 @@
     $("#trackList").innerHTML = TRACKS.map(t => {
       const s = TRAIN[t.id]; let ln = 0;
       return "<div class='track' id='track-" + t.id + "'><h3>" + esc(t.title) + "</h3><p class='track-sub'>" + esc(t.sub) + "</p>" +
+        "<div class='track-badge' data-badge-for='" + t.id + "'></div>" +
         "<div class='meter'><i style='width:" + trackPct(t.id) + "%'></i></div>" +
-        t.lessons.map((l, i) => l[2] === "group" ? "<div class='lesson-group'>" + esc(l[0]) + "</div>" + (l[1] ? "<p class='lesson-group-sub'>" + esc(l[1]) + "</p>" : "") : "<div class='lesson'><div class='lesson-head'><div style='flex:1'><b>Lesson " + (++ln) + " — " + esc(l[0]) + "</b><p>" + esc(l[1]) + "</p></div><button type='button' class='checkbtn' data-track='" + t.id + "' data-lesson='" + i + "' aria-pressed='" + s.done.has(i) + "'><span class='box'>" + (s.done.has(i) ? "✓" : "") + "</span>" + (s.done.has(i) ? "Completed" : "Mark complete") + "</button></div></div>").join("") +
+        (t.id === "realestate" ? "<figure class='sec-art track-art'><img src='assets/real-estate-deals-web.jpg' alt='House at dusk with a deed and keys \u2014 using a land trust for subject-to and other real estate deals' loading='lazy' /></figure>" : "") +
+        t.lessons.map((l, i) => l[2] === "group" ? "<div class='lesson-group'>" + esc(l[0]) + "</div>" + (l[1] ? "<p class='lesson-group-sub'>" + esc(l[1]) + "</p>" : "") : "<div class='lesson'><div class='lesson-head'><div style='flex:1'><b>Lesson " + (++ln) + " — " + esc(l[0]) + "</b><p>" + esc(l[1]) + "</p></div><button type='button' class='checkbtn' data-track='" + t.id + "' data-lesson='" + i + "' aria-pressed='" + s.done.has(i) + "'><span class='box'>" + (s.done.has(i) ? "✓" : "") + "</span>" + (s.done.has(i) ? "Completed" : "Mark complete") + "</button><button type='button' class='teacherbtn' data-ttrack='" + t.id + "' data-tlesson='" + i + "'>🎓 Learn with the AI Teacher</button></div></div>").join("") +
         "<div class='quiz'><p class='q'>Check yourself</p>" + t.quiz.map((qz, qi) => "<div style='margin-bottom:14px'><p class='q'>" + (qi + 1) + ". " + esc(qz.q) + "</p><div class='opts'>" + qz.opts.map((o, oi) => "<button type='button' class='opt' data-tq='" + t.id + "' data-qi='" + qi + "' data-oi='" + oi + "'>" + esc(o) + "</button>").join("") + "</div><p class='feedback' id='fb-" + t.id + "-" + qi + "'>" + esc(qz.why) + "</p></div>").join("") + "</div>" +
         "<div class='track-done' id='done-" + t.id + "'>Track complete — " + esc(t.title) + ". Screenshot or print your summary and file it with the trust records.</div>" +
         "<div class='doc-actions'><button class='btn small' data-trackpdf='" + t.id + "' type='button'>Download PDF — Training Summary</button></div>" +
@@ -1923,6 +2086,9 @@
       const s = TRAIN[b.dataset.track]; const i = Number(b.dataset.lesson);
       if(s.done.has(i)) s.done.delete(i); else s.done.add(i);
       renderTracks(); checkTrackDone(b.dataset.track);
+    }));
+    $$("#trackList .teacherbtn").forEach(b => b.addEventListener("click", () => {
+      openTeacher(b.dataset.ttrack, Number(b.dataset.tlesson));
     }));
     $$("#trackList .opt").forEach(b => b.addEventListener("click", () => {
       const t = TRACKS.find(x => x.id === b.dataset.tq); const qi = Number(b.dataset.qi); const oi = Number(b.dataset.oi);
@@ -1941,6 +2107,7 @@
       flowPDF(t.title + " — Training Summary", blocks, t.title.replace(/\W+/g, "-") + "-Summary.pdf");
     }));
     TRACKS.forEach(t => checkTrackDone(t.id));
+    if(window.Badges) Badges.refresh();
   }
   function renderTracksMeter(id){
     const el = document.querySelector("#track-" + id + " .meter i"); if(el) el.style.width = trackPct(id) + "%";
@@ -1949,8 +2116,404 @@
     const t = TRACKS.find(x => x.id === id); const s = TRAIN[id];
     const done = s.done.size === t.lessons.filter(x => x[2] !== "group").length && t.quiz.every((q, i) => s.quiz[i]);
     const el = $("#done-" + id); if(el) el.style.display = done ? "block" : "none";
+    if(window.Badges) Badges.onTrackCheck(id, done);
     renderTracksMeter(id);
   }
+
+  /* ==================== AI TEACHER ====================
+   * An interactive teacher for every lesson: pressing "Learn with the
+   * AI Teacher" turns the lesson into a slide deck built at runtime
+   * from the lesson's own TRACKS data (same source of truth as the
+   * lesson text, so the two never drift). Each deck: a title slide
+   * with what-you'll-learn bullets, one teaching point per slide,
+   * term cards for the terms lesson, a slide per contract for the
+   * contract lessons, the track's quiz (interactive, scored through
+   * the same TRAIN state as the on-page quiz), and a recap slide whose
+   * button marks the lesson complete through the same path as the
+   * lesson's own check button. "Read it to me" uses the browser's own
+   * speech synthesis. "Ask the Teacher" is a local keyword search over
+   * this lesson's material plus the terms lesson — it answers with
+   * excerpts from the lesson itself and says so on its face; there is
+   * no external AI service behind it. The Teacher is lesson content:
+   * trust-app.js gates it with the same freemium pop-up as the
+   * lessons (its capture-phase handler sees the button inside
+   * #training, and openTeacher re-checks access before opening). */
+  const TCHR = { built: false, open: false, trackId: null, lessonIdx: -1, slides: [], idx: 0, speak: false, corpus: [], termsCache: null, answered: {} };
+  const TCHR_LEADS = ["Here's the point: ", "Say it plain: ", "Lock this in: ", "Here's how it works: ", "Remember this: ", "Watch the wording: "];
+
+  function tchrSentences(text){
+    return String(text || "").split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
+  }
+  function tchrFirst(text, n){
+    const s = tchrSentences(text)[0] || String(text || "");
+    return s.length > n ? s.slice(0, n - 1).trim() + "…" : s;
+  }
+  function tchrIsTermName(s){
+    if (!s || s.length < 3 || s.length > 60) return false;
+    const letters = s.replace(/[^A-Za-z]/g, "");
+    if (letters.length < 3) return false;
+    const up = s.replace(/[^A-Z]/g, "").length;
+    return up / letters.length > 0.8;
+  }
+  /* Parse a "TERM — definition. In a deal: … NEXT TERM — …" body into
+   * { intro, terms: [{ term, text }] }. Continuation segments created
+   * by em-dashes inside a definition are rejoined with the dash. */
+  function tchrParseTerms(body){
+    const parts = String(body || "").split(" — ");
+    const terms = []; let intro = ""; let cur = null;
+    const pushText = (chunk) => {
+      if (!chunk) return;
+      if (cur) {
+        if (!cur.text) cur.text = chunk;
+        else if (!/[.!?]$/.test(cur.text) && /^[a-z]/.test(chunk)) cur.text += " — " + chunk;
+        else cur.text += " " + chunk;
+      } else intro += (intro ? " " : "") + chunk;
+    };
+    parts.forEach((p, i) => {
+      if (i === 0) {
+        const m = p.match(/^(.*?)\s([A-Z][A-Z0-9 &\/\-]{2,})$/s);
+        if (m && tchrIsTermName(m[2].trim())) { intro = m[1].trim(); cur = { term: m[2].trim(), text: "" }; }
+        else intro = p.trim();
+        return;
+      }
+      let rest = p, next = null;
+      const idx = p.lastIndexOf(". ");
+      if (idx >= 0) {
+        const tail = p.slice(idx + 2).trim();
+        if (tchrIsTermName(tail)) { rest = p.slice(0, idx + 1); next = tail; }
+      }
+      pushText(rest.trim());
+      if (next) { if (cur) terms.push(cur); cur = { term: next, text: "" }; }
+    });
+    if (cur) terms.push(cur);
+    return { intro, terms };
+  }
+  function tchrTermsIndex(){
+    if (TCHR.termsCache) return TCHR.termsCache;
+    let out = [];
+    TRACKS.forEach(t => t.lessons.forEach(l => {
+      if (l[0] === "Breaking Down Each Term") out = tchrParseTerms(l[1]).terms;
+    }));
+    TCHR.termsCache = out;
+    return out;
+  }
+  /* Split a chunk further on ALL-CAPS-style callout labels. */
+  const TCHR_CALLOUTS = ["WATCH OUT:", "DUE-ON-SALE HONESTY:", "THE CLOSING CHECKLIST:", "HOW EXERCISE WORKS:", "THE EXITS"];
+  function tchrSplitCallouts(chunk){
+    const out = [chunk];
+    for (const label of TCHR_CALLOUTS) {
+      for (let i = 0; i < out.length; i++) {
+        const at = out[i].text.indexOf(label);
+        if (at > 0) {
+          const before = { head: out[i].head, text: out[i].text.slice(0, at).trim(), kind: out[i].kind };
+          const after = { head: label.replace(/:$/, ""), text: out[i].text.slice(at + label.length).trim(), kind: "watchout" };
+          out.splice(i, 1, before, after);
+        }
+      }
+    }
+    return out.filter(c => c.text);
+  }
+  function tchrHeadOf(text){
+    const m = String(text || "").match(/^([A-Za-z][A-Za-z &\/\-]{2,40}):\s/);
+    return m ? m[1].trim() : "";
+  }
+  /* Turn a lesson body into teaching chunks:
+   * [{ head, text, kind }] kind: point | term | contract | watchout. */
+  function tchrChunks(body){
+    const text = String(body || "");
+    const parsed = tchrParseTerms(text);
+    if (parsed.terms.length >= 4) {
+      const chunks = [];
+      if (parsed.intro) chunks.push({ head: "The Map", text: parsed.intro, kind: "point" });
+      parsed.terms.forEach(tm => {
+        let def = tm.text, deal = "";
+        const di = tm.text.indexOf("In a deal:");
+        if (di >= 0) { def = tm.text.slice(0, di).trim(); deal = tm.text.slice(di + "In a deal:".length).trim(); }
+        chunks.push({ head: tm.term, text: def, deal, kind: "term" });
+      });
+      return chunks;
+    }
+    const isContracts = text.indexOf("THE CONTRACTS:") >= 0;
+    const markers = text.match(/\(\d+\)/g);
+    let chunks = [];
+    if (markers && markers.length >= 2) {
+      const pieces = text.split(/(?=\(\d+\)\s)/).map(s => s.trim()).filter(Boolean);
+      pieces.forEach((piece, pi) => {
+        const nm = piece.match(/^\((\d+)\)\s*/);
+        if (!nm) { chunks.push({ head: tchrHeadOf(piece), text: piece, kind: "point" }); return; }
+        let rest = piece.slice(nm[0].length).trim();
+        let head = "", kind = isContracts && pi > 0 ? "contract" : "point";
+        const dash = rest.indexOf(" — ");
+        if (dash > 0 && dash <= 70) { head = rest.slice(0, dash).trim(); rest = rest.slice(dash + 3).trim(); }
+        if (!head) head = isContracts && pi > 0 ? "Contract " + nm[1] : "Part " + nm[1];
+        chunks.push({ head, text: rest, kind });
+      });
+    } else {
+      const sents = tchrSentences(text);
+      let buf = [];
+      const flush = () => {
+        if (!buf.length) return;
+        const joined = buf.join(" ");
+        chunks.push({ head: tchrHeadOf(joined), text: joined, kind: "point" });
+        buf = [];
+      };
+      sents.forEach(s => {
+        buf.push(s);
+        if (buf.length >= 2 || buf.join(" ").length >= 420) flush();
+      });
+      flush();
+    }
+    const split = [];
+    chunks.forEach(c => tchrSplitCallouts(c).forEach(x => split.push(x)));
+    return split.length ? split : [{ head: "", text, kind: "point" }];
+  }
+  function tchrLabel(chunk){
+    if (chunk.head) return chunk.head;
+    return String(chunk.text || "").split(/\s+/).slice(0, 7).join(" ") + "…";
+  }
+  function tchrScriptFor(slide, n){
+    if (slide.kind === "title") {
+      return "Let's learn this one properly: " + slide.title + ". " +
+        "Here's what you'll walk away with: " + slide.bullets.join("; ") + ". Tap Next and we take it one point at a time.";
+    }
+    if (slide.kind === "term") {
+      return slide.head + " — in plain words: " + tchrFirst(slide.text, 220) +
+        (slide.deal ? " In a deal: " + tchrFirst(slide.deal, 180) : "");
+    }
+    if (slide.kind === "contract") {
+      return "This paper does a specific job. " + (slide.head ? slide.head + ": " : "") + tchrFirst(slide.text, 220);
+    }
+    if (slide.kind === "watchout") {
+      return "Slow down on this one — it matters. " + tchrFirst(slide.text, 220);
+    }
+    if (slide.kind === "quiz") return "Check yourself: " + slide.q;
+    if (slide.kind === "recap") {
+      return "That's the lesson. Three things to carry out of here: " + slide.takeaways.join(" ") + " Mark it complete and move to the next one.";
+    }
+    return TCHR_LEADS[n % TCHR_LEADS.length] + tchrFirst(slide.text, 240);
+  }
+  function buildDeck(track, lessonIdx){
+    const lesson = track.lessons[lessonIdx];
+    const chunks = tchrChunks(lesson[1]);
+    const slides = [];
+    slides.push({ kind: "title", title: lesson[0], trackTitle: track.title,
+      bullets: chunks.slice(0, 3).map(tchrLabel) });
+    chunks.forEach(c => slides.push({ kind: c.kind, head: c.head, text: c.text, deal: c.deal || "",
+      label: tchrLabel(c) }));
+    (track.quiz || []).forEach((qz, qi) => slides.push({ kind: "quiz", qi, q: qz.q, opts: qz.opts, a: qz.a, why: qz.why }));
+    slides.push({ kind: "recap", title: lesson[0],
+      takeaways: chunks.slice(0, 3).map(c => (c.head ? c.head + " — " : "") + tchrFirst(c.text, 150)) });
+    slides.forEach((s, i) => { s.script = tchrScriptFor(s, i); });
+    TCHR.corpus = chunks.map(c => ({ head: c.head || "", text: c.text + (c.deal ? " In a deal: " + c.deal : ""), kind: c.kind, fromTerms: c.kind === "term" }));
+    return slides;
+  }
+  function buildTeacher(){
+    if (TCHR.built) return;
+    const ov = document.createElement("div");
+    ov.id = "teacherOverlay";
+    ov.hidden = true;
+    ov.setAttribute("role", "dialog");
+    ov.setAttribute("aria-modal", "true");
+    ov.setAttribute("aria-label", "AI Teacher");
+    ov.innerHTML =
+      "<div class='tchr-card'>" +
+      "<div class='tchr-top'><span class='tchr-brand'>🎓 AI Teacher</span><span class='tchr-where' id='tchrWhere'></span>" +
+      "<button class='tchr-x' id='tchrExit' type='button' aria-label='Exit the teacher'>&times;</button></div>" +
+      "<div class='tchr-progress'><i id='tchrBar'></i></div>" +
+      "<div class='tchr-slide' id='tchrSlide'></div>" +
+      "<div class='tchr-ask'><label for='tchrAskInput'>Ask the Teacher — answers from this lesson's material</label>" +
+      "<div class='tchr-askrow'><input id='tchrAskInput' type='text' placeholder='Ask about this lesson…' />" +
+      "<button class='ta-like' id='tchrAskBtn' type='button'>Ask</button></div>" +
+      "<div class='tchr-answer' id='tchrAnswer' hidden></div></div>" +
+      "<div class='tchr-controls'><button class='tchr-nav' id='tchrPrev' type='button'>← Prev</button>" +
+      "<button class='tchr-nav' id='tchrTts' type='button' aria-pressed='false'>🔊 Read it to me</button>" +
+      "<span class='tchr-count' id='tchrCount'></span>" +
+      "<button class='tchr-nav' id='tchrNext' type='button'>Next →</button></div>" +
+      "</div>";
+    document.body.appendChild(ov);
+    TCHR.overlay = ov;
+    TCHR.built = true;
+    $("#tchrExit").addEventListener("click", closeTeacher);
+    $("#tchrPrev").addEventListener("click", () => tchrGo(TCHR.idx - 1));
+    $("#tchrNext").addEventListener("click", () => tchrGo(TCHR.idx + 1));
+    $("#tchrTts").addEventListener("click", toggleTeacherSpeech);
+    $("#tchrAskBtn").addEventListener("click", () => {
+      const inp = $("#tchrAskInput");
+      tchrShowAnswer(teacherAnswer(inp ? inp.value : ""));
+    });
+  }
+  function openTeacher(trackId, lessonIdx){
+    if (window.TrustApp && window.TrustApp.gate && !window.TrustApp.gate.hasAccess()) {
+      window.TrustApp.gate.handleTrigger("lessons");
+      return false;
+    }
+    const track = TRACKS.find(x => x.id === trackId);
+    if (!track) return false;
+    const lesson = track.lessons[lessonIdx];
+    if (!lesson || lesson[2] === "group") return false;
+    buildTeacher();
+    TCHR.trackId = trackId; TCHR.lessonIdx = lessonIdx;
+    TCHR.slides = buildDeck(track, lessonIdx);
+    TCHR.idx = 0; TCHR.open = true; TCHR.answered = {};
+    TCHR.overlay.hidden = false;
+    const w = $("#tchrWhere"); if (w) w.textContent = track.title;
+    const ans = $("#tchrAnswer"); if (ans) { ans.hidden = true; ans.textContent = ""; }
+    try { document.body.style.overflow = "hidden"; } catch (e) {}
+    renderTeacherSlide();
+    return true;
+  }
+  function closeTeacher(){
+    if (!TCHR.built) { TCHR.open = false; return; }
+    TCHR.open = false;
+    TCHR.overlay.hidden = true;
+    tchrStopSpeech();
+    try { document.body.style.overflow = ""; } catch (e) {}
+  }
+  function tchrGo(i){
+    if (!TCHR.slides.length) return;
+    const n = Math.max(0, Math.min(TCHR.slides.length - 1, i));
+    if (n === TCHR.idx && TCHR.open) { renderTeacherSlide(); return; }
+    TCHR.idx = n;
+    renderTeacherSlide();
+  }
+  function renderTeacherSlide(){
+    const slide = TCHR.slides[TCHR.idx];
+    const host = $("#tchrSlide");
+    if (!slide || !host) return;
+    let h = "";
+    if (slide.kind === "title") {
+      h = "<p class='tchr-kicker'>" + esc(slide.trackTitle) + "</p><h3 class='tchr-title'>" + esc(slide.title) + "</h3>" +
+        "<p class='tchr-learn'>What you'll learn</p><ul class='tchr-bullets'>" +
+        slide.bullets.map(b => "<li>" + esc(b) + "</li>").join("") + "</ul>";
+    } else if (slide.kind === "term") {
+      h = "<p class='tchr-kicker'>Breaking Down Each Term</p><h3 class='tchr-term'>" + esc(slide.head) + "</h3>" +
+        "<p class='tchr-body'>" + esc(slide.text) + "</p>" +
+        (slide.deal ? "<div class='tchr-deal'><b>In a deal:</b> " + esc(slide.deal) + "</div>" : "");
+    } else if (slide.kind === "contract") {
+      h = "<p class='tchr-kicker'>The Contracts</p><h3 class='tchr-head'>" + esc(slide.head) + "</h3>" +
+        "<p class='tchr-body'>" + esc(slide.text) + "</p>";
+    } else if (slide.kind === "watchout") {
+      h = "<p class='tchr-kicker'>Watch Out</p><h3 class='tchr-head'>" + esc(slide.head || "Watch Out") + "</h3>" +
+        "<p class='tchr-body'>" + esc(slide.text) + "</p>";
+    } else if (slide.kind === "quiz") {
+      const picked = TCHR.answered[slide.qi];
+      h = "<p class='tchr-kicker'>Check Yourself</p><p class='tchr-q'>" + esc(slide.q) + "</p><div class='tchr-opts'>" +
+        slide.opts.map((o, oi) => "<button type='button' class='tchr-opt" +
+          (picked != null ? (oi === slide.a ? " correct" : (oi === picked ? " wrong" : "")) : "") +
+          "' data-oi='" + oi + "'>" + esc(o) + "</button>").join("") + "</div>" +
+        (picked != null ? "<p class='tchr-feedback'>" + (picked === slide.a ? "Correct. " : "Not quite. ") + esc(slide.why) + "</p>" : "");
+    } else if (slide.kind === "recap") {
+      const done = TRAIN[TCHR.trackId].done.has(TCHR.lessonIdx);
+      h = "<p class='tchr-kicker'>Recap</p><h3 class='tchr-head'>" + esc(slide.title) + "</h3>" +
+        "<ol class='tchr-bullets'>" + slide.takeaways.map(x => "<li>" + esc(x) + "</li>").join("") + "</ol>" +
+        (done ? "<p class='tchr-done-note'>✓ Lesson completed</p>"
+              : "<button type='button' class='tchr-done'>Mark lesson complete</button>");
+    } else {
+      h = (slide.head ? "<h3 class='tchr-head'>" + esc(slide.head) + "</h3>" : "") +
+        "<p class='tchr-body'>" + esc(slide.text) + "</p>";
+    }
+    h += "<p class='tchr-script'>🎓 " + esc(slide.script) + "</p>";
+    host.innerHTML = h;
+    const count = $("#tchrCount");
+    if (count) count.textContent = "Slide " + (TCHR.idx + 1) + " of " + TCHR.slides.length;
+    const bar = $("#tchrBar");
+    if (bar) bar.style.width = Math.round(((TCHR.idx + 1) / TCHR.slides.length) * 100) + "%";
+    const prev = $("#tchrPrev"); if (prev) prev.disabled = TCHR.idx === 0;
+    const next = $("#tchrNext"); if (next) next.disabled = TCHR.idx === TCHR.slides.length - 1;
+    if (slide.kind === "quiz") {
+      $$("#teacherOverlay .tchr-opt").forEach(b => b.addEventListener("click", () => {
+        tchrAnswerQuiz(slide, Number(b.dataset.oi));
+      }));
+    }
+    $$("#teacherOverlay .tchr-done").forEach(b => b.addEventListener("click", () => {
+      TRAIN[TCHR.trackId].done.add(TCHR.lessonIdx);
+      renderTracks(); checkTrackDone(TCHR.trackId);
+      renderTeacherSlide();
+    }));
+    if (TCHR.speak) tchrSpeakCurrent();
+  }
+  function tchrAnswerQuiz(slide, oi){
+    if (TCHR.slides[TCHR.idx] !== slide) return; /* stale binding from an earlier render */
+    const right = oi === slide.a;
+    TCHR.answered[slide.qi] = oi;
+    TRAIN[TCHR.trackId].quiz[slide.qi] = right;
+    renderTracksMeter(TCHR.trackId); checkTrackDone(TCHR.trackId);
+    renderTeacherSlide();
+  }
+  /* ---- Read it to me (browser speech synthesis; optional) ---- */
+  function tchrSpeakCurrent(){
+    try {
+      const ss = window.speechSynthesis;
+      if (!ss || !window.SpeechSynthesisUtterance) return;
+      const slide = TCHR.slides[TCHR.idx];
+      if (!slide) return;
+      ss.cancel();
+      ss.speak(new window.SpeechSynthesisUtterance(slide.script));
+    } catch (e) { /* voice is an enhancement; silence is fine */ }
+  }
+  function tchrStopSpeech(){
+    try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+  }
+  function toggleTeacherSpeech(){
+    TCHR.speak = !TCHR.speak;
+    const btn = $("#tchrTts");
+    if (btn) { btn.setAttribute("aria-pressed", String(TCHR.speak)); btn.classList.toggle("on", TCHR.speak); }
+    if (TCHR.speak) tchrSpeakCurrent(); else tchrStopSpeech();
+  }
+  /* ---- Ask the Teacher: local keyword search over this lesson ---- */
+  const TCHR_STOP = new Set(["what", "does", "mean", "with", "this", "that", "from", "have", "when", "then", "than", "into", "your", "yours", "about", "which", "there", "their", "them", "they", "will", "would", "should", "could", "explain", "please", "tell", "give", "defined", "definition"]);
+  function tchrTokens(q){
+    return String(q || "").toLowerCase().split(/[^a-z0-9]+/)
+      .filter(w => w.length >= 4 && !TCHR_STOP.has(w));
+  }
+  function teacherAnswer(question){
+    const toks = tchrTokens(question);
+    const notFound = { found: false, text: "That's not in this lesson's material. Try a word from the lesson itself — or open Breaking Down Each Term for the definitions." };
+    if (!toks.length || !TCHR.corpus.length) return notFound;
+    const docs = TCHR.corpus.slice();
+    tchrTermsIndex().forEach(tm => {
+      if (!docs.some(d => d.kind === "term" && d.head === tm.term)) {
+        let def = tm.text, deal = "";
+        const di = tm.text.indexOf("In a deal:");
+        if (di >= 0) { def = tm.text.slice(0, di).trim(); deal = tm.text.slice(di + "In a deal:".length).trim(); }
+        docs.push({ head: tm.term, text: def + (deal ? " In a deal: " + deal : ""), kind: "term", fromTerms: true });
+      }
+    });
+    let best = null;
+    docs.forEach(d => {
+      const hay = (d.head + " " + d.text).toLowerCase();
+      let hits = 0;
+      toks.forEach(tok => { if (hay.indexOf(tok) >= 0) hits++; });
+      let score = hits;
+      let termHit = false;
+      if (d.kind === "term" && toks.some(tok => d.head.toLowerCase().indexOf(tok) >= 0)) { score += 3; termHit = true; }
+      if (hits >= 2) score += 1;
+      if (!best || score > best.score) best = { doc: d, score, hits, termHit };
+    });
+    if (!best || (best.hits < 2 && !best.termHit)) return notFound;
+    const d = best.doc;
+    const lead = d.fromTerms && d.kind === "term" ? "From Breaking Down Each Term — " : "From this lesson — ";
+    return { found: true, text: lead + (d.head ? d.head + ": " : "") + tchrFirst(d.text, 480) };
+  }
+  function tchrShowAnswer(res){
+    const el = $("#tchrAnswer");
+    if (!el) return;
+    el.hidden = false;
+    el.textContent = res.text;
+    el.classList.toggle("miss", !res.found);
+  }
+  window.Teacher = {
+    open: openTeacher, close: closeTeacher,
+    next: () => tchrGo(TCHR.idx + 1), prev: () => tchrGo(TCHR.idx - 1),
+    go: tchrGo, render: renderTeacherSlide,
+    toggleSpeech: toggleTeacherSpeech,
+    answer: teacherAnswer,
+    isOpen: () => TCHR.open,
+    index: () => TCHR.idx,
+    slides: () => TCHR.slides,
+    chunks: tchrChunks, parseTerms: tchrParseTerms,
+    state: TCHR
+  };
 
   /* ==================== CONTENT LIBRARY ==================== */
   const ARTICLES = [
@@ -2616,6 +3179,288 @@
   document.getElementById("specClose").addEventListener("click", closeSpec);
   document.getElementById("heroSpec").addEventListener("click", openSpec);
   </script>
+
+<script>
+/* ================= BADGES — completion seals, badge wall, badge-gated areas =================
+   Badges are DERIVED from TRAIN progress every render (the same predicate
+   checkTrackDone uses: every lesson done + every quiz answer correct).
+   No standalone "earned" flag is ever trusted or stored. */
+(function(){
+  "use strict";
+  var BDG = [
+    { track:"trustee",    name:"Trustee Badge",                       short:"TRUSTEE",     icon:"\u{1F6E1}\uFE0F", area:"crm",       areaName:"Trust Fund CRM",
+      line:"Trustee Training covers the trustee's duties, the annual accounting, and the record-keeping the CRM is built around." },
+    { track:"beneficiary",name:"Beneficiary Badge",                   short:"BENEFICIARY", icon:"\u{1F381}",        area:"portal",    areaName:"Grantor Portal",
+      line:"Beneficiary Training covers what a beneficiary owns, how distributions work, and the rights the portal puts in your hands." },
+    { track:"guardian",   name:"Guardian Badge",                      short:"GUARDIAN",    icon:"\u{1F54A}\uFE0F", area:"vault",     areaName:"Trust Fund Vault",
+      line:"Guardian Training covers guardianship versus trusteeship, court oversight, and the document discipline the Vault enforces." },
+    { track:"private",    name:"Private Structures Badge",            short:"PRIVATE",     icon:"\u{1F4DC}",        area:"contracts", areaName:"Contracts Engine",
+      line:"Private Structures & The Contracts Engine covers business trusts, the contracts engine, and growing a trust through contracts." },
+    { track:"realestate", name:"Real Estate & Land Trusts Badge",     short:"REAL ESTATE", icon:"\u{1F3E1}",        area:"ltgen",     areaName:"Land Trust Units Distribution Generator",
+      line:"Real Estate & Land Trusts covers land trust mechanics, subject-to and seller-financed deals, and how to split beneficial units." }
+  ];
+  var bdgSeq = 0, bdgWas = {}, bdgInitDone = false;
+  function bdgEsc(s){ return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function bdgByTrack(t){ for(var i=0;i<BDG.length;i++) if(BDG[i].track===t) return BDG[i]; return null; }
+  function bdgByArea(a){ for(var i=0;i<BDG.length;i++) if(BDG[i].area===a) return BDG[i]; return null; }
+  /* Earned = the checkTrackDone predicate, recomputed from TRAIN every time. */
+  function bdgEarned(track){
+    try{
+      /* Mirror checkTrackDone exactly: every non-group lesson done, and
+         every track quiz answered correctly (TRAIN.quiz[i] === true). */
+      var t = null, i;
+      for(i=0;i<TRACKS.length;i++) if(TRACKS[i].id===track) t = TRACKS[i];
+      if(!t) return false;
+      var st = TRAIN[track]; if(!st || !st.done) return false;
+      var lessons = t.lessons.filter(function(l){ return l[2] !== "group"; });
+      if(st.done.size !== lessons.length) return false;
+      var quiz = t.quiz || [];
+      for(i=0;i<quiz.length;i++) if(!st.quiz || !st.quiz[i]) return false;
+      return true;
+    }catch(e){ return false; }
+  }
+  function bdgUserName(){
+    try{ if(window.TrustApp && TrustApp.state && TrustApp.state.user && TrustApp.state.user.displayName) return TrustApp.state.user.displayName; }catch(e){}
+    return "Member";
+  }
+  function bdgSeal(b, size, earned, pop){
+    bdgSeq++;
+    var arc = "bdgArc" + bdgSeq;
+    var ring1 = earned ? "#e8cc6a" : "#5a4a1a", ring2 = earned ? "#c9a227" : "#3d3412";
+    var arcFill = earned ? "#e8cc6a" : "#6b5c24", iconOp = earned ? "1" : ".35", nameFill = earned ? "#f3e5ab" : "#57503a";
+    return "<svg class='badge-seal" + (earned ? " earned" : " locked") + (pop ? " just-earned" : "") + "' width='" + size + "' height='" + size +
+      "' viewBox='0 0 120 120' role='img' aria-label='" + bdgEsc(b.name) + (earned ? " — earned" : " — not yet earned") + "'>" +
+      "<circle cx='60' cy='60' r='57' fill='#0d0a04' stroke='" + ring1 + "' stroke-width='3'/>" +
+      "<circle cx='60' cy='60' r='49' fill='none' stroke='" + ring2 + "' stroke-width='1.4'/>" +
+      "<defs><path id='" + arc + "' d='M 60,60 m -42,0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0'/></defs>" +
+      "<text font-size='9.5' letter-spacing='2.2' fill='" + arcFill + "' font-family='Georgia,serif'><textPath href='#" + arc + "' startOffset='2%'>\u2605 " + b.short + " \u2605 BUILD A TRUST 24</textPath></text>" +
+      "<text x='60' y='66' text-anchor='middle' font-size='30' opacity='" + iconOp + "'>" + b.icon + "</text>" +
+      "<text x='60' y='90' text-anchor='middle' font-size='9' letter-spacing='1.6' fill='" + nameFill + "' font-family='Georgia,serif'>" + b.short + "</text></svg>";
+  }
+  function bdgRenderWall(){
+    var wall = document.getElementById("badgeWall"); if(!wall) return;
+    var cells = BDG.map(function(b){
+      var e = bdgEarned(b.track);
+      return "<div class='badge-cell" + (e ? " earned" : "") + "' data-badge-cell='" + b.track + "'>" + bdgSeal(b, 96, e, false) +
+        "<div class='badge-cell-name'>" + bdgEsc(b.name) + "</div>" +
+        (e ? "<div class='badge-state earned'>\u2713 Earned</div><button type='button' class='btn ghost small' data-badge-dl='" + b.track + "'>Download badge</button>"
+           : "<div class='badge-state'>Complete the track to earn this badge.</div>") + "</div>";
+    }).join("");
+    wall.innerHTML = "<div class='badge-wall-head'><h3>My Badges</h3><p>One gold seal for every training track you complete. Badges also open doors on this platform: the Trustee Badge unlocks the Trust Fund CRM, the Beneficiary Badge the Grantor Portal, the Guardian Badge the Trust Fund Vault, the Private Structures Badge the Contracts Engine, and the Real Estate Badge the Land Trust Units Distribution Generator.</p></div>" +
+      "<div class='badge-grid'>" + cells + "</div>";
+  }
+  function bdgRenderSlots(){
+    var slots = document.querySelectorAll("[data-badge-for]");
+    for(var i=0;i<slots.length;i++){
+      var el = slots[i]; var track = el.dataset ? el.dataset.badgeFor : null;
+      if(!track && el.getAttribute) track = el.getAttribute("data-badge-for");
+      var b = bdgByTrack(track); if(!b) continue;
+      var e = bdgEarned(track);
+      el.innerHTML = bdgSeal(b, 34, e, false) + "<span class='track-badge-txt'>" + (e ? bdgEsc(b.name) + " \u2014 earned \u2713" : bdgEsc(b.name) + " \u2014 complete this track to earn it") + "</span>";
+    }
+  }
+  function bdgCheer(b){
+    var box = document.getElementById("badgeCheer"); if(!box) return;
+    box.hidden = false;
+    box.innerHTML = bdgSeal(b, 84, true, true) + "<div><h3>Badge earned \u2014 congratulations, " + bdgEsc(bdgUserName()) + "!</h3><p>You completed the track and earned the " + bdgEsc(b.name) + ". It now sits in gold on your badge wall \u2014 and it opens the " + bdgEsc(b.areaName) + ".</p></div>";
+  }
+  function bdgLockHtml(b, withClose){
+    return "<div class='badge-lock-card'>" + bdgSeal(b, 84, false, false) +
+      "<div class='badge-lock-txt'><h3>" + bdgEsc(b.areaName) + " \u2014 locked</h3>" +
+      "<p><b>This area opens when you earn the " + bdgEsc(b.name) + ".</b></p><p>" + bdgEsc(b.line) + "</p>" +
+      "<div class='row'><button type='button' class='btn primary' data-badge-jump='" + b.track + "'>Jump into the training track</button>" +
+      (withClose ? "<button type='button' class='btn ghost' id='badgeLockClose'>Not now</button>" : "") + "</div></div></div>";
+  }
+  function bdgIsAdmin(){ try{ var T = window.TrustApp; if(!T || !T.state || !T.state.user) return false; if(T.isAdmin) return !!T.isAdmin(T.state.user); if(T.gate && T.gate.isAdmin) return !!T.gate.isAdmin(T.state.user); return false; }catch(e){ return false; } }
+  function bdgHasPaid(){ try{ return !!(window.TrustApp && TrustApp.gate && TrustApp.gate.hasAccess()); }catch(e){ return false; } }
+  function bdgAreaLocked(area){
+    var b = bdgByArea(area); if(!b) return false;
+    if(bdgIsAdmin()) return false;
+    return !bdgEarned(b.track);
+  }
+  function bdgInlineLock(lockId, hostEl, area, on){
+    var box = document.getElementById(lockId);
+    if(on){
+      var b = bdgByArea(area);
+      if(!box){
+        box = document.createElement("div"); box.id = lockId; box.className = "badge-lock-slot";
+        if(hostEl && hostEl.firstChild) hostEl.insertBefore(box, hostEl.firstChild);
+        else if(hostEl) hostEl.appendChild(box);
+      }
+      box.innerHTML = bdgLockHtml(b, false);
+      if(hostEl) hostEl.classList.add("badge-area-locked");
+    } else {
+      if(box) box.innerHTML = "";
+      if(hostEl) hostEl.classList.remove("badge-area-locked");
+    }
+  }
+  function bdgVaultCard(){
+    var vb = document.getElementById("vaultBody"); if(!vb) return null;
+    return vb.closest ? vb.closest(".p-card") : vb.parentNode;
+  }
+  function bdgRefreshLocks(){
+    if(!bdgHasPaid() && !bdgIsAdmin()){
+      /* Non-paid visitors meet the payment pop-up first — never the badge lock. */
+      bdgInlineLock("badgeLockCrm", document.getElementById("crm"), "crm", false);
+      bdgInlineLock("badgeLockContracts", document.getElementById("contracts"), "contracts", false);
+      bdgInlineLock("badgeLockVault", bdgVaultCard(), "vault", false);
+      return;
+    }
+    bdgInlineLock("badgeLockCrm", document.getElementById("crm"), "crm", bdgAreaLocked("crm"));
+    bdgInlineLock("badgeLockContracts", document.getElementById("contracts"), "contracts", bdgAreaLocked("contracts"));
+    bdgInlineLock("badgeLockVault", bdgVaultCard(), "vault", bdgAreaLocked("vault"));
+  }
+  function bdgRefresh(){
+    bdgRenderWall(); bdgRenderSlots(); bdgRefreshLocks();
+  }
+  function bdgOnTrackCheck(id, done){
+    var now = bdgEarned(id);
+    if(bdgInitDone && done && now && !bdgWas[id]){
+      var b = bdgByTrack(id);
+      if(b) bdgCheer(b);
+    }
+    bdgWas[id] = now;
+    bdgRenderWall(); bdgRenderSlots(); bdgRefreshLocks();
+  }
+  /* ---------- badge-gated areas: click interception (capture phase) ---------- */
+  function bdgChain(t){
+    var out = [], n = t, guard = 0;
+    while(n && guard++ < 14){ out.push(n); n = n.parentNode; }
+    return out;
+  }
+  function bdgChainHas(chain, pred){ for(var i=0;i<chain.length;i++) if(pred(chain[i])) return true; return false; }
+  function bdgInClass(chain, cls){ return bdgChainHas(chain, function(n){ return n.classList && n.classList.contains && n.classList.contains(cls); }); }
+  function bdgInId(chain, id){ return bdgChainHas(chain, function(n){ return n.id === id; }); }
+  function bdgInteractive(chain){
+    return bdgChainHas(chain, function(n){
+      if(n.dataset && n.dataset.badgeJump) return false;
+      var tag = n.tagName;
+      return tag === "BUTTON" || tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA" || tag === "A";
+    });
+  }
+  function bdgAreaForEvent(ev){
+    var t = ev && ev.target; if(!t) return null;
+    var chain = bdgChain(t);
+    if(bdgInClass(chain, "badge-lock-card")) return null;
+    if(bdgInId(chain, "badgeLockModal")) return null;
+    var tid = t.id || "";
+    if(tid === "heroPortal" || tid === "openPortal2") return "portal";
+    if(["ltGenerate","ltSplitBtn","ltPrintSchedule","ltPrintCerts","ltSaveRecord"].indexOf(tid) >= 0) return "ltgen";
+    if(bdgInId(chain, "ltGenerator") && bdgInteractive(chain)) return "ltgen";
+    if(bdgChainHas(chain, function(n){ return typeof n.id === "string" && n.id.indexOf("vault") === 0; }) && bdgInteractive(chain)) return "vault";
+    if(bdgInId(chain, "crm") && bdgInteractive(chain)) return "crm";
+    if(bdgInId(chain, "contracts") && bdgInteractive(chain)) return "contracts";
+    return null;
+  }
+  function bdgShowLock(area){
+    var b = bdgByArea(area); if(!b) return;
+    var m = document.getElementById("badgeLockModal");
+    if(!m){
+      m = document.createElement("div"); m.id = "badgeLockModal"; m.className = "badge-lock-modal"; m.hidden = true;
+      document.body.appendChild(m);
+    }
+    m.innerHTML = bdgLockHtml(b, true);
+    m.hidden = false;
+    var host = document.getElementById(area === "crm" ? "crm" : area === "contracts" ? "contracts" : "");
+    if(host && host.scrollIntoView) host.scrollIntoView({ block:"start" });
+  }
+  function bdgHideLock(){
+    var m = document.getElementById("badgeLockModal"); if(m) m.hidden = true;
+  }
+  function bdgGateClick(ev){
+    /* Order matters: non-paid visitors still hit the payment pop-up first.
+       The payment gate listens on the same capture phase; returning here
+       without touching the event lets it fire exactly as before. */
+    if(!bdgHasPaid()) return false;
+    var area = bdgAreaForEvent(ev);
+    if(!area) return false;
+    if(!bdgAreaLocked(area)) return false;
+    if(ev.preventDefault) ev.preventDefault();
+    if(ev.stopPropagation) ev.stopPropagation();
+    if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+    bdgShowLock(area);
+    return true;
+  }
+  function bdgJump(track){
+    bdgHideLock();
+    var el = document.getElementById("track-" + track) || document.getElementById("training");
+    if(el && el.scrollIntoView) el.scrollIntoView({ block:"start" });
+  }
+  function bdgUiClick(ev){
+    var t = ev && ev.target; if(!t) return;
+    var chain = bdgChain(t), i, node = null, dl = null;
+    for(i=0;i<chain.length;i++){
+      var n = chain[i];
+      if(!node && n.dataset && n.dataset.badgeJump) node = n.dataset.badgeJump;
+      if(!node && n.getAttribute && n.getAttribute("data-badge-jump")) node = n.getAttribute("data-badge-jump");
+      if(!dl && n.dataset && n.dataset.badgeDl) dl = n.dataset.badgeDl;
+      if(!dl && n.getAttribute && n.getAttribute("data-badge-dl")) dl = n.getAttribute("data-badge-dl");
+    }
+    if(node){ bdgJump(node); return; }
+    if(dl){ bdgDownload(dl); return; }
+    if(t.id === "badgeLockClose") bdgHideLock();
+  }
+  /* ---------- downloadable badge PNG (client-side canvas) ---------- */
+  function bdgDownload(track){
+    var b = bdgByTrack(track);
+    if(!b || !bdgEarned(track)) return false;
+    var c = document.createElement("canvas");
+    c.width = 1080; c.height = 1080;
+    if(!c.getContext) return false;
+    var g = c.getContext("2d"); if(!g) return false;
+    g.fillStyle = "#0a0805"; g.fillRect(0,0,1080,1080);
+    g.strokeStyle = "#c9a227"; g.lineWidth = 6; g.strokeRect(28,28,1024,1024);
+    g.beginPath(); g.arc(540,430,300,0,Math.PI*2); g.fillStyle = "#0d0a04"; g.fill();
+    g.lineWidth = 14; g.strokeStyle = "#e8cc6a"; g.stroke();
+    g.beginPath(); g.arc(540,430,262,0,Math.PI*2); g.lineWidth = 4; g.strokeStyle = "#c9a227"; g.stroke();
+    g.textAlign = "center";
+    g.fillStyle = "#e8cc6a"; g.font = "bold 44px Georgia, serif";
+    g.fillText("\u2605 BUILD A TRUST 24 \u2605", 540, 196);
+    g.font = "190px serif"; g.fillText(b.icon, 540, 500);
+    g.fillStyle = "#f3e5ab"; g.font = "bold 62px Georgia, serif";
+    g.fillText(b.short, 540, 640);
+    g.fillStyle = "#e8cc6a"; g.font = "34px Georgia, serif";
+    g.fillText(b.name.toUpperCase(), 540, 700);
+    g.fillStyle = "#f5efe0"; g.font = "52px Georgia, serif";
+    g.fillText(bdgUserName(), 540, 830);
+    g.fillStyle = "#b8ac8d"; g.font = "30px Georgia, serif";
+    var d = new Date();
+    var ds = d.toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric" });
+    g.fillText("Earned " + ds, 540, 890);
+    if(!c.toBlob) return false;
+    c.toBlob(function(blob){
+      if(!blob) return;
+      try{
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "build-a-trust-24-" + b.track + "-badge.png";
+        document.body.appendChild(a);
+        if(a.click) a.click();
+        if(a.remove) a.remove();
+      }catch(e){}
+    }, "image/png");
+    return true;
+  }
+  window.Badges = {
+    list: BDG,
+    earned: bdgEarned,
+    refresh: bdgRefresh,
+    areaLocked: bdgAreaLocked,
+    handleClick: bdgGateClick,
+    handleUiClick: bdgUiClick,
+    download: bdgDownload,
+    onTrackCheck: bdgOnTrackCheck,
+    userName: bdgUserName
+  };
+  try{ document.addEventListener("click", bdgGateClick, true); }catch(e){}
+  try{ document.addEventListener("click", bdgUiClick, false); }catch(e){}
+  /* Baseline "was-earned" snapshot so a page load never replays a celebration. */
+  try{ BDG.forEach(function(b){ bdgWas[b.track] = bdgEarned(b.track); }); }catch(e){}
+  bdgInitDone = true;
+  bdgRefresh();
+})();
+</script>
+
   
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
