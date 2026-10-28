@@ -76,3 +76,35 @@ PYTHONPATH=/opt/muse/skills/custom-connector-setup/bin \
   --project <NEW_PROJECT_ID> --team team_Zy0HA4NTI9MA7vmwHG5vRF46 \
   --target production --name build-a-trust-24
 ```
+
+## Trust News & Insights — newsletter section + article generator (added 2026-10-28)
+
+- `news.html` — the newsletter index ("Trust News & Insights"). Articles are
+  OPEN to read (top-of-funnel trust information); the freemium gate is
+  unchanged and still covers only the Builder, the lessons, and the Land
+  Trust generator.
+- `news/<slug>.html` — one page per article, in the site's black/gold design.
+- `assets/news/<slug>-header.svg` / `.png` — the branded header graphic
+  (one concept diagram per article; PNG is used for cards and social/OG).
+- `newsletter.js` — the newsletter sign-up wiring. It hooks every
+  `form.newsletter-form` (homepage news section, news index, article pages)
+  and writes to the SAME `trustSignups` collection as the free sign-up,
+  with `tierInterest: "newsletter"` and a page-named `source`
+  (`newsletter-home`, `newsletter-index`, `newsletter-article-<slug>`),
+  so the /admin sign-ups table separates newsletter readers from builder
+  sign-ups. No rules change was needed — the existing validator's field
+  shape is reused exactly.
+- `tools/generate_article.py` — THE TOOL. To publish the next ruling or
+  news item: copy a JSON spec in `tools/articles/` (headline, date, source
+  citation, summary points, graphic concept), run
+  `python3 tools/generate_article.py`, and it produces the header graphic
+  (SVG + PNG), the article page, the news-index card, and the homepage
+  feature — paste a ruling, get a graphic + article. Facts discipline:
+  the generator prints only what the spec says; verify the source first,
+  and every PLR article must carry the caution that a private letter
+  ruling binds only its own taxpayer (IRC § 6110(k)(3)).
+- First article: `news/plr-202641001.html` — IRS PLR 202641001 (released
+  October 9, 2026): a grandfathered (pre-Sept. 25, 1985) GST trust divided
+  pro rata into three equal trusts with no GST, income, or gift tax.
+  Verified against the ruling coverage in Legal 500 (Oct 27, 2026) and
+  Wealth Strategies Journal (Oct 13, 2026, citing IRS.gov).
