@@ -19,7 +19,9 @@ WHAT IT DOES (for Madison, in one read):
 HOW TO USE:
   1. Copy tools/articles/plr-202641001.json to tools/articles/<new-slug>.json
   2. Fill in: slug, date, kicker, headline, dek (one-line summary),
-     source_citation, sources[], graphic{} (headline_lines, from/to labels),
+     source_citation, sources[], graphic{} (headline_lines, from/to labels,
+     alt — the hero image's alt text, always set it per article; to_suffix —
+     optional text appended to each to-label, e.g. the PLR's " — EQUAL THIRD"),
      sections[] (heading + paragraphs + optional bullets; light HTML such as
      <b> is allowed inside paragraphs/bullets — everything is authored here,
      never scraped, so the facts on the page are exactly what you typed).
@@ -61,6 +63,9 @@ GA = """    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY3
       gtag('js', new Date());
       gtag('config', 'G-ZY3QEL6P1S');
     </script>"""
+
+ADSENSE = """    <!-- Google AdSense (pub-4295784512862093) — loader only; no ad units until Google approves the site -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4295784512862093" crossorigin="anonymous"></script>"""
 
 FONTS = """    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -148,7 +153,7 @@ def render_svg(spec):
         boxes += (
             '<rect x="580" y="' + str(yy - 34) + '" width="520" height="68" rx="10" fill="#17130a" stroke="' + GOLD + '" stroke-width="2"/>'
             '<text x="840" y="' + str(yy + 9) + '" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" '
-            'font-size="27" letter-spacing="2" fill="#f4ecd7">' + esc(label) + " — EQUAL THIRD</text>\n      "
+            'font-size="27" letter-spacing="2" fill="#f4ecd7">' + esc(label) + esc(g.get("to_suffix", "")) + "</text>\n      "
         )
         arrows += (
             '<line x1="452" y1="388" x2="566" y2="' + str(yy) + '" stroke="' + GOLD + '" stroke-width="3"/>'
@@ -236,7 +241,7 @@ def render_png(spec, out_path):
         d.line([(452, 388), (562, yy)], fill=(201, 162, 39), width=3)
         d.polygon([(566, yy), (548, yy - 7), (548, yy + 7)], fill=(201, 162, 39))
         d.rounded_rectangle([580, yy - 34, 1100, yy + 34], radius=10, fill=(23, 19, 10), outline=(201, 162, 39), width=2)
-        t = lab + " — EQUAL THIRD"
+        t = lab + g.get("to_suffix", "")
         d.text((840 - d.textlength(t, font=font(SANS_B, 25)) / 2, yy - 16), t, font=font(SANS_B, 25), fill=(244, 236, 215))
     centered(d, 524, g["footer"], font(SANS, 16), (154, 140, 102))
     centered(d, 550, g["subline"], font(SANS_B, 22), (232, 204, 106))
@@ -317,6 +322,16 @@ def render_index_share_png(out_path):
 
 
 # ---------------------------------------------------------------- pages
+def hero_alt(spec):
+    """Hero image alt text. Comes from the article JSON (graphic.alt) so a
+    non-PLR article never inherits the PLR split diagram's description;
+    falls back to a generic headline-based alt when the JSON sets none."""
+    alt = (spec.get("graphic") or {}).get("alt")
+    if alt:
+        return alt
+    return spec["headline"] + " — header graphic from Trust News & Insights"
+
+
 def render_article(spec):
     css = load_css()
     sections_html = ""
@@ -355,6 +370,7 @@ def render_article(spec):
     <link rel="canonical" href="SITEURL/news/SLUG.html" />
     <title>HEADLINE | Trust News &amp; Insights — Build A Trust 24</title>
 GA
+ADSENSE
 FONTS
     <style>CSS</style>
   </head>
@@ -371,7 +387,7 @@ FONTS
         <p class="art-meta">DATEDISPLAY &middot; Source: SOURCECIT</p>
         SHAREROW
       </div>
-      <div class="art-hero"><img src="../assets/news/SLUG-header.png" alt="HEADLINE — header graphic: one grandfathered trust dividing into three equal trusts" /></div>
+      <div class="art-hero"><img src="../assets/news/SLUG-header.png" alt="HEROALT" /></div>
       <div class="art-body">
 SECTIONS
         <div class="disclaimer">DISCLAIMER</div>
@@ -387,6 +403,7 @@ SCRIPTS
 """
     return (
         page.replace("HEADLINE", esc(spec["headline"]))
+        .replace("HEROALT", esc(hero_alt(spec)))
         .replace("DEK", esc(spec["dek"]))
         .replace("SITEURL", SITE)
         .replace("SLUG", spec["slug"])
@@ -400,6 +417,7 @@ SCRIPTS
         .replace("FOOTER", footer_block("../"))
         .replace("SCRIPTS", scripts_block("../"))
         .replace("GA", GA)
+        .replace("ADSENSE", ADSENSE)
         .replace("FONTS", FONTS)
         .replace("CSS", css)
     )
@@ -448,6 +466,7 @@ def render_index(specs):
     <link rel="canonical" href="SITEURL/news.html" />
     <title>Trust News &amp; Insights — IRS Rulings &amp; Trust Law, In Plain Language | Build A Trust 24</title>
 GA
+ADSENSE
 FONTS
     <style>CSS</style>
   </head>
@@ -480,6 +499,7 @@ SCRIPTS
         .replace("FOOTER", footer_block(""))
         .replace("SCRIPTS", scripts_block(""))
         .replace("GA", GA)
+        .replace("ADSENSE", ADSENSE)
         .replace("FONTS", FONTS)
         .replace("CSS", css)
     )
