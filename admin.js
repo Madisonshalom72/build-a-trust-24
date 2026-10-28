@@ -140,7 +140,7 @@
         var d = snap.exists ? snap.data() : {};
         $("fHeadline").value = d.headlineHtml || "";
         $("fSubtitle").value = d.subtitle || "";
-        $("fPrice").value = d.priceDisplay || "$50/mo";
+        $("fPrice").value = d.priceDisplay || "$50 credit per month";
         $("fPriceAnnual").value = d.priceAnnual || "$299/yr";
         $("fCheckoutMonthly").value = d.checkoutMonthlyUrl || "";
         $("fCheckoutAnnual").value = d.checkoutAnnualUrl || "";
@@ -157,7 +157,7 @@
     var payload = {
       headlineHtml: $("fHeadline").value.trim(),
       subtitle: $("fSubtitle").value.trim(),
-      priceDisplay: $("fPrice").value.trim() || "$50/mo",
+      priceDisplay: $("fPrice").value.trim() || "$50 credit per month",
       priceAnnual: $("fPriceAnnual").value.trim() || "$299/yr",
       checkoutMonthlyUrl: $("fCheckoutMonthly").value.trim(),
       checkoutAnnualUrl: $("fCheckoutAnnual").value.trim(),

@@ -165,6 +165,15 @@
       .stack-layer b{font-family:var(--serif);color:var(--gold2);display:block;font-size:1.08rem}
       .stack-layer span{font-size:.88rem;color:var(--muted);display:block;margin-top:3px}
       .stack-arrow{text-align:center;color:var(--gold);font-size:1.25rem;line-height:1;padding:5px 0}
+      /* trust fund playground entry card (entity tiles, mirrors playground.html) */
+      .pg-entry{display:grid;grid-template-columns:1fr 1.2fr;gap:20px;align-items:center;border:1px solid var(--gold);border-radius:16px;padding:22px;margin:22px 0 6px;background:linear-gradient(180deg,#241c0d,#17130a);box-shadow:0 14px 40px rgba(0,0,0,.35)}
+      .pg-entry-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      .pg-mini-tile{border:1px solid var(--gold-deep);border-radius:12px;background:rgba(201,162,39,.05);padding:12px 8px 10px;text-align:center}
+      .pg-mini-tile svg{width:44px;height:44px}
+      .pg-mini-tile span{display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold2);margin-top:5px}
+      .pg-entry-body h3{font-family:var(--serif);color:var(--gold2);font-size:1.5rem;margin:0 0 8px}
+      .pg-entry-body p{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+      @media (max-width:640px){.pg-entry{grid-template-columns:1fr}}
       .waterfall{display:flex;flex-direction:column;gap:10px;margin-top:14px}
       .wf-tier{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:15px 16px}
       .wf-num{width:42px;height:42px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--serif);font-weight:900;color:var(--gold2);background:rgba(201,162,39,.08)}
@@ -209,6 +218,7 @@
       #myTrustsPanel .ta-meta{color:var(--faint);font-size:.82rem}
       #trustToast{display:none;position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:120;background:#1e190e;border:1px solid var(--gold);color:var(--ink);border-radius:10px;padding:12px 16px;max-width:min(560px,92vw);font-size:.9rem;box-shadow:0 14px 40px rgba(0,0,0,.6)}
       #signup .price-annual{font-family:var(--serif);font-size:1.15rem;margin:-4px 0 12px;color:var(--gold2)}
+      #signup .price-limited{border:1px solid var(--gold-deep);background:rgba(201,162,39,.08);border-radius:10px;padding:9px 12px;color:var(--gold2);font-size:.88rem;margin:0 0 14px}
       /* freemium gate (trust-app.js) */
       #trustGateModal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(5,4,2,.8);padding:16px}
       #trustGateModal[hidden]{display:none !important}
@@ -550,8 +560,8 @@
 
     <div class="ttk" id="trustTicker" aria-hidden="true">
       <div class="ttk-track" id="trustTickerTrack">
-        <div class="ttk-seq"><span class="ttk-item">HOW TO SET UP A TRUST FUND</span><span class="ttk-sep">✦</span><span class="ttk-item">16 TRUST TYPES</span><span class="ttk-sep">✦</span><span class="ttk-item hot">SIGN UP FREE</span><span class="ttk-sep">✦</span><span class="ttk-item hot">FULL ACCESS $50/MO OR $299/YR</span><span class="ttk-sep">✦</span><span class="ttk-item">BUILD YOUR TRUST INDENTURE AGREEMENT</span><span class="ttk-sep">✦</span><span class="ttk-item">CERTIFICATES OF BENEFICIAL INTEREST ON BOND PAPER</span><span class="ttk-sep">✦</span><span class="ttk-item">GROW THROUGH CONTRACTS — THE CONTRACTS ENGINE</span><span class="ttk-sep">✦</span><span class="ttk-item">LAND TRUSTS &amp; REAL ESTATE</span><span class="ttk-sep">✦</span><span class="ttk-item">TRUSTEE · BENEFICIARY · GUARDIAN TRAINING</span><span class="ttk-sep">✦</span><span class="ttk-item hot">THE SECRET TO MILLION DOLLAR TRUST FUNDS — EXPOSED</span><span class="ttk-sep">✦</span></div>
-        <div class="ttk-seq"><span class="ttk-item">HOW TO SET UP A TRUST FUND</span><span class="ttk-sep">✦</span><span class="ttk-item">16 TRUST TYPES</span><span class="ttk-sep">✦</span><span class="ttk-item hot">SIGN UP FREE</span><span class="ttk-sep">✦</span><span class="ttk-item hot">FULL ACCESS $50/MO OR $299/YR</span><span class="ttk-sep">✦</span><span class="ttk-item">BUILD YOUR TRUST INDENTURE AGREEMENT</span><span class="ttk-sep">✦</span><span class="ttk-item">CERTIFICATES OF BENEFICIAL INTEREST ON BOND PAPER</span><span class="ttk-sep">✦</span><span class="ttk-item">GROW THROUGH CONTRACTS — THE CONTRACTS ENGINE</span><span class="ttk-sep">✦</span><span class="ttk-item">LAND TRUSTS &amp; REAL ESTATE</span><span class="ttk-sep">✦</span><span class="ttk-item">TRUSTEE · BENEFICIARY · GUARDIAN TRAINING</span><span class="ttk-sep">✦</span><span class="ttk-item hot">THE SECRET TO MILLION DOLLAR TRUST FUNDS — EXPOSED</span><span class="ttk-sep">✦</span></div>
+        <div class="ttk-seq"><span class="ttk-item">HOW TO SET UP A TRUST FUND</span><span class="ttk-sep">✦</span><span class="ttk-item">16 TRUST TYPES</span><span class="ttk-sep">✦</span><span class="ttk-item hot">SIGN UP FREE</span><span class="ttk-sep">✦</span><span class="ttk-item hot">FULL ACCESS $50 CREDIT PER MONTH OR $299/YR — LIMITED TIME</span><span class="ttk-sep">✦</span><span class="ttk-item">BUILD YOUR TRUST INDENTURE AGREEMENT</span><span class="ttk-sep">✦</span><span class="ttk-item">CERTIFICATES OF BENEFICIAL INTEREST ON BOND PAPER</span><span class="ttk-sep">✦</span><span class="ttk-item">GROW THROUGH CONTRACTS — THE CONTRACTS ENGINE</span><span class="ttk-sep">✦</span><span class="ttk-item">LAND TRUSTS &amp; REAL ESTATE</span><span class="ttk-sep">✦</span><span class="ttk-item">TRUSTEE · BENEFICIARY · GUARDIAN TRAINING</span><span class="ttk-sep">✦</span><span class="ttk-item hot">THE SECRET TO MILLION DOLLAR TRUST FUNDS — EXPOSED</span><span class="ttk-sep">✦</span></div>
+        <div class="ttk-seq"><span class="ttk-item">HOW TO SET UP A TRUST FUND</span><span class="ttk-sep">✦</span><span class="ttk-item">16 TRUST TYPES</span><span class="ttk-sep">✦</span><span class="ttk-item hot">SIGN UP FREE</span><span class="ttk-sep">✦</span><span class="ttk-item hot">FULL ACCESS $50 CREDIT PER MONTH OR $299/YR — LIMITED TIME</span><span class="ttk-sep">✦</span><span class="ttk-item">BUILD YOUR TRUST INDENTURE AGREEMENT</span><span class="ttk-sep">✦</span><span class="ttk-item">CERTIFICATES OF BENEFICIAL INTEREST ON BOND PAPER</span><span class="ttk-sep">✦</span><span class="ttk-item">GROW THROUGH CONTRACTS — THE CONTRACTS ENGINE</span><span class="ttk-sep">✦</span><span class="ttk-item">LAND TRUSTS &amp; REAL ESTATE</span><span class="ttk-sep">✦</span><span class="ttk-item">TRUSTEE · BENEFICIARY · GUARDIAN TRAINING</span><span class="ttk-sep">✦</span><span class="ttk-item hot">THE SECRET TO MILLION DOLLAR TRUST FUNDS — EXPOSED</span><span class="ttk-sep">✦</span></div>
       </div>
     </div>
 
@@ -575,6 +585,7 @@
           <button class="btn" data-goto="#land-trust">Land Trusts &amp; Real Estate</button>
           <a class="btn ghost" href="https://madisonshalom72.github.io/startbusiness24-site/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">StartBusiness24 &mdash; Start Your Company</a>
           <a class="btn ghost" href="news.html" style="text-decoration:none;display:inline-block">Trust News &amp; Insights</a>
+          <a class="btn ghost" href="playground.html" style="text-decoration:none;display:inline-block">Playground</a>
         </div>
         <div class="hero-stats">
           <div class="stat"><b>16</b><span>Trust Types</span></div>
@@ -605,8 +616,8 @@
 
       <!-- ================= SIGN-UP & PRICING ================= -->
       <section id="signup">
-        <div class="sec-head"><h2>Sign Up Free &mdash; Then Unlock the Full Builder for $50/mo</h2><div class="rule"></div></div>
-        <p class="sec-sub">Start free: explore the trust library, the training tracks, and the AI Trust Specialist. When you are ready to build, the full Build A Trust 24 access is <b style="color:var(--gold2)">$50/mo</b> &mdash; or <b style="color:var(--gold2)">$299/yr</b> for the whole year &mdash; the complete builder, the Trust Indenture Agreement generator, unit certificates on bond paper, the trust CRM, and the Grantor Portal.</p>
+        <div class="sec-head"><h2>Sign Up Free &mdash; Then Unlock the Full Builder for $50 Credit per Month</h2><div class="rule"></div></div>
+        <p class="sec-sub">Start free: explore the trust library, the training tracks, and the AI Trust Specialist. When you are ready to build, the full Build A Trust 24 access is <b style="color:var(--gold2)">$50 credit per month</b> &mdash; or <b style="color:var(--gold2)">$299/yr</b> for the whole year &mdash; the complete builder, the Trust Indenture Agreement generator, unit certificates on bond paper, the trust CRM, and the Grantor Portal. <b style="color:var(--gold2)">Limited time</b> at these levels &mdash; see the card.</p>
         <div class="price-grid">
           <div class="price-card">
             <p class="price-tier">Free Sign-Up</p>
@@ -627,8 +638,9 @@
           </div>
           <div class="price-card featured">
             <p class="price-tier">Full Access &middot; Build A Trust 24</p>
-            <p class="price-amt" id="cfgPriceAmt">$50/mo</p>
+            <p class="price-amt" id="cfgPriceAmt">$50 credit per month</p>
             <p class="price-annual" id="cfgPriceAnnual">or $299/yr &mdash; the whole year</p>
+            <p class="price-limited">Limited time &mdash; the credit rises to $99/mo or $499/yr on November 7, 2026.</p>
             <ul>
               <li>Everything in Free, plus:</li>
               <li>The full five-step trust builder with per-type dropdowns</li>
@@ -639,7 +651,7 @@
               <li>Grantor Portal &mdash; your whole trust in one window</li>
               <li>Instant Millionaire Trust Fund Builder calculator</li>
             </ul>
-            <button class="btn primary" id="cfgCheckoutBtn" data-goto="#builder" style="width:100%">Get Full Access &mdash; $50/mo</button>
+            <button class="btn primary" id="cfgCheckoutBtn" data-goto="#builder" style="width:100%">Get Full Access &mdash; $50 credit per month</button>
             <p class="hint" style="color:var(--faint);font-size:.8rem;margin-top:10px">Monthly or annual &mdash; the complete toolkit on this page, no tiers.</p>
           </div>
         </div>
@@ -692,6 +704,7 @@
           </div>
           <p class="fine">Educational material only — not legal advice. Consult a lawyer if you don’t have the knowledge of a lawyer.</p>
         </div>
+        <div id="pgPlanNotice" role="status" style="display:none;border:1px solid var(--gold);border-radius:12px;padding:14px 16px;margin-bottom:16px;background:rgba(201,162,39,.08)"></div>
         <div class="wizard" id="wizardTop">
           <div class="steps" id="wizSteps">
             <div class="step-pill on" data-pill="1">1 &middot; Trust Type &amp; Options</div>
@@ -954,6 +967,20 @@
         </div>
         <p class="sec-sub" style="margin-top:12px"><b style="color:var(--gold2)">The reverse waterfall (Structure B):</b> when the business is the beneficiary, money starts at Tier 5 and flows <i>down</i> &mdash; the trustee makes a documented distribution from the trust to the named business for the purpose stated in the indenture, the business receives it into its own account, and it is spent and accounted for at the operating level. Same discipline, opposite direction: written purpose first, money second.</p>
 
+        <div class="pg-entry" id="pgEntry">
+          <div class="pg-entry-tiles" aria-hidden="true">
+            <div class="pg-mini-tile"><svg viewBox="0 0 48 48" fill="none" stroke="#c9a227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5h18v31H15z"/><path d="M15 5c-2.8 0-4.5 1.8-4.5 4.5V36"/><path d="M33 36c2.8 0 4.5-1.8 4.5-4.5"/><path d="M19 12h10M19 17h10M19 22h6"/><circle cx="26.5" cy="29.5" r="3.6"/><path d="M24.8 32.6 23.4 38l3.1-1.9L29.6 38l-1.4-5.4"/></svg><span>Trust</span></div>
+            <div class="pg-mini-tile"><svg viewBox="0 0 48 48" fill="none" stroke="#c9a227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19a19 13 0 0 1 38 0"/><path d="M24 6v4M24 19v7"/><path d="M9 41h30"/><rect x="11" y="30" width="8" height="11"/><rect x="21" y="26" width="7" height="15"/><rect x="30" y="31" width="8" height="10"/><path d="M24 26v-3"/></svg><span>Holding LLC</span></div>
+            <div class="pg-mini-tile"><svg viewBox="0 0 48 48" fill="none" stroke="#c9a227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 19l2.2-8h23.6L38 19"/><path d="M10 19a4.6 4.6 0 0 0 9.3 0a4.6 4.6 0 0 0 9.4 0A4.6 4.6 0 0 0 38 19"/><path d="M12.5 23.5V41h23V23.5"/><path d="M20.5 41v-9.5h7V41"/><path d="M8 41h32"/></svg><span>Business</span></div>
+            <div class="pg-mini-tile"><svg viewBox="0 0 48 48" fill="none" stroke="#c9a227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22L24 8l17 14"/><path d="M12 20v20h24V20"/><path d="M24 34.5c-4.8-3.8-7.4-6.3-7.4-9.4a4.1 4.1 0 0 1 7.4-2.7 4.1 4.1 0 0 1 7.4 2.7c0 3.1-2.6 5.6-7.4 9.4z"/></svg><span>Non-Profit</span></div>
+          </div>
+          <div class="pg-entry-body">
+            <h3>Trust Fund Playground</h3>
+            <p>Don&rsquo;t just read the structure &mdash; <b style="color:var(--ink)">build it</b>. Snap entity tiles together &mdash; a trust, a holding LLC, operating businesses, a non-profit, beneficiaries &mdash; then <b style="color:var(--ink)">run it like a trust fund manager</b>: push money through the waterfall month by month and watch every move land in the ledger. When the build looks right, <b style="color:var(--ink)">scan it</b> with the Trust Fund Scanner &mdash; and if the scan is clean, <b style="color:var(--ink)">implement it</b>: your plan carries straight into the real Builder above.</p>
+            <a class="btn primary" href="playground.html" style="text-decoration:none;display:inline-block">Open the Trust Fund Playground &rarr;</a>
+          </div>
+        </div>
+
         <h3 class="cat-title">How You Operate Each One, Day to Day</h3>
         <div class="ops-grid">
           <div class="res-block" style="margin-bottom:0">
@@ -981,6 +1008,37 @@
         </div>
         <p class="sec-sub" style="margin-top:14px">Build either structure in the <a href="#builder">builder</a>: choose your trust type, list the business interest on Schedule A (Structure A), or add the business by its legal name as a beneficiary with units in Step 3 (Structure B) &mdash; then send the people and the business to the CRM and keep the documents in the Vault. Need the companies formed first? <a href="https://madisonshalom72.github.io/startbusiness24-site/" target="_blank" rel="noopener">StartBusiness24</a> handles the LLC / company formation and EIN step.</p>
         <div style="border:1px solid var(--gold-deep);border-radius:12px;padding:14px 16px;margin-top:6px;background:rgba(201,162,39,.05)"><b style="color:var(--gold2)">DISCLAIMER:</b> <span style="color:var(--muted)">This section is educational material on how these structures are generally organized and operated. It is not legal, tax, or financial advice. Assigning a business interest to a trust, naming a business as a beneficiary, and setting distribution waterfalls all have legal and tax consequences that depend on your state and your facts. If you do not have the knowledge of a lawyer, consult a lawyer before implementing your trust.</span></div>
+      </section>
+
+      <!-- ================= NON-PROFIT ================= -->
+      <section id="nonprofit">
+        <div class="sec-head"><h2>How to Start a Non-Profit &mdash; and Its Tax Benefits</h2><div class="rule"></div></div>
+        <p class="sec-sub">A non-profit is an organization with a mission instead of owners &mdash; and it is built in <b style="color:var(--ink)">two halves</b>: your <b style="color:var(--ink)">state</b> creates the organization, and the <b style="color:var(--ink)">IRS</b> decides whether it is tax-exempt. Forming a nonprofit corporation does not by itself make anything tax-exempt; the benefits below flow from the federal 501(c)(3) determination, not the state filing. Here is how to start a non-profit, in the order the steps unlock.</p>
+
+        <h3 class="cat-title">The 7 Formation Steps, in Brief</h3>
+        <ul class="check-list">
+          <li><b style="color:var(--ink)">1. Choose the purpose and the name.</b> Write the mission in a sentence or two, then check the name against your state&rsquo;s business records.</li>
+          <li><b style="color:var(--ink)">2. Incorporate with the state.</b> File nonprofit articles of incorporation &mdash; with exempt-purpose and asset-dedication language in from the start, the way the IRS expects for a future 501(c)(3).</li>
+          <li><b style="color:var(--ink)">3. Get an EIN.</b> The organization&rsquo;s own tax ID (Form SS-4; the online application is free) &mdash; needed even with no employees.</li>
+          <li><b style="color:var(--ink)">4. Set up the board and bylaws.</b> Name the initial directors (many states require at least three), adopt bylaws, hold the first meeting, keep minutes.</li>
+          <li><b style="color:var(--ink)">5. Apply to the IRS for tax-exempt status.</b> Form 1023, or the shorter 1023-EZ for small organizations. Only the IRS determination letter makes it a recognized 501(c)(3).</li>
+          <li><b style="color:var(--ink)">6. Finish the state layer.</b> State income-tax exemption, sales/property exemptions where offered, and charitable-solicitation registration <i>before</i> fundraising, where your state requires it.</li>
+          <li><b style="color:var(--ink)">7. Open the books.</b> A bank account in the organization&rsquo;s name and EIN, bookkeeping that separates restricted funds, and the annual filings calendared. Formation is a day; administration is every year after.</li>
+        </ul>
+
+        <h3 class="cat-title">The Tax Benefits, Plainly</h3>
+        <div class="grid">
+          <div class="card"><h3>Federal Income-Tax Exemption</h3><p>Under &sect; 501(a), a recognized 501(c)(3) pays <b>no federal income tax</b> on income related to its exempt purpose.</p></div>
+          <div class="card"><h3>Deductible Donations</h3><p>Contributions to a 501(c)(3) are <b>deductible for donors</b> under &sect; 170 (for donors who itemize) &mdash; which makes fundraising materially easier.</p></div>
+          <div class="card"><h3>Grant Eligibility</h3><p>Most foundation and government grant programs will <b>only fund recognized 501(c)(3)</b> organizations.</p></div>
+          <div class="card"><h3>State Tax Exemptions</h3><p>Many states exempt 501(c)(3)s from state income or franchise tax, and some extend sales- or property-tax exemptions &mdash; these <b>vary widely by state</b> and usually need their own applications.</p></div>
+        </div>
+        <p class="sec-sub" style="margin-top:14px"><b style="color:var(--gold2)">The limit that defines the whole structure:</b> <b style="color:var(--ink)">no private inurement</b> &mdash; no part of a non-profit&rsquo;s earnings may go to a founder, director, or any other private individual, and if it ever closes, its assets must pass to another exempt purpose. Income from a regular business <i>not substantially related</i> to the mission is taxed anyway (UBIT, &sect;&sect; 511&ndash;514), and the exemption is maintained annually &mdash; most 501(c)(3)s file a Form 990 every year, and three straight years of not filing revokes it automatically. Run beside a trust, the pairing is the one this site teaches above: the trust holds the private side, the non-profit carries the mission &mdash; and a trust can name a 501(c)(3) as a beneficiary.</p>
+        <div class="doc-actions" style="margin-top:6px">
+          <a class="btn primary" href="news/how-to-start-a-nonprofit.html" style="text-decoration:none;display:inline-block">Read the full guide</a>
+          <a class="btn" href="playground.html" style="text-decoration:none;display:inline-block">Snap a Non-Profit Tile in the Playground</a>
+        </div>
+        <div style="border:1px solid var(--gold-deep);border-radius:12px;padding:14px 16px;margin-top:16px;background:rgba(201,162,39,.05)"><b style="color:var(--gold2)">DISCLAIMER:</b> <span style="color:var(--muted)">This section is educational material on how non-profits are generally formed and taxed. It is not legal, tax, or financial advice. Nonprofit corporation law, charitable-solicitation registration, and state tax exemptions are set state by state and differ in fees, forms, and deadlines; federal exemption turns on the organization&rsquo;s actual purposes and activities. If you do not have the knowledge of a lawyer, consult a lawyer before implementing your trust or forming an organization.</span></div>
       </section>
 
       <!-- ================= INSTANT MILLIONAIRE ================= -->
@@ -1169,6 +1227,7 @@
         <div class="sec-head"><h2>Trust News &amp; Insights — Rulings &amp; Trust Law, In Plain Language</h2><div class="rule"></div></div>
         <p class="sec-sub">From the Build A Trust 24 newsletter desk: IRS rulings and trust law developments, read from the source and explained plainly — free to read, no account needed. The latest:</p>
         <div class="article-grid">
+          <div class="article-card"><a class="card-link" href="news/how-to-start-a-nonprofit.html"><img src="assets/news/how-to-start-a-nonprofit-header.png" alt="" /><span class="k">Non-Profit Formation &amp; Taxes</span><h3>How to Start a Non-Profit — and the Tax Benefits That Come With It</h3><p>A non-profit is built in two halves: your state creates the organization, and the IRS decides whether it is tax-exempt. Here are the formation steps in order, the tax benefits a 501(c)(3) actually receives, and how a non-profit fits beside a family trust.</p><p class="meta">October 28, 2026 &middot; IRS exempt-organizations guidance (IRS.gov) and state nonprofit corporation law</p></a><div class="share-row" aria-label="Share this page"><span class="share-k">Share</span><a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftrust.privatemoneyrightsplaybook.xyz%2Fnews%2Fhow-to-start-a-nonprofit.html" target="_blank" rel="noopener">Facebook</a><a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Ftrust.privatemoneyrightsplaybook.xyz%2Fnews%2Fhow-to-start-a-nonprofit.html&text=How%20to%20Start%20a%20Non-Profit%20%E2%80%94%20and%20the%20Tax%20Benefits%20That%20Come%20With%20It" target="_blank" rel="noopener">X</a><a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftrust.privatemoneyrightsplaybook.xyz%2Fnews%2Fhow-to-start-a-nonprofit.html" target="_blank" rel="noopener">LinkedIn</a><button type="button" class="share-btn" data-copy-link="https://trust.privatemoneyrightsplaybook.xyz/news/how-to-start-a-nonprofit.html">Copy link</button><button type="button" class="share-btn" data-share-native data-share-url="https://trust.privatemoneyrightsplaybook.xyz/news/how-to-start-a-nonprofit.html" data-share-title="How to Start a Non-Profit — and the Tax Benefits That Come With It" hidden>Share &#8599;</button></div></div>
           <div class="article-card"><a class="card-link" href="news/plr-202641001.html"><img src="assets/news/plr-202641001-header.png" alt="" /><span class="k">IRS Private Letter Ruling 202641001</span><h3>IRS Lets a Grandfathered Trust Split in Three — With No GST, Income, or Gift Tax</h3><p>In PLR 202641001, released October 9, 2026, the IRS approved a trustee&#x27;s plan to divide one long-standing family trust into three equal trusts — and ruled the division triggers no generation-skipping transfer tax, no income tax, and no gift tax.</p><p class="meta">October 28, 2026 &middot; IRS Private Letter Ruling 202641001 (released October 9, 2026)</p></a><div class="share-row" aria-label="Share this page"><span class="share-k">Share</span><a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftrust.privatemoneyrightsplaybook.xyz%2Fnews%2Fplr-202641001.html" target="_blank" rel="noopener">Facebook</a><a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Ftrust.privatemoneyrightsplaybook.xyz%2Fnews%2Fplr-202641001.html&text=IRS%20Lets%20a%20Grandfathered%20Trust%20Split%20in%20Three%20%E2%80%94%20With%20No%20GST%2C%20Income%2C%20or%20Gift%20Tax" target="_blank" rel="noopener">X</a><a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftrust.privatemoneyrightsplaybook.xyz%2Fnews%2Fplr-202641001.html" target="_blank" rel="noopener">LinkedIn</a><button type="button" class="share-btn" data-copy-link="https://trust.privatemoneyrightsplaybook.xyz/news/plr-202641001.html">Copy link</button><button type="button" class="share-btn" data-share-native data-share-url="https://trust.privatemoneyrightsplaybook.xyz/news/plr-202641001.html" data-share-title="IRS Lets a Grandfathered Trust Split in Three — With No GST, Income, or Gift Tax" hidden>Share &#8599;</button></div></div>
         </div>
         <div class="nl-box" style="margin-left:0">
@@ -3270,7 +3329,7 @@
         "<p>Generate the trust in the builder and the ledger of certificates appears here.</p>") + "</div>" +
       "<div class='p-card'><h3>Training Completion</h3>" + TRACKS.map(t => "<div class='kv'><span>" + esc(t.title) + "</span><b>" + trackPct(t.id) + "%</b></div>").join("") +
         "<button class='btn small' id='pvTrain' type='button' style='margin-top:10px'>Open Training</button></div>" +
-      "<div class='p-card'><h3>Your Build A Trust 24 Access</h3><p>Free sign-up covers the trust library, the training tracks, and the AI Trust Specialist. Full access — the builder, indenture generator, bond-paper certificates, CRM, and this Portal — is $50/mo, or $299/yr for the whole year.</p><button class='btn small primary' id='pvSignup' type='button'>Sign Up Free / See Pricing</button></div>";
+      "<div class='p-card'><h3>Your Build A Trust 24 Access</h3><p>Free sign-up covers the trust library, the training tracks, and the AI Trust Specialist. Full access — the builder, indenture generator, bond-paper certificates, CRM, and this Portal — is $50 credit per month, or $299/yr for the whole year.</p><button class='btn small primary' id='pvSignup' type='button'>Sign Up Free / See Pricing</button></div>";
     $("#portal").classList.add("open"); document.body.style.overflow = "hidden";
     $("#pvDocs").addEventListener("click", () => { closePortal(); gotoSel("#builder"); showStep(5); });
     $("#pvCrm").addEventListener("click", () => { closePortal(); gotoSel("#crm"); });
@@ -3381,7 +3440,7 @@
     if(!name || !email) return;
     $("#signupForm").style.display = "none";
     const d = $("#signupDone"); d.style.display = "block";
-    d.innerHTML = "<b>Welcome, " + esc(name.split(" ")[0]) + ".</b> Your free Build A Trust 24 sign-up is recorded on this page — the trust library, all four training tracks, the knowledge library, and the AI Trust Specialist are yours to explore. When you are ready to build, full access is $50/mo (or $299/yr).";
+    d.innerHTML = "<b>Welcome, " + esc(name.split(" ")[0]) + ".</b> Your free Build A Trust 24 sign-up is recorded on this page — the trust library, all four training tracks, the knowledge library, and the AI Trust Specialist are yours to explore. When you are ready to build, full access is $50 credit per month (or $299/yr).";
   });
 
   /* ==================== LAND TRUST UNITS DISTRIBUTION GENERATOR ==================== */
@@ -3543,6 +3602,46 @@
   }
   window.LandTrustGen = { compute: ltCompute, validateUnits: ltValidateUnits, splitCents: ltSplitCents, splitAmount: ltSplitAmount, pctOf: ltPctOf, render: ltRender, renderSplit: ltRenderSplit, scrape: ltScrape, generate: ltGenerate, last: function(){ return LT_LAST; } };
 
+  /* ---- Playground plan prefill (Trust Fund Playground -> Builder) ----
+   * playground.html's Implement step saves the visitor's structure to
+   * localStorage 'bat24-playground-plan'. When that plan exists, prefill
+   * the wizard fields it maps cleanly to and say so. Anything whose shape
+   * does not align is skipped silently; a malformed plan must never break
+   * the builder, and the freemium gate flow is untouched (prefill only
+   * sets field values inside the normal page load). */
+  function applyPlaygroundPlan(){
+    let plan = null;
+    try {
+      const raw = localStorage.getItem("bat24-playground-plan");
+      if(raw) plan = JSON.parse(raw);
+    } catch(e) { plan = null; }
+    if(!plan || !plan.trust) return;
+    const pt = plan.trust;
+    try {
+      if(pt.type && trustById(pt.type)) pickType(pt.type);
+      if(pt.state) syncState(pt.state);
+      if(pt.grantor) $("#fGrantor").value = pt.grantor;
+      if(pt.trustee) $("#fTrustee").value = pt.trustee;
+      if(pt.name){ const tn = $("#fTrustName"); tn.value = pt.name; tn.dataset.touched = "1"; }
+      if(pt.fundingNote) $("#fFunding").value = pt.fundingNote;
+      if(pt.totalUnits) $("#fTotalUnits").value = pt.totalUnits;
+      const bens = Array.isArray(plan.beneficiaries) ? plan.beneficiaries.filter(b => b && b.name) : [];
+      if(bens.length){
+        const host = $("#benRows");
+        if(host) Array.prototype.slice.call(host.children || []).forEach(r => { try { host.removeChild(r); } catch(e) {} });
+        bens.forEach(b => addBenRow(b.name, (b.kind === "nonprofit" || b.kind === "business") ? "Charity / organization" : "Child", b.units != null ? b.units : ""));
+      }
+      const biz = Array.isArray(plan.businesses) ? plan.businesses.filter(b => b && b.name) : [];
+      biz.forEach(b => addAssetRow({ desc: b.name, cat: "Business interest" }));
+      updateUnitsSummary();
+      const note = $("#pgPlanNotice");
+      if(note){
+        note.style.display = "block";
+        note.innerHTML = "<b style='color:var(--gold2)'>Loaded from your Playground plan.</b> <span style='color:var(--muted)'>Your structure from the Trust Fund Playground &mdash; <b style='color:var(--ink)'>" + esc(pt.name || "your trust") + "</b>" + (pt.typeName ? ", a " + esc(pt.typeName) : "") + (pt.stateName ? " under " + esc(pt.stateName) + " law" : "") + " &mdash; is filled into the builder below: the people, the state, the beneficiaries and their units" + (biz.length ? ", and the businesses on Schedule A" : "") + ". Review every step, adjust anything, then generate the real Trust Indenture Agreement.</span>";
+      }
+    } catch(e) { /* a playground plan must never break the builder */ }
+  }
+
   /* ==================== INIT ==================== */
   fillStates($("#fState"), ""); fillStates($("#fStateTop"), ""); fillStates($("#tState"), "PA");
   fillTrustSelect($("#cmpA"), "revocable"); fillTrustSelect($("#cmpB"), "irrevocable");
@@ -3553,6 +3652,7 @@
   renderLibrary(); renderCompare(); renderCRM(); renderTracks(); renderArticles(); renderStateDir(); renderVault(); ltInit();
   runTax(); runMort(); runPL(); runIMTFB();
   showStep(1);
+  applyPlaygroundPlan();
   </script>
 
   <script>
@@ -3691,7 +3791,7 @@
     if(text.includes("vault")) return "The <b>Trust Fund Vault</b> (inside the Grantor Portal) is the register of digitized copies — indenture, certificates, policies, deeds, funding documents — with category, date, page count, storage location, digitized check-off, and PDF status. Originals on bond paper stay in the physical vault; the Vault tracks the working copies.";
     if(text.includes("crm") || text.includes("people") || text.includes("manage")) return "The <b>Trust Fund CRM</b> keeps three registers — beneficiaries, trustees, guardians — with contacts, units, distribution history, and training progress per person. Send people over from the builder or add them in the CRM section.";
     if(text.includes("portal")) return "The <b>Grantor Portal</b> is one window for the whole trust: structure and status, documents, people, the units ledger, training completion — and the Trust Fund Vault. Use the 'Open Grantor Portal' button at the top of the page.";
-    if(text.includes("price") || text.includes("cost") || text.includes("50") || text.includes("sign up") || text.includes("free")) return "Simple pricing: <b>sign up free</b> to explore the trust library, training tracks, and me. Full Build A Trust 24 access — the builder, indenture generator, bond-paper certificates, CRM, and Grantor Portal — is <b>$50/mo</b>, or <b>$299/yr</b> for the whole year. The sign-up is in the pricing section of this page.";
+    if(text.includes("price") || text.includes("cost") || text.includes("50") || text.includes("sign up") || text.includes("free")) return "Simple pricing: <b>sign up free</b> to explore the trust library, training tracks, and me. Full Build A Trust 24 access — the builder, indenture generator, bond-paper certificates, CRM, and Grantor Portal — is <b>$50 credit per month</b>, or <b>$299/yr</b> for the whole year &mdash; limited time at these levels: the credit rises to $99/mo or $499/yr on November 7, 2026. The sign-up is in the pricing section of this page.";
     if(text.includes("probate")) return "<b>Probate</b> is the court process of proving a will and transferring a deceased person's assets. A funded revocable living trust avoids probate for the assets it holds — which is why funding matters as much as drafting.";
     if(text.includes("state") || text.includes("jurisdiction")) {
       const m = STATE_LIST.find(s => text.includes(s[1].toLowerCase()));
@@ -4022,7 +4122,7 @@
   (function(){
     var LINK = "https://trust.privatemoneyrightsplaybook.xyz";
     var DISCLAIMER = "Educational content from Build A Trust 24 \u2014 not legal advice. Consult a lawyer if you don\u2019t have the knowledge of a lawyer.";
-    var CTA = "Sign up free at Build A Trust 24 and learn how to set up a trust fund step by step. Full Access is $50/mo or $299/yr.";
+    var CTA = "Sign up free at Build A Trust 24 and learn how to set up a trust fund step by step. Full Access is $50 credit per month or $299/yr.";
     var TYPES = [
       {id:"family", name:"Family Trust Fund", benefit:"one structure to hold, protect, and grow what your family builds \u2014 with rules you write"},
       {id:"revocable", name:"Revocable Living Trust", benefit:"keeps your assets out of probate while you stay in control \u2014 amend or revoke it anytime"},
@@ -4081,7 +4181,7 @@
       } else if (f === "ig") {
         text = a.hook + "\n\n" + what + "\n" + a.line + "\n\n" + CTA + "\n" + LINK + "\n.\n.\n" + hashtags(t) + "\n\n" + DISCLAIMER;
       } else if (f === "ad") {
-        text = "HEADLINE: " + a.hook + "\nAD: " + art + t.name + " " + t.benefit + ". Learn how to set up a trust fund step by step \u2014 sign up free. Full Access $50/mo or $299/yr.\n" + LINK + "\n\n" + DISCLAIMER;
+        text = "HEADLINE: " + a.hook + "\nAD: " + art + t.name + " " + t.benefit + ". Learn how to set up a trust fund step by step \u2014 sign up free. Full Access $50 credit per month or $299/yr.\n" + LINK + "\n\n" + DISCLAIMER;
       } else if (f === "video") {
         text = "HOOK (0\u20133s, on camera): \u201C" + a.hook + "\u201D\n\nBODY (3\u201325s): \u201C" + opener + " " + art + t.name + " " + t.benefit + ". " + a.line + "\u201D\n\nCTA (25\u201330s): \u201C" + CTA + " Link: " + LINK + "\u201D\n\nCaption: " + a.hook + " " + hashtags(t) + "\n" + DISCLAIMER;
       } else {

@@ -37,7 +37,7 @@
     config: {
       headlineHtml: null,
       subtitle: null,
-      priceDisplay: "$50/mo",
+      priceDisplay: "$50 credit per month",
       priceAnnual: "$299/yr",
       checkoutUrl: "",
       checkoutMonthlyUrl: "",
@@ -82,6 +82,13 @@
 
   /* ---------------- site content (Firestore -> page) ---------------- */
 
+  /* The account-bar pill is narrow: the full "$50 credit per month"
+   * shortens to "$50 Credit" there; any other configured price shows
+   * verbatim. */
+  function pillText(display) {
+    return "Get Full Access \u2014 " + String(display || "").replace("credit per month", "Credit");
+  }
+
   function applyConfig(cfg) {
     if (cfg.headlineHtml) {
       var h = $("#cfgHeadline");
@@ -95,12 +102,12 @@
       var amt = $("#cfgPriceAmt");
       if (amt) amt.textContent = cfg.priceDisplay;
       var h2 = $("#signup .sec-head h2");
-      if (h2 && h2.textContent.indexOf("$50/mo") !== -1) {
-        h2.textContent = h2.textContent.replace("$50/mo", cfg.priceDisplay);
+      if (h2 && h2.textContent.indexOf("$50 credit per month") !== -1) {
+        h2.textContent = h2.textContent.replace("$50 credit per month", cfg.priceDisplay);
       }
       var sub = $("#signup .sec-sub");
-      if (sub && sub.innerHTML.indexOf("$50/mo") !== -1) {
-        sub.innerHTML = sub.innerHTML.split("$50/mo").join(esc(cfg.priceDisplay));
+      if (sub && sub.innerHTML.indexOf("$50 credit per month") !== -1) {
+        sub.innerHTML = sub.innerHTML.split("$50 credit per month").join(esc(cfg.priceDisplay));
       }
       var btn = $("#cfgCheckoutBtn");
       if (btn) btn.innerHTML = "Get Full Access &mdash; " + esc(cfg.priceDisplay);
@@ -130,7 +137,7 @@
       }
     }
     var pill = $("#taGatePill");
-    if (pill) pill.textContent = "Get Full Access \u2014 " + cfg.priceDisplay;
+    if (pill) pill.textContent = pillText(cfg.priceDisplay);
     wireCheckout();
     refreshGateLabels();
   }
@@ -170,7 +177,7 @@
     bar.id = "trustAcctBar";
     bar.innerHTML =
       '<span class="ta-brand">Build A Trust 24</span>' +
-      '<button class="ta-btn primary" id="taGatePill" type="button" hidden>Get Full Access \u2014 $50/mo</button>' +
+      '<button class="ta-btn primary" id="taGatePill" type="button" hidden>Get Full Access \u2014 $50 Credit</button>' +
       '<span class="ta-user" id="taUser" hidden></span>' +
       '<button class="ta-btn" id="taMyTrusts" type="button" hidden>My Trusts</button>' +
       '<button class="ta-btn" id="taAdmin" type="button" hidden>Admin</button>' +
@@ -568,7 +575,7 @@
     if (m) m.innerHTML = "<b>" + esc(planLabel("monthly")) + "</b>Full access, billed monthly. Cancel anytime.";
     if (a) a.innerHTML = "<b>" + esc(planLabel("annual")) + "</b>The whole year of full access \u2014 the best value on the page.";
     var pillPrice = $("#taGatePill");
-    if (pillPrice) pillPrice.textContent = "Get Full Access \u2014 " + state.config.priceDisplay;
+    if (pillPrice) pillPrice.textContent = pillText(state.config.priceDisplay);
   }
 
   function buildGate() {
@@ -600,6 +607,7 @@
       '<button class="tg-plan primary" id="tgPlanMonthly" type="button"></button>' +
       '<button class="tg-plan" id="tgPlanAnnual" type="button"></button>' +
       "</div>" +
+      '<p class="tg-note">Limited time \u2014 the credit rises to $99/mo or $499/yr on November 7, 2026.</p>' +
       '<p class="tg-note" id="tgNote" hidden></p>' +
       '<button class="tg-keep" id="tgKeep" type="button">Keep looking around</button>' +
       "</div>";

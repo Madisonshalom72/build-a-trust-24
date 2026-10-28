@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <meta name="description" content="The Trust Fund Playground by Build A Trust 24: build a trust fund structure tile by tile — trust, holding LLC, operating businesses, corporations, non-profits, and beneficiaries — run it month by month like a trust fund manager, scan the structure with the Trust Fund Scanner, and implement it in the real Builder. Educational, not legal advice." />
+    <title>Trust Fund Playground — Build It, Run It, Scan It | Build A Trust 24</title>
+    <!-- Google Analytics (Alice property; no separate trust property exists yet) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY3QEL6P1S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ZY3QEL6P1S');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#0a0805; --bg2:#100d07; --panel:#17130a; --panel2:#1e190e; --line:#3a2f16;
+        --gold:#c9a227; --gold2:#e8cc6a; --gold-deep:#8a6d1c;
+        --ink:#f4ecd7; --muted:#c4b890; --faint:#9a8c66;
+        --good:#9ec49a; --warn:#e0a458; --bad:#d97b6c; --radius:14px;
+        --serif:"Playfair Display", Georgia, serif;
+        --sans:"Public Sans", -apple-system, "Segoe UI", sans-serif;
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      body{margin:0;background:radial-gradient(1200px 500px at 50% -80px,#241b08 0%,var(--bg) 55%);color:var(--ink);font-family:var(--sans);line-height:1.55}
+      a{color:var(--gold2)}
+      .wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+      /* ---------- Buttons & fields (site system) ---------- */
+      .btn{appearance:none;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#2a2110,#1a1509);color:var(--gold2);font:600 .95rem var(--sans);padding:13px 22px;border-radius:10px;cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease;text-decoration:none;display:inline-block}
+      .btn:hover{border-color:var(--gold);transform:translateY(-1px)}
+      .btn.primary{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#191204;border-color:var(--gold)}
+      .btn.primary:hover{background:linear-gradient(180deg,#f0d67e,var(--gold2))}
+      .btn.ghost{background:transparent}
+      .btn.small{padding:8px 14px;font-size:.85rem}
+      .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+      select,input[type=text],input[type=date],textarea{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:11px 13px;font:400 .95rem var(--sans);width:100%}
+      select:focus,input:focus,textarea:focus{outline:2px solid var(--gold-deep);outline-offset:1px}
+      .field label{display:block;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+      .field .hint{font-size:.8rem;color:var(--faint);margin-top:5px}
+      .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+      .field-grid .full{grid-column:1/-1}
+      .doc-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+      .hint{font-size:.85rem;color:var(--faint)}
+      /* ---------- Chrome ---------- */
+      .sb24-bar{background:linear-gradient(180deg,#241c0b,#171208);border-bottom:1px solid var(--gold-deep);padding:10px 0;text-align:center;font-size:.9rem;color:var(--muted)}
+      .sb24-bar a{color:var(--gold2);font-weight:600;text-decoration:none}
+      .sb24-bar a:hover{text-decoration:underline}
+      .ttk{overflow:hidden;background:#0d0a04;border-top:1px solid var(--gold-deep);border-bottom:1px solid var(--gold-deep)}
+      .ttk-track{display:flex;width:max-content;animation:ttkScroll 30s linear infinite}
+      .ttk:hover .ttk-track{animation-play-state:paused}
+      .ttk-seq{display:flex;align-items:center;flex-shrink:0;white-space:nowrap;padding:8px 0;font-family:ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace;font-size:12.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+      .ttk-item{padding:0 14px}
+      .ttk-item.hot{color:var(--gold2);font-weight:700}
+      .ttk-sep{color:var(--gold);opacity:.85}
+      @keyframes ttkScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+      header.pg-hero{position:relative;overflow:hidden;padding:52px 0 36px;text-align:center;border-bottom:1px solid var(--line)}
+      .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;opacity:.28}
+      header.pg-hero .wrap{position:relative;z-index:1}
+      .series-tag{display:inline-block;letter-spacing:.32em;font-size:.72rem;font-weight:700;color:var(--gold);text-transform:uppercase;border:1px solid var(--gold-deep);padding:6px 14px;border-radius:999px;background:rgba(201,162,39,.07)}
+      h1{font-family:var(--serif);font-weight:900;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.08;margin:18px 0 6px;color:var(--ink)}
+      h1 .gold{color:var(--gold2)}
+      .hero-sub{font-family:var(--serif);font-style:italic;font-size:clamp(1.02rem,2.6vw,1.28rem);color:var(--muted);max-width:760px;margin:10px auto 0}
+      .pg-nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+      .pg-nav a{border:1px solid var(--line);background:rgba(10,8,5,.72);color:var(--gold2);border-radius:999px;padding:8px 15px;font:600 .83rem var(--sans);text-decoration:none}
+      .pg-nav a:hover{border-color:var(--gold)}
+      /* ---------- Sections ---------- */
+      section{padding:44px 0 8px}
+      .sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+      h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0;color:var(--ink)}
+      .sec-head .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--gold-deep),transparent);min-width:60px}
+      .sec-sub{color:var(--muted);max-width:800px;margin:4px 0 18px}
+      .sec-sub b{color:var(--ink)}
+      .cat-title{font-family:var(--serif);font-size:1.15rem;color:var(--gold2);letter-spacing:.04em;margin:26px 0 12px;text-transform:uppercase}
+      .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+      .state-note{border:1px solid var(--gold-deep);background:rgba(201,162,39,.06);border-radius:11px;padding:14px 16px;font-size:.9rem;color:var(--muted);margin-top:14px}
+      .state-note b{color:var(--gold2)}
+      .disclaimer-box{border:1px solid var(--gold-deep);border-radius:12px;padding:14px 16px;margin-top:16px;background:rgba(201,162,39,.05);font-size:.92rem;color:var(--muted)}
+      .disclaimer-box b{color:var(--gold2)}
+      /* ---------- Ledger / stats (site system) ---------- */
+      .ledger{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:.9rem}
+      .ledger th,.ledger td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
+      .ledger th{color:var(--faint);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:var(--panel2)}
+      .ledger td{color:var(--ink)}
+      .ledger .blank td{color:var(--faint)}
+      .ledger-wrap{overflow-x:auto;border-radius:var(--radius)}
+      .units-bar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+      .stat{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:10px 18px;min-width:120px;flex:1}
+      .stat b{display:block;font-family:var(--serif);font-size:1.35rem;color:var(--gold2)}
+      .stat span{font-size:.78rem;color:var(--faint);letter-spacing:.06em;text-transform:uppercase}
+      /* ---------- Structure diagram (site system) ---------- */
+      .stack-diagram{display:flex;flex-direction:column;gap:0;max-width:720px;margin:18px auto}
+      .stack-layer{border:1px solid var(--gold-deep);background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:12px;padding:16px 18px;text-align:center}
+      .stack-layer b{font-family:var(--serif);color:var(--gold2);display:block;font-size:1.08rem}
+      .stack-layer span{font-size:.88rem;color:var(--muted);display:block;margin-top:3px}
+      .stack-layer .bal{display:inline-block;margin-top:8px;border:1px solid var(--gold-deep);background:rgba(201,162,39,.08);color:var(--gold2);border-radius:999px;padding:3px 12px;font:700 .85rem var(--sans)}
+      .stack-arrow{text-align:center;color:var(--gold);font-size:1.05rem;line-height:1.25;padding:5px 0}
+      .stack-layer.above{border-style:dashed;border-color:var(--warn)}
+      .stack-layer .dg-row{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line);padding:7px 2px;font-size:.9rem;color:var(--muted);text-align:left}
+      .stack-layer .dg-row:first-of-type{margin-top:8px}
+      .stack-layer .dg-row b{font-family:var(--sans);color:var(--ink);font-size:.9rem;display:inline}
+      /* ---------- Waterfall (site system) ---------- */
+      .waterfall{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+      .wf-tier{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:15px 16px;transition:border-color .3s ease,background .3s ease,box-shadow .3s ease}
+      .wf-num{width:42px;height:42px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--serif);font-weight:900;color:var(--gold2);background:rgba(201,162,39,.08)}
+      .wf-tier b{font-family:var(--serif);color:var(--ink);display:block;font-size:1rem}
+      .wf-tier span{font-size:.9rem;color:var(--muted);display:block;margin-top:2px}
+      .wf-tier.lit{border-color:var(--gold);background:rgba(201,162,39,.12);box-shadow:0 0 0 1px var(--gold) inset}
+      /* ---------- Footer ---------- */
+      footer{border-top:1px solid var(--line);margin-top:50px;padding:26px 0 90px;color:var(--faint);font-size:.83rem}
+      footer .fine{max-width:820px}
+      /* ---------- Playground: entity tile palette ---------- */
+      .pg-palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;margin:14px 0 6px}
+      .pg-tile{appearance:none;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:14px;padding:14px 10px 12px;cursor:pointer;text-align:center;color:var(--ink);font-family:var(--sans);display:flex;flex-direction:column;align-items:center;gap:7px;transition:border-color .15s ease,transform .15s ease,background .15s ease;width:100%}
+      .pg-tile:hover{border-color:var(--gold);transform:translateY(-2px)}
+      .pg-tile:active{transform:translateY(0)}
+      .pg-tile svg{width:62px;height:62px;flex:none}
+      .pg-tile .t-name{font-family:var(--serif);font-weight:700;font-size:.98rem;line-height:1.2;color:var(--gold2)}
+      .pg-tile .t-sub{font-size:.74rem;color:var(--faint);line-height:1.35}
+      .pg-tile .t-add{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-deep);border-radius:999px;padding:3px 10px;background:rgba(201,162,39,.07)}
+      .pg-tile-off{font-size:.8rem;color:var(--faint);margin-top:8px;min-height:1.2em}
+      /* ---------- Playground: placed entity cards ---------- */
+      .pg-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:12px}
+      .pg-card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+      .pg-card .pc-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+      .pg-card .pc-head svg{width:40px;height:40px;flex:none}
+      .pg-card .pc-head .pc-kind{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+      .pg-card .pc-head .pc-title{font-family:var(--serif);font-size:1.02rem;color:var(--ink);line-height:1.25}
+      .pg-card .pc-remove{margin-left:auto;appearance:none;border:1px solid var(--line);background:transparent;color:var(--faint);border-radius:8px;width:30px;height:30px;font-size:1rem;line-height:1;cursor:pointer;flex:none}
+      .pg-card .pc-remove:hover{border-color:var(--bad);color:var(--bad)}
+      .pg-card .pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      .pg-card .pc-bal{margin-top:10px;border-top:1px dashed var(--line);padding-top:9px;font-size:.88rem;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+      .pg-card .pc-bal b{color:var(--gold2)}
+      .pg-pulse{animation:pgPulse 1.1s ease}
+      @keyframes pgPulse{0%{box-shadow:0 0 0 0 rgba(201,162,39,.55)}100%{box-shadow:0 0 0 16px rgba(201,162,39,0)}}
+      .struct-chip{display:inline-block;border:1px solid var(--gold-deep);background:rgba(201,162,39,.08);color:var(--gold2);border-radius:999px;padding:5px 13px;font:600 .8rem var(--sans);margin:2px 4px 2px 0}
+      /* ---------- Playground: manager actions ---------- */
+      .pg-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
+      .pg-action{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 16px}
+      .pg-action h4{font-family:var(--serif);margin:0 0 4px;font-size:1rem;color:var(--gold2)}
+      .pg-action p{margin:0 0 10px;font-size:.85rem;color:var(--muted)}
+      .pg-action .row{display:flex;gap:8px;flex-wrap:wrap}
+      .pg-action .row>*{flex:1;min-width:100px}
+      .pg-action .row .btn{flex:0 0 auto}
+      .pg-msg{margin-top:12px;font-size:.92rem;color:var(--gold2);min-height:1.3em}
+      .pg-msg.err{color:var(--bad)}
+      /* ---------- Playground: scanner ---------- */
+      .scan-row{display:grid;grid-template-columns:86px 1fr;gap:12px;align-items:start;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:13px 15px;margin-top:10px}
+      .scan-pill{text-align:center;font:700 .72rem var(--sans);letter-spacing:.08em;border-radius:999px;padding:5px 6px;margin-top:2px}
+      .scan-pill.pass{border:1px solid var(--good);color:var(--good);background:rgba(158,196,154,.08)}
+      .scan-pill.review{border:1px solid var(--warn);color:var(--warn);background:rgba(224,164,88,.09)}
+      .scan-row b{font-family:var(--serif);color:var(--ink);display:block;font-size:.99rem}
+      .scan-row span{font-size:.89rem;color:var(--muted);display:block;margin-top:2px}
+      .scan-verdict{margin-top:16px;border-radius:12px;padding:16px 18px;font-size:1rem}
+      .scan-verdict.ok{border:1px solid var(--good);background:rgba(158,196,154,.07);color:var(--ink)}
+      .scan-verdict.no{border:1px solid var(--warn);background:rgba(224,164,88,.07);color:var(--ink)}
+      .scan-verdict b{font-family:var(--serif);font-size:1.1rem}
+      /* ---------- Playground: implement ---------- */
+      .impl-out{margin-top:14px}
+      .impl-out:empty{display:none}
+      .impl-panel{border:1px solid var(--gold-deep);border-radius:12px;padding:16px 18px;background:rgba(201,162,39,.05)}
+      .impl-panel.bad{border-color:var(--warn);background:rgba(224,164,88,.06)}
+      .impl-panel h4{font-family:var(--serif);margin:0 0 6px;color:var(--gold2);font-size:1.08rem}
+      .impl-panel p{margin:0 0 8px;color:var(--muted);font-size:.93rem}
+      .impl-panel ul{margin:6px 0;padding-left:20px;color:var(--muted);font-size:.93rem}
+      @media (max-width:760px){
+        .field-grid,.pg-card .pc-grid{grid-template-columns:1fr}
+        .wf-tier{grid-template-columns:44px 1fr}
+        .pg-palette{grid-template-columns:repeat(auto-fill,minmax(128px,1fr))}
+        .scan-row{grid-template-columns:70px 1fr}
+      }
+      @media (prefers-reduced-motion:reduce){
+        html{scroll-behavior:auto}
+        *{transition:none !important;animation:none !important}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sb24-bar"><div class="wrap">Starting a business of your own? <a href="https://madisonshalom72.github.io/startbusiness24-site/" target="_blank" rel="noopener">StartBusiness24 &mdash; form your LLC or company, get your EIN, and launch right &rarr;</a></div></div>
+
+    <div class="ttk" aria-hidden="true">
+      <div class="ttk-track">
+        <div class="ttk-seq"><span class="ttk-item">THE TRUST FUND PLAYGROUND</span><span class="ttk-sep">✦</span><span class="ttk-item hot">BUILD IT TILE BY TILE</span><span class="ttk-sep">✦</span><span class="ttk-item">RUN IT LIKE A TRUST FUND MANAGER</span><span class="ttk-sep">✦</span><span class="ttk-item">16 TRUST TYPES</span><span class="ttk-sep">✦</span><span class="ttk-item hot">SCAN IT BEFORE YOU BUILD IT</span><span class="ttk-sep">✦</span><span class="ttk-item">TRUST FUND + HOLDING LLC + OPERATING BUSINESSES</span><span class="ttk-sep">✦</span><span class="ttk-item">THE WATERFALL METHOD, LIVE</span><span class="ttk-sep">✦</span><span class="ttk-item">CERTIFICATES OF BENEFICIAL INTEREST</span><span class="ttk-sep">✦</span></div>
+        <div class="ttk-seq"><span class="ttk-item">THE TRUST FUND PLAYGROUND</span><span class="ttk-sep">✦</span><span class="ttk-item hot">BUILD IT TILE BY TILE</span><span class="ttk-sep">✦</span><span class="ttk-item">RUN IT LIKE A TRUST FUND MANAGER</span><span class="ttk-sep">✦</span><span class="ttk-item">16 TRUST TYPES</span><span class="ttk-sep">✦</span><span class="ttk-item hot">SCAN IT BEFORE YOU BUILD IT</span><span class="ttk-sep">✦</span><span class="ttk-item">TRUST FUND + HOLDING LLC + OPERATING BUSINESSES</span><span class="ttk-sep">✦</span><span class="ttk-item">THE WATERFALL METHOD, LIVE</span><span class="ttk-sep">✦</span><span class="ttk-item">CERTIFICATES OF BENEFICIAL INTEREST</span><span class="ttk-sep">✦</span></div>
+      </div>
+    </div>
+
+    <header class="pg-hero">
+      <img class="hero-bg" src="assets/hero-web.jpg" alt="" fetchpriority="high" />
+      <div class="wrap">
+        <span class="series-tag">Build A Trust 24 &middot; Interactive Playground</span>
+        <h1>The Trust Fund <span class="gold">Playground</span></h1>
+        <p class="hero-sub">Build a trust fund out of tiles &mdash; a trust, a holding company, operating businesses, and the people it is run for &mdash; then operate it month by month the way a trust fund manager does, scan the structure before you commit to it, and implement it for real in the Builder.</p>
+        <nav class="pg-nav" aria-label="Playground">
+          <a href="index.html">&larr; Build A Trust 24 Home</a>
+          <a href="#build">1 &middot; Build</a>
+          <a href="#run">2 &middot; Run It</a>
+          <a href="#scan">3 &middot; Scan It</a>
+          <a href="#implement">4 &middot; Implement</a>
+          <a href="index.html#builder">The Real Builder</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+
+      <!-- ================= BUILD ================= -->
+      <section id="build">
+        <div class="sec-head"><h2>1 &middot; Build Your Structure, Tile by Tile</h2><div class="rule"></div></div>
+        <p class="sec-sub">Tap a tile to place that piece into your structure &mdash; the diagram below assembles as you build, exactly the way the <b>Trust Funds &amp; Businesses</b> teaching on the main site lays it out: the trust on top, a holding company in the middle, the operating businesses underneath, and distributions flowing down to the beneficiaries by their units. Edit names and figures right on the placed cards. Nothing here is saved or sent anywhere &mdash; it is a sandbox. <b>The Example Family Trust</b> is loaded so you can run it immediately.</p>
+        <p><span id="pgStructLabel"></span></p>
+
+        <div class="card" id="pgTrustCard">
+          <p class="hint" style="margin:0 0 4px;letter-spacing:.14em;font-weight:700;color:var(--gold)">LAYER 1 &middot; THE TRUST ITSELF</p>
+          <h3 style="font-family:var(--serif);margin:0 0 12px;font-size:1.25rem">The Trust</h3>
+          <div class="field-grid">
+            <div class="field"><label for="pgTrustName">Trust name</label><input type="text" id="pgTrustName" /></div>
+            <div class="field"><label for="pgTrustType">Trust type (all 16)</label><select id="pgTrustType"></select></div>
+            <div class="field"><label for="pgState">State jurisdiction</label><select id="pgState"></select></div>
+            <div class="field"><label for="pgTotalUnits">Total units of beneficial interest</label><input type="text" inputmode="decimal" id="pgTotalUnits" /></div>
+            <div class="field"><label for="pgGrantor">Grantor (who creates &amp; funds it)</label><input type="text" id="pgGrantor" /></div>
+            <div class="field"><label for="pgTrustee">Trustee (who operates it)</label><input type="text" id="pgTrustee" /></div>
+            <div class="field full"><label for="pgFundingNote">Funding step &mdash; what actually goes into the trust (its Schedule A)</label><input type="text" id="pgFundingNote" placeholder="e.g., Membership interest in Example Holdings LLC, assigned to the trustee in writing" /><p class="hint">An unfunded trust operates nothing. Name the asset, the business interest, or the assignment that funds it.</p></div>
+          </div>
+          <div id="pgStateNote"></div>
+        </div>
+
+        <h3 class="cat-title">Entity Tiles &mdash; Tap to Add a Piece</h3>
+        <div class="pg-palette" id="pgPalette"></div>
+        <p class="pg-tile-off" id="pgPaletteMsg" role="status"></p>
+
+        <div class="units-bar">
+          <div class="stat"><b id="pgUnitsTotal">100</b><span>Total Units</span></div>
+          <div class="stat"><b id="pgUnitsAlloc">0</b><span>Units Allocated</span></div>
+          <div class="stat"><b id="pgUnitsRemain">100</b><span>Units Remaining</span></div>
+          <div class="stat"><b id="pgBenCount">0</b><span>Beneficiaries</span></div>
+        </div>
+
+        <h3 class="cat-title">Your Structure &mdash; Assembled Live</h3>
+        <div class="stack-diagram" id="pgDiagram" role="img" aria-label="Live diagram of the trust fund structure you are building"></div>
+
+        <h3 class="cat-title">Operating Layer &mdash; Placed Pieces</h3>
+        <div class="pg-cards" id="pgOpCards"></div>
+
+        <h3 class="cat-title">Beneficiaries &mdash; Placed Pieces</h3>
+        <div class="pg-cards" id="pgBenCards"></div>
+
+        <div class="doc-actions">
+          <button class="btn ghost" id="pgReset" type="button">Reset to the Example Family Trust</button>
+        </div>
+      </section>
+
+      <!-- ================= RUN ================= -->
+      <section id="run">
+        <div class="sec-head"><h2>2 &middot; Run It Like a Trust Fund Manager</h2><div class="rule"></div></div>
+        <p class="sec-sub">This is the manager&rsquo;s desk. <b>Run One Month</b> pushes money through the <b>Waterfall Method</b> exactly as the main site teaches it &mdash; nothing skips a tier. Every move is written into the playground ledger below, the way a trustee&rsquo;s accounting records it in both sets of books. <span id="pgMonthLabel"></span></p>
+
+        <div class="waterfall">
+          <div class="wf-tier" id="pgTier1"><div class="wf-num">1</div><div><b>Tier 1 &middot; Money Comes In at the Operating Level</b><span>Each operating business collects its monthly revenue into its own account. No trust money and no personal money is mixed in.</span></div></div>
+          <div class="wf-tier" id="pgTier2"><div class="wf-num">2</div><div><b>Tier 2 &middot; The Operating Business Pays Its Own Way First</b><span>Expenses, payroll, insurance, and taxes come out, and a working reserve stays behind. Only what is left is profit available to move.</span></div></div>
+          <div class="wf-tier" id="pgTier3"><div class="wf-num">3</div><div><b>Tier 3 &middot; Profit Flows Up to the Holding Company</b><span>Each business distributes its net profit to its owner &mdash; the holding company (or directly to the trust when there is no holding layer).</span></div></div>
+          <div class="wf-tier" id="pgTier4"><div class="wf-num">4</div><div><b>Tier 4 &middot; The Holding Company Distributes to the Trust</b><span>The holding company passes what it received up to its owner, the trust. The trustee receives it as trust income and logs it.</span></div></div>
+          <div class="wf-tier" id="pgTier5"><div class="wf-num">5</div><div><b>Tier 5 &middot; The Trustee Distributes Under the Indenture</b><span>Last tier, on purpose: the trustee distributes to the beneficiaries according to their units. Every distribution is logged with its date, amount, and balance.</span></div></div>
+        </div>
+
+        <div class="units-bar">
+          <div class="stat"><b id="pgBalTrustStat">$0.00</b><span>Trust Balance</span></div>
+          <div class="stat"><b id="pgMonthsStat">0</b><span>Months Run</span></div>
+          <div class="stat"><b id="pgDistStat">$0.00</b><span>Distributed to Beneficiaries</span></div>
+          <div class="stat"><b id="pgLedgerCount">0</b><span>Ledger Entries</span></div>
+        </div>
+
+        <div class="field" style="max-width:340px"><label for="pgDistRate">Monthly distribution rate (Tier 5)</label>
+          <select id="pgDistRate">
+            <option value="1">Distribute 100% of what the trust receives</option>
+            <option value="0.5">Distribute 50% &mdash; keep half as trust reserve</option>
+            <option value="0">Distribute 0% &mdash; hold everything as reserve</option>
+          </select>
+          <p class="hint">The share of each month&rsquo;s Tier 4 receipts the trustee pays out at Tier 5. The rest stays in the trust as its reserve.</p>
+        </div>
+
+        <div class="doc-actions">
+          <button class="btn primary" id="pgRunMonth" type="button">Run One Month</button>
+          <button class="btn" id="pgRunYear" type="button">Run a Full Year (12 Months)</button>
+        </div>
+        <p class="pg-msg" id="pgRunMsg" role="status"></p>
+
+        <h3 class="cat-title">Manager Actions &mdash; One at a Time</h3>
+        <div class="pg-actions">
+          <div class="pg-action">
+            <h4>Receive Income</h4>
+            <p>Money lands in one layer&rsquo;s own account &mdash; a payment, a rent check, a royalty.</p>
+            <div class="row"><select id="pgIncEntity" aria-label="Entity receiving income"></select><input type="text" inputmode="decimal" id="pgIncAmt" placeholder="Amount $" aria-label="Income amount" /><button class="btn small" id="pgIncBtn" type="button">Receive</button></div>
+          </div>
+          <div class="pg-action">
+            <h4>Pay an Expense</h4>
+            <p>A layer pays its own bill out of its own balance &mdash; insurance, repairs, filings, payroll.</p>
+            <div class="row"><select id="pgExpEntity" aria-label="Entity paying the expense"></select><input type="text" inputmode="decimal" id="pgExpAmt" placeholder="Amount $" aria-label="Expense amount" /><button class="btn small" id="pgExpBtn" type="button">Pay</button></div>
+          </div>
+          <div class="pg-action">
+            <h4>Make a Distribution</h4>
+            <p>The trustee pays a set amount out of the trust balance, split across beneficiaries by their units.</p>
+            <div class="row"><input type="text" inputmode="decimal" id="pgDistAmt" placeholder="Amount $" aria-label="Distribution amount" /><button class="btn small" id="pgDistBtn" type="button">Distribute</button></div>
+          </div>
+          <div class="pg-action">
+            <h4>Issue a Certificate</h4>
+            <p>Issue a numbered Certificate of Beneficial Interest to a beneficiary for the units they hold.</p>
+            <div class="row"><select id="pgCertBen" aria-label="Beneficiary receiving the certificate"></select><button class="btn small" id="pgCertBtn" type="button">Issue Certificate</button></div>
+          </div>
+        </div>
+        <p class="pg-msg" id="pgActionMsg" role="status"></p>
+
+        <h3 class="cat-title">Year View &mdash; The Operation So Far</h3>
+        <div id="pgSummary"></div>
+
+        <h3 class="cat-title">The Playground Ledger</h3>
+        <p class="sec-sub" style="margin-bottom:10px">Every action, dated, with the balance after it &mdash; the same discipline the site&rsquo;s Trust Registry CRM and units ledger keep for a real trust.</p>
+        <div class="ledger-wrap"><table class="ledger">
+          <thead><tr><th>Date</th><th>Layer / Entity</th><th>Action</th><th>Amount</th><th>Balance After</th></tr></thead>
+          <tbody id="pgLedgerRows"></tbody>
+        </table></div>
+      </section>
+
+      <!-- ================= SCAN ================= -->
+      <section id="scan">
+        <div class="sec-head"><h2>3 &middot; Scan the Structure &mdash; Can It Legally Operate?</h2><div class="rule"></div></div>
+        <p class="sec-sub">The <b>Trust Fund Scanner</b> checks the structure you built against the same rules the main site teaches: the trust type has to exist under the state you picked, the people have to be named, the units have to add up, and the trust has to actually be funded &mdash; an unfunded trust operates nothing. Each check comes back <b>PASS</b> or <b>REVIEW</b> with the reason in plain language.</p>
+        <div class="doc-actions">
+          <button class="btn primary" id="pgScanBtn" type="button">Scan This Structure</button>
+        </div>
+        <div id="pgScanOut"></div>
+        <div class="disclaimer-box"><b>Scanner disclaimer:</b> The Trust Fund Scanner is an educational checklist, not a legal determination. It checks your structure against general rules and this site&rsquo;s state notes &mdash; it cannot see your facts, your creditors, your tax picture, or your state&rsquo;s full statute. Only a licensed attorney in your state can say whether a structure is legal for you. If you do not have the knowledge of a lawyer, consult a lawyer before implementing your trust.</div>
+      </section>
+
+      <!-- ================= IMPLEMENT ================= -->
+      <section id="implement">
+        <div class="sec-head"><h2>4 &middot; Implement It For Real</h2><div class="rule"></div></div>
+        <p class="sec-sub">When the scan comes back with no blocking flags, you can choose to implement the structure. Implementing saves this exact plan on this device and sends you to the <b>real Trust Builder</b>, where the actual Trust Indenture Agreement &mdash; with the standard provisions, your state&rsquo;s governing-law article, Schedules A and B, and bond-paper Certificates of Beneficial Interest &mdash; is drafted. The Builder is where paper replaces play: the membership gate applies there as usual.</p>
+        <div class="doc-actions">
+          <button class="btn primary" id="pgImplementBtn" type="button">Implement This Structure</button>
+          <a class="btn ghost" href="index.html#builder">Skip the playground &mdash; open the Builder</a>
+        </div>
+        <div class="impl-out" id="pgImplementOut"></div>
+        <div class="disclaimer-box"><b>DISCLAIMER:</b> This playground, its scanner, and its ledger are educational tools. If you do not have the knowledge of a lawyer, consult a lawyer before implementing your trust. Nothing here is legal advice, and using this playground does not create an attorney-client relationship.</div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p style="font-family:var(--serif);color:var(--gold2);font-size:1rem;margin:0 0 6px">The Golden Age of Trust Funds &mdash; by Build A Trust 24, a Gold Series product.</p>
+        <p class="fine" style="border:1px solid var(--gold-deep);border-radius:10px;padding:12px 14px;color:var(--muted)"><b style="color:var(--gold2)">DISCLAIMER:</b> This site and its builder are educational tools. If you do not have the knowledge of a lawyer, consult a lawyer before implementing your trust. Nothing here is legal advice, and using this builder does not create an attorney-client relationship.</p>
+        <p class="fine">Educational U.S. overview. Trust categories can overlap, and matches shown here are general planning examples. Benefits depend on funding, drafting, administration, and governing law. A revocable trust does not by itself protect the creator from creditors or reduce taxes. Nothing on this page &mdash; including the Trust Fund Playground, the Trust Fund Scanner, and any document the builder generates &mdash; is legal, tax, or financial advice. Consult a licensed estate-planning attorney and tax professional in your state before executing any trust document. Sources consulted for the trust-type overview: IRS &middot; SSA &middot; Medicaid.gov &middot; The Florida Bar &middot; state trust statutes.</p>
+        <p class="fine">Starting a business to hold in your trust? <a href="https://madisonshalom72.github.io/startbusiness24-site/" target="_blank" rel="noopener">StartBusiness24</a> &mdash; form your LLC or company, get your EIN, and launch.</p>
+        <p class="fine">Written by human, assisted by AI.</p>
+      </div>
+    </footer>
+
+    <script>
+    (function(){
+      'use strict';
+      function el(id){ return document.getElementById(id); }
+      function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+      function r2(n){ return Math.round((+n || 0) * 100) / 100; }
+      function money(n){
+        var neg = n < 0, a = Math.abs(r2(n)).toFixed(2), parts = a.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return (neg ? '-$' : '$') + parts.join('.');
+      }
+      function signed(n){ return (n > 0 ? '+' : '') + money(n); }
+      function num(v){ var n = parseFloat(String(v == null ? '' : v).replace(/[$,]/g,'')); return isNaN(n) ? 0 : n; }
+      function hook(elm, type, fn){ if(!elm) return; var k = '_pg_' + type; if(elm[k]) return; elm[k] = 1; elm.addEventListener(type, fn); }
+      function setMsg(id, text, isErr){ var m = el(id); if(!m) return; m.textContent = text || ''; m.className = 'pg-msg' + (isErr ? ' err' : ''); }
+
+      /* ==================== DATA (mirrors the main site's builder) ==================== */
+      var TYPES = [
+        ['revocable','Revocable Living Trust'],['irrevocable','Irrevocable Trust'],['testamentary','Testamentary Trust'],
+        ['spendthrift','Spendthrift Trust'],['snt','Special Needs Trust'],['ilit','Irrevocable Life Insurance Trust (ILIT)'],
+        ['dapt','Domestic Asset Protection Trust (DAPT)'],['mapt','Medicaid Asset Protection Trust'],['qtip','QTIP Marital Trust'],
+        ['bypass','Bypass / Credit Shelter Trust'],['slat','Spousal Lifetime Access Trust (SLAT)'],['dynasty','Dynasty Trust'],
+        ['grat','Grantor Retained Annuity Trust (GRAT)'],['qprt','Qualified Personal Residence Trust (QPRT)'],
+        ['crt','Charitable Remainder Trust (CRT)'],['clt','Charitable Lead Trust (CLT)']
+      ];
+      function typeName(id){ for(var i=0;i<TYPES.length;i++) if(TYPES[i][0]===id) return TYPES[i][1]; return id; }
+      var STATE_LIST = [["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],["CO","Colorado"],["CT","Connecticut"],["DE","Delaware"],["DC","District of Columbia"],["FL","Florida"],["GA","Georgia"],["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],["IN","Indiana"],["IA","Iowa"],["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],["MA","Massachusetts"],["MI","Michigan"],["MN","Minnesota"],["MS","Mississippi"],["MO","Missouri"],["MT","Montana"],["NE","Nebraska"],["NV","Nevada"],["NH","New Hampshire"],["NJ","New Jersey"],["NM","New Mexico"],["NY","New York"],["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],["OK","Oklahoma"],["OR","Oregon"],["PA","Pennsylvania"],["RI","Rhode Island"],["SC","South Carolina"],["SD","South Dakota"],["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],["VA","Virginia"],["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"]];
+      var DAPT_STATES = ["AK","DE","HI","MI","MS","MO","NV","NH","OH","OK","RI","SD","TN","UT","VA","WV","WY"];
+      var CP_STATES = ["AZ","CA","ID","LA","NV","NM","TX","WA","WI"];
+      var DYNASTY_STATES = ["SD","NV","DE","AK","TN","WY","FL","AZ"];
+      function stateName(abbr){ for(var i=0;i<STATE_LIST.length;i++) if(STATE_LIST[i][0]===abbr) return STATE_LIST[i][1]; return abbr || ''; }
+
+      /* ==================== TILE ART — original gold line drawings ==================== */
+      function svgWrap(inner){ return '<svg viewBox="0 0 48 48" fill="none" stroke="#c9a227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>'; }
+      var ART = {
+        trust: svgWrap('<path d="M15 5h18v31H15z"/><path d="M15 5c-2.8 0-4.5 1.8-4.5 4.5V36"/><path d="M33 36c2.8 0 4.5-1.8 4.5-4.5"/><path d="M19 12h10M19 17h10M19 22h6"/><circle cx="26.5" cy="29.5" r="3.6"/><path d="M24.8 32.6 23.4 38l3.1-1.9L29.6 38l-1.4-5.4"/>'),
+        holding: svgWrap('<path d="M5 19a19 13 0 0 1 38 0"/><path d="M24 6v4M24 19v7"/><path d="M9 41h30"/><rect x="11" y="30" width="8" height="11"/><rect x="21" y="26" width="7" height="15"/><rect x="30" y="31" width="8" height="10"/><path d="M24 26v-3"/>'),
+        biz: svgWrap('<path d="M10 19l2.2-8h23.6L38 19"/><path d="M10 19a4.6 4.6 0 0 0 9.3 0a4.6 4.6 0 0 0 9.4 0A4.6 4.6 0 0 0 38 19"/><path d="M12.5 23.5V41h23V23.5"/><path d="M20.5 41v-9.5h7V41"/><path d="M8 41h32"/>'),
+        corp: svgWrap('<path d="M24 4l11 6H13z"/><path d="M17 10v24M24 10v24M31 10v24"/><path d="M13 34h22"/><path d="M10 41h28M14 37.5h20"/><path d="M7 41V22h6M41 41V22h-6"/>'),
+        nonprofit: svgWrap('<path d="M7 22L24 8l17 14"/><path d="M12 20v20h24V20"/><path d="M24 34.5c-4.8-3.8-7.4-6.3-7.4-9.4a4.1 4.1 0 0 1 7.4-2.7 4.1 4.1 0 0 1 7.4 2.7c0 3.1-2.6 5.6-7.4 9.4z"/>'),
+        benperson: svgWrap('<circle cx="19" cy="13" r="5.5"/><path d="M8.5 39c.8-6.2 5-9.5 10.5-9.5 3.4 0 6.3 1.3 8.2 3.7"/><rect x="29" y="25" width="12.5" height="10" rx="1.5"/><circle cx="35.2" cy="30" r="2.1"/>'),
+        benbiz: svgWrap('<path d="M8 16l1.8-6.5h17.4L29 16"/><path d="M8 16a3.8 3.8 0 0 0 7.7 0 3.8 3.8 0 0 0 7.6 0A3.8 3.8 0 0 0 31 16" transform="translate(-2.5 1)"/><path d="M10.5 20.5V35h19V20.5"/><path d="M17 35v-7h6v7"/><path d="M40 5v11M36 11.8L40 16l4-4.2"/>'),
+        bennonprofit: svgWrap('<path d="M24 26.5c-4.2-3.3-6.5-5.5-6.5-8.2a3.6 3.6 0 0 1 6.5-2.4 3.6 3.6 0 0 1 6.5 2.4c0 2.7-2.3 4.9-6.5 8.2z"/><path d="M24 4v7M20.8 8.2L24 11.5l3.2-3.3"/><path d="M7 33c3.8 3.4 9.5 5 17 5s13.2-1.6 17-5"/><path d="M10 38.5c3 2 7.8 3 14 3s11-1 14-3"/>')
+      };
+      var TILES = [
+        { btn:'pgTileTrust', key:'trust', name:'Trust', sub:'The fund itself — tap to pick from all 16 trust types', art:'trust' },
+        { btn:'pgTileHolding', key:'holding', name:'Holding LLC', sub:'The middle layer — holds, never operates', art:'holding' },
+        { btn:'pgTileBiz', key:'biz', name:'Operating Business', sub:'An LLC that does the work and earns the money', art:'biz' },
+        { btn:'pgTileCorp', key:'corp', name:'Corporation', sub:'An operating company — shares instead of units', art:'corp' },
+        { btn:'pgTileNonprofit', key:'nonprofit', name:'Non-Profit Organization', sub:'An organization the structure runs or funds', art:'nonprofit' },
+        { btn:'pgTileBenPerson', key:'benperson', name:'Individual Beneficiary', sub:'A person the trust is run for', art:'benperson' },
+        { btn:'pgTileBenBiz', key:'benbiz', name:'Business as Beneficiary', sub:'Structure B — the trust funds the business', art:'benbiz' },
+        { btn:'pgTileBenNonprofit', key:'bennonprofit', name:'Non-Profit as Beneficiary', sub:'An organization that receives distributions', art:'bennonprofit' }
+      ];
+      var OP_LABEL = { llc:'Operating Business · LLC', corp:'Corporation', nonprofit:'Non-Profit Organization' };
+      var BEN_LABEL = { person:'Individual Beneficiary', business:'Business Beneficiary', nonprofit:'Non-Profit Beneficiary' };
+      var MAX_OPS = 3, MAX_BENS = 6;
+
+      /* ==================== STATE ==================== */
+      var state;
+      function presetState(){
+        return {
+          trust: { name:'The Example Family Trust', type:'revocable', state:'PA', grantor:'Jordan Example', trustee:'Jordan Example, Trustee', totalUnits:100, fundingNote:'Membership interests in the operating businesses below, assigned to the trustee in writing (Schedule A).', balance:0 },
+          holding: { name:'Example Holdings LLC', balance:0 },
+          ops: [
+            { kind:'llc', name:'Example Home Services LLC', rev:12000, exp:7400, balance:0, role:'operating' },
+            { kind:'llc', name:'Example Rentals LLC', rev:6500, exp:3900, balance:0, role:'operating' }
+          ],
+          bens: [
+            { kind:'person', name:'Alex Example', units:40, received:0, cert:0 },
+            { kind:'person', name:'Sam Example', units:35, received:0, cert:0 },
+            { kind:'nonprofit', name:'Example Family Foundation', units:25, received:0, cert:0 }
+          ],
+          ledger: [], months: 0, certSeq: 0,
+          totals: { revenue:0, expenses:0, up:0, distributed:0 }
+        };
+      }
+      var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      function monthLabel(){
+        var now = new Date();
+        var d = new Date(now.getFullYear(), now.getMonth() + state.months, 1);
+        return MON[d.getMonth()] + ' ' + d.getFullYear();
+      }
+      function allocUnits(){ return state.bens.reduce(function(s,b){ return s + (+b.units || 0); }, 0); }
+      function pushLedger(entity, action, amt, bal){
+        state.ledger.push({ d: monthLabel(), e: entity, a: action, amt: (amt == null ? null : r2(amt)), bal: (bal == null ? null : r2(bal)) });
+      }
+
+      /* ==================== RENDER: palette / options ==================== */
+      function renderPalette(){
+        el('pgPalette').innerHTML = TILES.map(function(t){
+          return '<button class="pg-tile" id="' + t.btn + '" type="button" data-key="' + t.key + '">' + ART[t.art] +
+            '<span class="t-name">' + t.name + '</span><span class="t-sub">' + t.sub + '</span><span class="t-add">+ Tap to add</span></button>';
+        }).join('');
+      }
+      function renderTrustOptions(){
+        el('pgTrustType').innerHTML = TYPES.map(function(t){ return '<option value="' + t[0] + '">' + esc(t[1]) + '</option>'; }).join('');
+        el('pgState').innerHTML = '<option value="">— Select a state —</option>' + STATE_LIST.map(function(s){ return '<option value="' + s[0] + '">' + esc(s[1]) + '</option>'; }).join('');
+      }
+      function syncTrustInputs(){
+        el('pgTrustName').value = state.trust.name;
+        el('pgTrustType').value = state.trust.type;
+        el('pgState').value = state.trust.state;
+        el('pgGrantor').value = state.trust.grantor;
+        el('pgTrustee').value = state.trust.trustee;
+        el('pgTotalUnits').value = state.trust.totalUnits;
+        el('pgFundingNote').value = state.trust.fundingNote;
+      }
+      function renderStateNote(){
+        var box = el('pgStateNote'), ab = state.trust.state;
+        if(!ab){ box.innerHTML = ''; return; }
+        var notes = [];
+        if(DAPT_STATES.indexOf(ab) >= 0) notes.push(stateName(ab) + ' has a DAPT statute, so a Domestic Asset Protection Trust can be sited and administered here.');
+        else notes.push(stateName(ab) + ' does not have a DAPT statute — a DAPT would be sited in a qualifying state instead.');
+        if(CP_STATES.indexOf(ab) >= 0) notes.push(stateName(ab) + ' is a community-property state — coordinate the trust with the community-property step-up rules.');
+        if(DYNASTY_STATES.indexOf(ab) >= 0) notes.push(stateName(ab) + ' allows very long or perpetual trusts — a candidate situs for a dynasty trust.');
+        notes.push('Federal rules apply everywhere: Medicaid uses a 60-month look-back, and spendthrift protection always has state-law exceptions.');
+        box.innerHTML = '<div class="state-note"><b>' + esc(stateName(ab)) + ' notes:</b> ' + esc(notes.join(' ')) + '</div>';
+      }
+      function renderStructLabel(){
+        var chips = [];
+        var hasBizBen = state.bens.some(function(b){ return b.kind === 'business'; });
+        var opsRunning = state.ops.filter(function(o){ return o.role !== 'owner'; });
+        if(opsRunning.length && state.holding) chips.push('Structure A · The trust owns the businesses — through the holding LLC');
+        if(opsRunning.length && !state.holding) chips.push('Direct ownership · The trust owns the businesses with no holding layer');
+        if(hasBizBen) chips.push('Structure B · A business is named as a beneficiary');
+        if(!opsRunning.length && !hasBizBen) chips.push('A trust and its beneficiaries — add an operating piece to run money through it');
+        el('pgStructLabel').innerHTML = chips.map(function(c){ return '<span class="struct-chip">' + esc(c) + '</span>'; }).join('');
+      }
+
+      /* ==================== RENDER: diagram ==================== */
+      function balPill(id, val){ return '<span class="bal" id="' + id + '">Balance ' + money(val) + '</span>'; }
+      function renderDiagram(){
+        var t = state.trust, h = '';
+        var ownerNp = null;
+        state.ops.forEach(function(o){ if(o.kind === 'nonprofit' && o.role === 'owner') ownerNp = o; });
+        if(ownerNp){
+          h += '<div class="stack-layer above"><b>Above the Trust · ' + esc(ownerNp.name) + '</b><span>A non-profit placed as the owner of the whole structure — the Scanner has something to say about this placement.</span>' + balPill('dgBalAbove', ownerNp.balance) + '</div>';
+          h += '<div class="stack-arrow" aria-hidden="true">&darr; placed as owner of &darr;</div>';
+        }
+        h += '<div class="stack-layer"><b id="dgTrustName">' + esc(t.name || 'Unnamed Trust') + '</b><span id="dgTrustMeta">' + esc(typeName(t.type)) + (t.state ? ' · ' + esc(stateName(t.state)) : ' · no state picked') + ' · Trustee: ' + esc(t.trustee || 'not named') + '</span>' + balPill('dgBalTrust', t.balance) + '</div>';
+        if(state.holding){
+          h += '<div class="stack-arrow" aria-hidden="true">&darr; owns 100% of &darr;</div>';
+          h += '<div class="stack-layer"><b>' + esc(state.holding.name) + '</b><span>Layer 2 · The Holding Company — holds the businesses, signs no customers, carries no operating risk of its own.</span>' + balPill('dgBalHolding', state.holding.balance) + '</div>';
+          h += '<div class="stack-arrow" aria-hidden="true">&darr; owns &darr;</div>';
+        } else {
+          h += '<div class="stack-arrow" aria-hidden="true">&darr; owns directly — no holding layer &darr;</div>';
+        }
+        var running = state.ops.filter(function(o){ return o.role !== 'owner'; });
+        h += '<div class="stack-layer"><b>Layer 3 · The Operating Layer</b>';
+        if(!running.length) h += '<span>No operating pieces placed yet — tap an Operating Business, Corporation, or Non-Profit tile above.</span>';
+        running.forEach(function(o){
+          var i = state.ops.indexOf(o);
+          h += '<div class="dg-row"><span><b>' + esc(o.name) + '</b> · ' + esc(OP_LABEL[o.kind]) + ' · ' + money(o.rev) + ' in / ' + money(o.exp) + ' out monthly</span><span class="bal" id="dgBalOp' + i + '">Balance ' + money(o.balance) + '</span></div>';
+        });
+        h += '</div>';
+        h += '<div class="stack-arrow" aria-hidden="true">&darr; profits flow up · distributions flow down, by units &darr;</div>';
+        h += '<div class="stack-layer"><b>The Beneficiaries</b>';
+        if(!state.bens.length) h += '<span>No beneficiaries placed yet — a trust fund needs someone (or an organization) it is run for.</span>';
+        var alloc = allocUnits();
+        state.bens.forEach(function(b, i){
+          var pct = alloc > 0 ? (100 * b.units / alloc) : 0;
+          h += '<div class="dg-row"><span><b>' + esc(b.name) + '</b> · ' + esc(BEN_LABEL[b.kind]) + ' · ' + b.units + ' units (' + pct.toFixed(1) + '%)</span><span class="bal" id="dgBenRecv' + i + '">Received ' + money(b.received) + '</span></div>';
+        });
+        h += '</div>';
+        el('pgDiagram').innerHTML = h;
+      }
+
+      /* ==================== RENDER: placed cards ==================== */
+      function opCard(o, i){
+        var roleField = '';
+        if(o.kind === 'nonprofit'){
+          roleField = '<div class="field full"><label for="opRole' + i + '">Role in this structure</label><select id="opRole' + i + '" data-idx="' + i + '">' +
+            '<option value="operating"' + (o.role !== 'owner' ? ' selected' : '') + '>Operating organization — owned by the layer above</option>' +
+            '<option value="owner"' + (o.role === 'owner' ? ' selected' : '') + '>Owner — sits above the trust</option></select>' +
+            '<p class="hint">Where the piece sits changes what the Scanner says about it.</p></div>';
+        }
+        return '<div class="pg-card" id="opCard' + i + '"><div class="pc-head">' + ART[o.kind === 'llc' ? 'biz' : o.kind] +
+          '<div><div class="pc-kind">' + esc(OP_LABEL[o.kind]) + '</div><div class="pc-title">' + esc(o.name) + '</div></div>' +
+          '<button class="pc-remove" id="opRemove' + i + '" type="button" data-idx="' + i + '" aria-label="Remove ' + esc(o.name) + '">&times;</button></div>' +
+          '<div class="pc-grid">' +
+          '<div class="field full"><label for="opName' + i + '">Name</label><input type="text" id="opName' + i + '" data-idx="' + i + '" /></div>' +
+          '<div class="field"><label for="opRev' + i + '">Monthly revenue $</label><input type="text" inputmode="decimal" id="opRev' + i + '" data-idx="' + i + '" /></div>' +
+          '<div class="field"><label for="opExp' + i + '">Monthly expenses $</label><input type="text" inputmode="decimal" id="opExp' + i + '" data-idx="' + i + '" /></div>' +
+          roleField +
+          '</div><div class="pc-bal"><span>Balance</span><b id="opBal' + i + '">' + money(o.balance) + '</b></div></div>';
+      }
+      function benCard(b, i){
+        return '<div class="pg-card" id="benCard' + i + '"><div class="pc-head">' + ART[b.kind === 'person' ? 'benperson' : (b.kind === 'business' ? 'benbiz' : 'bennonprofit')] +
+          '<div><div class="pc-kind">' + esc(BEN_LABEL[b.kind]) + '</div><div class="pc-title">' + esc(b.name) + '</div></div>' +
+          '<button class="pc-remove" id="benRemove' + i + '" type="button" data-idx="' + i + '" aria-label="Remove ' + esc(b.name) + '">&times;</button></div>' +
+          '<div class="pc-grid">' +
+          '<div class="field full"><label for="benName' + i + '">Name</label><input type="text" id="benName' + i + '" data-idx="' + i + '" /></div>' +
+          '<div class="field"><label for="benUnits' + i + '">Units of beneficial interest</label><input type="text" inputmode="decimal" id="benUnits' + i + '" data-idx="' + i + '" /></div>' +
+          '<div class="field"><label>Share of distributions</label><div class="stat" style="min-width:0"><b id="benPct' + i + '">0%</b><span>By units</span></div></div>' +
+          '</div><div class="pc-bal"><span>Received to date <b id="benRecv' + i + '">' + money(b.received) + '</b></span><span id="benCertLine' + i + '">' + (b.cert ? 'Certificate #' + b.cert + ' issued' : 'No certificate issued yet') + '</span></div></div>';
+      }
+      function renderCards(){
+        el('pgOpCards').innerHTML = state.ops.length ? state.ops.map(opCard).join('') :
+          '<p class="hint">Nothing in the operating layer yet. Tap an Operating Business, Corporation, or Non-Profit Organization tile to place one.</p>';
+        el('pgBenCards').innerHTML = state.bens.length ? state.bens.map(benCard).join('') :
+          '<p class="hint">No beneficiaries yet. Tap a beneficiary tile to add the people — or organizations — this trust is run for.</p>';
+        state.ops.forEach(function(o, i){
+          el('opName' + i).value = o.name;
+          el('opRev' + i).value = o.rev;
+          el('opExp' + i).value = o.exp;
+          wireOp(i);
+        });
+        state.bens.forEach(function(b, i){
+          el('benName' + i).value = b.name;
+          el('benUnits' + i).value = b.units;
+          wireBen(i);
+        });
+      }
+      function wireOp(i){
+        ['opName','opRev','opExp','opRemove','opRole'].forEach(function(p){ var n = el(p + i); if(n) n.setAttribute('data-idx', String(i)); });
+        hook(el('opName' + i), 'input', function(e){ var j = +e.target.getAttribute('data-idx'); state.ops[j].name = e.target.value; renderDiagram(); syncEntityLabels(); });
+        hook(el('opRev' + i), 'input', function(e){ var j = +e.target.getAttribute('data-idx'); state.ops[j].rev = num(e.target.value); renderDiagram(); });
+        hook(el('opExp' + i), 'input', function(e){ var j = +e.target.getAttribute('data-idx'); state.ops[j].exp = num(e.target.value); renderDiagram(); });
+        hook(el('opRemove' + i), 'click', function(e){
+          var j = +e.target.getAttribute('data-idx'), gone = state.ops[j];
+          state.ops.splice(j, 1);
+          pushLedger(gone.name, 'Structure change — removed from the operating layer', null, null);
+          structureChanged('Removed ' + gone.name + '.');
+        });
+        var role = el('opRole' + i);
+        if(role) hook(role, 'change', function(e){
+          var j = +e.target.getAttribute('data-idx');
+          state.ops[j].role = e.target.value;
+          pushLedger(state.ops[j].name, e.target.value === 'owner' ? 'Structure change — re-placed above the trust as owner' : 'Structure change — placed in the operating layer', null, null);
+          structureChanged(e.target.value === 'owner' ? state.ops[j].name + ' now sits above the trust. Scan the structure to see what that means.' : state.ops[j].name + ' is back in the operating layer.');
+        });
+      }
+      function wireBen(i){
+        ['benName','benUnits','benRemove'].forEach(function(p){ var n = el(p + i); if(n) n.setAttribute('data-idx', String(i)); });
+        hook(el('benName' + i), 'input', function(e){ var j = +e.target.getAttribute('data-idx'); state.bens[j].name = e.target.value; renderDiagram(); syncEntityLabels(); });
+        hook(el('benUnits' + i), 'input', function(e){ var j = +e.target.getAttribute('data-idx'); state.bens[j].units = num(e.target.value); updateComputed(); });
+        hook(el('benRemove' + i), 'click', function(e){
+          var j = +e.target.getAttribute('data-idx'), gone = state.bens[j];
+          state.bens.splice(j, 1);
+          pushLedger(gone.name, 'Structure change — beneficiary removed', null, null);
+          structureChanged('Removed beneficiary ' + gone.name + '.');
+        });
+      }
+
+      /* ==================== RENDER: selects / computed / summary / ledger ==================== */
+      function entityOptions(){
+        var out = [{ v:'trust', label: state.trust.name + ' (the trust)' }];
+        if(state.holding) out.push({ v:'holding', label: state.holding.name + ' (holding)' });
+        state.ops.forEach(function(o, i){ if(o.role !== 'owner') out.push({ v:'op' + i, label: o.name }); });
+        return out;
+      }
+      function renderEntitySelects(){
+        var opts = entityOptions();
+        ['pgIncEntity','pgExpEntity'].forEach(function(id){
+          var sel = el(id); if(!sel) return;
+          var cur = sel.value;
+          sel.innerHTML = opts.map(function(o){ return '<option value="' + o.v + '">' + esc(o.label) + '</option>'; }).join('');
+          if(opts.some(function(o){ return o.v === cur; })) sel.value = cur;
+        });
+        var cs = el('pgCertBen');
+        if(cs){
+          var cur2 = cs.value;
+          cs.innerHTML = state.bens.length ? state.bens.map(function(b, i){ return '<option value="' + i + '">' + esc(b.name) + ' — ' + b.units + ' units</option>'; }).join('') : '<option value="">— No beneficiaries —</option>';
+          if(cur2 !== '' && +cur2 < state.bens.length) cs.value = cur2;
+        }
+      }
+      function syncEntityLabels(){ renderEntitySelects(); }
+      function updateComputed(){
+        var alloc = allocUnits(), total = +state.trust.totalUnits || 0;
+        el('pgUnitsTotal').textContent = String(total);
+        el('pgUnitsAlloc').textContent = String(alloc);
+        el('pgUnitsRemain').textContent = String(total - alloc);
+        el('pgBenCount').textContent = String(state.bens.length);
+        state.bens.forEach(function(b, i){
+          var p = el('benPct' + i);
+          if(p) p.textContent = alloc > 0 ? (100 * b.units / alloc).toFixed(1) + '%' : '0%';
+          var rc = el('benRecv' + i); if(rc) rc.textContent = money(b.received);
+          var cl = el('benCertLine' + i); if(cl) cl.textContent = b.cert ? 'Certificate #' + b.cert + ' issued' : 'No certificate issued yet';
+        });
+        state.ops.forEach(function(o, i){ var b = el('opBal' + i); if(b) b.textContent = money(o.balance); });
+        el('pgBalTrustStat').textContent = money(state.trust.balance);
+        el('pgMonthsStat').textContent = String(state.months);
+        el('pgDistStat').textContent = money(state.totals.distributed);
+        el('pgLedgerCount').textContent = String(state.ledger.length);
+        var ml = el('pgMonthLabel');
+        if(ml) ml.textContent = state.months ? 'You are operating in month ' + (state.months + 1) + ' (' + monthLabel() + ').' : 'The books open in ' + monthLabel() + '.';
+        renderDiagram();
+      }
+      function renderSummary(){
+        var rows = [
+          ['Months operated', String(state.months)],
+          ['Total revenue collected at the operating level', money(state.totals.revenue)],
+          ['Total operating expenses paid', money(state.totals.expenses)],
+          ['Total profit flowed up to the trust', money(state.totals.up)],
+          ['Total distributed to beneficiaries', money(state.totals.distributed)],
+          ['Trust balance (reserve on hand)', money(state.trust.balance)]
+        ];
+        if(state.holding) rows.push(['Holding company balance', money(state.holding.balance)]);
+        state.ops.forEach(function(o){ rows.push([o.name + ' — balance', money(o.balance)]); });
+        state.bens.forEach(function(b){ rows.push([b.name + ' — received to date', money(b.received)]); });
+        el('pgSummary').innerHTML = '<div class="ledger-wrap"><table class="ledger"><thead><tr><th>Measure</th><th>Amount</th></tr></thead><tbody>' +
+          rows.map(function(r){ return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+      }
+      function renderLedger(){
+        var rows = state.ledger.slice(-300);
+        el('pgLedgerRows').innerHTML = rows.length ? rows.map(function(e){
+          return '<tr><td>' + esc(e.d) + '</td><td>' + esc(e.e) + '</td><td>' + esc(e.a) + '</td><td>' + (e.amt == null ? '—' : signed(e.amt)) + '</td><td>' + (e.bal == null ? '—' : money(e.bal)) + '</td></tr>';
+        }).join('') : '<tr class="blank"><td colspan="5">No entries yet — run a month or take a manager action.</td></tr>';
+        var c = el('pgLedgerCount'); if(c) c.textContent = String(state.ledger.length);
+      }
+      function structureChanged(msg){
+        renderStructLabel(); renderCards(); renderEntitySelects(); renderLedger(); updateComputed(); renderSummary();
+        if(msg) setMsg('pgPaletteMsg', msg, false);
+      }
+
+      /* ==================== BUILD ACTIONS ==================== */
+      function addOp(kind, name){
+        if(state.ops.length >= MAX_OPS){ setMsg('pgPaletteMsg', 'The playground holds up to ' + MAX_OPS + ' operating pieces — remove one before adding another.', true); return; }
+        state.ops.push({ kind: kind, name: name, rev: 0, exp: 0, balance: 0, role: 'operating' });
+        pushLedger(name, 'Structure change — placed in the operating layer (' + OP_LABEL[kind] + ')', null, null);
+        structureChanged(name + ' placed in the operating layer. Set its name and monthly figures on its card.');
+      }
+      function addBen(kind, name){
+        if(state.bens.length >= MAX_BENS){ setMsg('pgPaletteMsg', 'The playground holds up to ' + MAX_BENS + ' beneficiaries — remove one before adding another.', true); return; }
+        state.bens.push({ kind: kind, name: name, units: 0, received: 0, cert: 0 });
+        pushLedger(name, 'Structure change — beneficiary added (' + BEN_LABEL[kind] + ')', null, null);
+        structureChanged(name + ' added as a beneficiary. Give them units on their card — distributions split by units.');
+      }
+      function tileAction(key){
+        if(key === 'trust'){
+          var card = el('pgTrustCard');
+          if(card){ card.scrollIntoView(); card.classList.remove('pg-pulse'); void card.offsetWidth; card.classList.add('pg-pulse'); }
+          el('pgTrustType').focus();
+          setMsg('pgPaletteMsg', 'There is one trust at the top of every structure — pick its type from all 16 in the Trust card.', false);
+        }
+        else if(key === 'holding'){
+          if(state.holding){ setMsg('pgPaletteMsg', state.holding.name + ' is already placed — one holding layer is the model this site teaches.', true); return; }
+          state.holding = { name: 'New Holding LLC', balance: 0 };
+          pushLedger('New Holding LLC', 'Structure change — holding company placed between the trust and the businesses', null, null);
+          structureChanged('Holding LLC placed. Structure A is complete: trust → holding company → operating businesses.');
+        }
+        else if(key === 'biz') addOp('llc', 'New Operating Business LLC');
+        else if(key === 'corp') addOp('corp', 'New Corporation, Inc.');
+        else if(key === 'nonprofit') addOp('nonprofit', 'New Non-Profit Organization');
+        else if(key === 'benperson') addBen('person', 'New Beneficiary');
+        else if(key === 'benbiz') addBen('business', 'New Business Beneficiary LLC');
+        else if(key === 'bennonprofit') addBen('nonprofit', 'New Non-Profit Beneficiary');
+      }
+      function readTrust(){
+        state.trust.name = el('pgTrustName').value;
+        state.trust.type = el('pgTrustType').value;
+        state.trust.state = el('pgState').value;
+        state.trust.grantor = el('pgGrantor').value;
+        state.trust.trustee = el('pgTrustee').value;
+        state.trust.totalUnits = num(el('pgTotalUnits').value);
+        state.trust.fundingNote = el('pgFundingNote').value;
+        renderStateNote(); renderStructLabel(); updateComputed();
+      }
+
+      /* ==================== RUN ENGINE ==================== */
+      function distribute(amt, label){
+        var alloc = allocUnits();
+        if(alloc <= 0) return 0;
+        amt = r2(amt);
+        state.trust.balance = r2(state.trust.balance - amt);
+        pushLedger(state.trust.name, label + ' — paid out of the trust', -amt, state.trust.balance);
+        var given = 0;
+        state.bens.forEach(function(b, idx){
+          var share;
+          if(idx === state.bens.length - 1) share = r2(amt - given);
+          else { share = r2(amt * b.units / alloc); given = r2(given + share); }
+          b.received = r2(b.received + share);
+          pushLedger(b.name, label + ' — received (' + b.units + ' units, ' + (100 * b.units / alloc).toFixed(1) + '%)', share, b.received);
+        });
+        state.totals.distributed = r2(state.totals.distributed + amt);
+        return amt;
+      }
+      function highlightTiers(){
+        var reduced = false;
+        try { reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+        for(var i = 1; i <= 5; i++){
+          (function(n){
+            var t = el('pgTier' + n); if(!t) return;
+            if(reduced){ t.classList.add('lit'); setTimeout(function(){ t.classList.remove('lit'); }, 600); }
+            else {
+              setTimeout(function(){ t.classList.add('lit'); }, (n - 1) * 240);
+              setTimeout(function(){ t.classList.remove('lit'); }, (n - 1) * 240 + 1100);
+            }
+          })(i);
+        }
+      }
+      function runMonth(quiet){
+        state.months++;
+        var upTotal = 0, anyOps = false;
+        state.ops.forEach(function(op){
+          if(op.role === 'owner') return;
+          anyOps = true;
+          op.balance = r2(op.balance + op.rev);
+          pushLedger(op.name, 'Tier 1 · Revenue received', op.rev, op.balance);
+          state.totals.revenue = r2(state.totals.revenue + op.rev);
+          op.balance = r2(op.balance - op.exp);
+          pushLedger(op.name, 'Tier 2 · Operating expenses paid', -op.exp, op.balance);
+          state.totals.expenses = r2(state.totals.expenses + op.exp);
+          var flow = r2(Math.min(Math.max(op.rev - op.exp, 0), Math.max(op.balance, 0)));
+          if(flow > 0){
+            op.balance = r2(op.balance - flow);
+            upTotal = r2(upTotal + flow);
+            pushLedger(op.name, 'Tier 3 · Profit distributed up to ' + (state.holding ? 'the holding company' : 'the trust'), -flow, op.balance);
+          }
+        });
+        var dist = 0;
+        if(upTotal > 0){
+          state.totals.up = r2(state.totals.up + upTotal);
+          if(state.holding){
+            state.holding.balance = r2(state.holding.balance + upTotal);
+            pushLedger(state.holding.name, 'Tier 3 · Profit received from the operating companies', upTotal, state.holding.balance);
+            state.holding.balance = r2(state.holding.balance - upTotal);
+            pushLedger(state.holding.name, 'Tier 4 · Distributed to the trust', -upTotal, state.holding.balance);
+            state.trust.balance = r2(state.trust.balance + upTotal);
+            pushLedger(state.trust.name, 'Tier 4 · Trust income received from the holding company', upTotal, state.trust.balance);
+          } else {
+            state.trust.balance = r2(state.trust.balance + upTotal);
+            pushLedger(state.trust.name, 'Tier 4 · Profit received directly — no holding layer', upTotal, state.trust.balance);
+          }
+          var rate = num(el('pgDistRate').value);
+          if(el('pgDistRate').value === '') rate = 1;
+          dist = r2(upTotal * rate);
+          if(dist > 0){
+            if(allocUnits() > 0) distribute(dist, 'Tier 5 · Distribution under the indenture');
+            else { dist = 0; }
+          }
+        }
+        renderLedger(); updateComputed(); renderSummary();
+        if(!quiet){
+          highlightTiers();
+          setMsg('pgRunMsg', anyOps
+            ? 'Month ' + state.months + ' closed: ' + money(upTotal) + ' flowed up to the trust' + (dist > 0 ? ', and ' + money(dist) + ' went out to the beneficiaries by units.' : '. Nothing was distributed at Tier 5 this month.')
+            : 'Month ' + state.months + ' closed: no operating pieces are placed, so no money moved. Add an operating tile in the Build step.', false);
+        }
+        return upTotal;
+      }
+
+      /* ==================== MANAGER ACTIONS ==================== */
+      function entityRef(v){
+        if(v === 'trust') return state.trust;
+        if(v === 'holding') return state.holding;
+        if(v && v.indexOf('op') === 0) return state.ops[+v.slice(2)] || null;
+        return null;
+      }
+      function doIncome(){
+        var ent = entityRef(el('pgIncEntity').value), amt = num(el('pgIncAmt').value);
+        if(!ent){ setMsg('pgActionMsg', 'Pick the layer that receives the income first.', true); return; }
+        if(!(amt > 0)){ setMsg('pgActionMsg', 'Enter an income amount above zero.', true); return; }
+        ent.balance = r2(ent.balance + amt);
+        pushLedger(ent.name, 'Income received (manager action)', amt, ent.balance);
+        el('pgIncAmt').value = '';
+        renderLedger(); updateComputed(); renderSummary();
+        setMsg('pgActionMsg', money(amt) + ' received into ' + ent.name + '. Logged in the ledger.', false);
+      }
+      function doExpense(){
+        var ent = entityRef(el('pgExpEntity').value), amt = num(el('pgExpAmt').value);
+        if(!ent){ setMsg('pgActionMsg', 'Pick the layer that pays the expense first.', true); return; }
+        if(!(amt > 0)){ setMsg('pgActionMsg', 'Enter an expense amount above zero.', true); return; }
+        ent.balance = r2(ent.balance - amt);
+        pushLedger(ent.name, 'Expense paid (manager action)', -amt, ent.balance);
+        el('pgExpAmt').value = '';
+        renderLedger(); updateComputed(); renderSummary();
+        setMsg('pgActionMsg', money(amt) + ' paid out of ' + ent.name + '. Logged in the ledger.', false);
+      }
+      function doDistribute(){
+        var amt = num(el('pgDistAmt').value);
+        if(!(amt > 0)){ setMsg('pgActionMsg', 'Enter a distribution amount above zero.', true); return; }
+        if(allocUnits() <= 0){ setMsg('pgActionMsg', 'No beneficiary holds any units yet — a distribution needs units to split by.', true); return; }
+        if(amt > state.trust.balance){ setMsg('pgActionMsg', 'The trust holds ' + money(state.trust.balance) + ' — a distribution cannot exceed the trust balance.', true); return; }
+        distribute(amt, 'Distribution to beneficiaries (manager action)');
+        el('pgDistAmt').value = '';
+        renderLedger(); updateComputed(); renderSummary();
+        setMsg('pgActionMsg', money(amt) + ' distributed from the trust, split by units. Logged in the ledger.', false);
+      }
+      function doCertificate(){
+        var v = el('pgCertBen').value;
+        if(v === '' || !state.bens[+v]){ setMsg('pgActionMsg', 'There is no beneficiary to issue a certificate to yet.', true); return; }
+        var b = state.bens[+v];
+        state.certSeq++;
+        b.cert = state.certSeq;
+        var alloc = allocUnits();
+        pushLedger(b.name, 'Certificate of Beneficial Interest #' + b.cert + ' issued — ' + b.units + ' units (' + (alloc > 0 ? (100 * b.units / alloc).toFixed(1) : '0.0') + '% of the trust)', null, null);
+        renderLedger(); updateComputed();
+        setMsg('pgActionMsg', 'Certificate of Beneficial Interest #' + b.cert + ' issued to ' + b.name + ' for ' + b.units + ' units. On a real trust this prints on bond paper from the Builder.', false);
+      }
+
+      /* ==================== SCANNER ==================== */
+      function computeScan(){
+        var t = state.trust, rows = [];
+        function row(status, sev, title, reason){ rows.push({ status: status, sev: sev, title: title, reason: reason }); }
+        var running = state.ops.filter(function(o){ return o.role !== 'owner'; });
+        // 1 · State picked
+        if(!t.state) row('REVIEW', 'block', 'State jurisdiction', 'No state is picked. A trust is implemented under one state\u2019s law — the state drives the governing-law article, the trust code, and which structures exist. Pick the state in the Trust card.');
+        else row('PASS', '', 'State jurisdiction', stateName(t.state) + ' law governs this structure, and the checks below were run against ' + stateName(t.state) + '\u2019s rules as this site teaches them.');
+        // 2 · Trust type can operate in the state
+        if(t.state && t.type === 'dapt' && DAPT_STATES.indexOf(t.state) < 0)
+          row('REVIEW', 'block', 'Trust type in this state — DAPT', stateName(t.state) + ' does not have a Domestic Asset Protection Trust statute. A DAPT must be created, sited, and administered in a qualifying state (for example Nevada, South Dakota, Delaware, or Alaska) with an independent trustee there. As drawn, this DAPT cannot operate under ' + stateName(t.state) + ' law.');
+        else if(t.type === 'mapt')
+          row('REVIEW', 'note', 'Trust type — Medicaid timing', 'A Medicaid Asset Protection Trust only does its job outside Medicaid\u2019s 60-month look-back: transfers made inside the look-back window can trigger a penalty period of ineligibility. The structure is a recognized one — but the calendar, not the paperwork, decides whether it works. Fund it 5+ years before care is likely.');
+        else if(t.type === 'dynasty' && t.state && DYNASTY_STATES.indexOf(t.state) < 0)
+          row('REVIEW', 'note', 'Trust type — dynasty situs', stateName(t.state) + ' limits how long a trust can last under its rule against perpetuities. A dynasty trust meant to run for generations is usually sited in a state that allows very long or perpetual trusts (for example South Dakota, Nevada, Delaware, or Alaska).');
+        else if(t.state)
+          row('PASS', '', 'Trust type in this state', 'A ' + typeName(t.type) + ' is a recognized structure under ' + stateName(t.state) + ' law as this site teaches it. (Recognition is the general rule — your facts and drafting still decide your case.)');
+        else
+          row('REVIEW', 'note', 'Trust type in this state', 'Pick a state first — whether this trust type can operate depends on that state\u2019s statute.');
+        // 3 · Trust named
+        if(!String(t.name).trim()) row('REVIEW', 'block', 'Trust named', 'The trust has no name. The indenture, the accounts, and every assignment name the trust — an unnamed trust cannot hold anything.');
+        else row('PASS', '', 'Trust named', '\u201C' + t.name + '\u201D is the name the indenture, accounts, and assignments will carry.');
+        // 4 · Trustee named
+        if(!String(t.trustee).trim()) row('REVIEW', 'block', 'Trustee named', 'No trustee is named. The trustee is the operator — the one who holds title, signs as trustee, and runs the waterfall. Name a trustee (and, in the real Builder, a successor).');
+        else row('PASS', '', 'Trustee named', t.trustee + ' operates the trust — signing in the trustee\u2019s capacity, never as an individual owner.');
+        // 5 · Units add up
+        var alloc = allocUnits(), total = +t.totalUnits || 0;
+        if(alloc !== total) row('REVIEW', 'block', 'Units add up', 'Beneficiary units add up to ' + alloc + ', but the trust is divided into ' + total + ' units. Distributions split by units — until the two numbers match, every split is wrong. Adjust the units on the beneficiary cards or the trust\u2019s total.');
+        else row('PASS', '', 'Units add up', 'Beneficiaries hold exactly ' + total + ' of ' + total + ' units — distributions split cleanly, to the cent.');
+        // 6 · Beneficiaries exist
+        if(!state.bens.length) row('REVIEW', 'block', 'Beneficiaries named', 'There are no beneficiaries. A trust fund is run for someone — add at least one beneficiary tile (a person, a business, or a non-profit).');
+        else row('PASS', '', 'Beneficiaries named', state.bens.length + ' beneficiar' + (state.bens.length === 1 ? 'y holds' : 'ies hold') + ' the units: ' + state.bens.map(function(b){ return b.name; }).join(', ') + '.');
+        // 7 · Funded
+        if(!running.length && !String(t.fundingNote).trim())
+          row('REVIEW', 'block', 'Funding step', 'Nothing funds this trust: no operating piece is assigned to it and the funding note is empty. An unfunded trust operates nothing — the grantor has to actually transfer an asset or assign a business interest into the trustee\u2019s hands (the trust\u2019s Schedule A) before any of this is real.');
+        else row('PASS', '', 'Funding step', running.length ? 'The structure assigns ' + running.map(function(o){ return o.name; }).join(', ') + ' into the trust\u2019s ownership chain — funding on paper, the way Schedule A records it.' : 'The funding note names what goes in: \u201C' + t.fundingNote + '\u201D Make sure the transfer itself actually happens and is documented.');
+        // 8 · Separateness
+        if(running.length && !state.holding)
+          row('REVIEW', 'note', 'Separateness — no holding layer', 'The trust owns the operating pieces directly. That is allowed — but the holding layer exists for a reason: it keeps ownership in one place and keeps each business\u2019s operating risk inside that business, away from the trust\u2019s other assets. One lawsuit at one business reaches further up this diagram than it should. Consider placing a Holding LLC tile.');
+        else if(running.length)
+          row('PASS', '', 'Separateness — holding layer in place', 'The holding company sits between the trust and the operating pieces: ownership in one place, operating risk kept inside each business.');
+        else
+          row('PASS', '', 'Separateness', 'No operating businesses are placed, so there is no operating risk to separate yet.');
+        // 9 · Non-profit placement
+        var npOwner = state.ops.filter(function(o){ return o.kind === 'nonprofit' && o.role === 'owner'; });
+        var npAny = state.ops.some(function(o){ return o.kind === 'nonprofit' && o.role !== 'owner'; }) || state.bens.some(function(b){ return b.kind === 'nonprofit'; });
+        if(npOwner.length)
+          row('REVIEW', 'block', 'Non-profit placement', npOwner[0].name + ' is placed ABOVE the trust, as the owner of the whole structure. That is the roles reversed: in the structures this site teaches, the trust is the ownership and governance layer — it holds the pieces and is operated by its trustee. A non-profit normally takes part the other way: as a beneficiary that receives distributions (the charitable pattern), or as an organization the structure itself operates. A non-profit that sponsors or forms a trust does so as a grantor at formation — it does not sit on top owning the fund. Move the non-profit into the operating layer, or add it as a beneficiary instead.');
+        else if(npAny)
+          row('PASS', '', 'Non-profit placement', 'The non-profit sits where non-profits belong in this structure — inside it or receiving from it, not on top of it.');
+        // 10 · Community property advisory
+        if(t.state && CP_STATES.indexOf(t.state) >= 0)
+          row('REVIEW', 'note', 'Community-property state', stateName(t.state) + ' is a community-property state: married couples may receive a full step-up in basis on community property at the first death. Coordinate how the trust holds marital property with that rule instead of assuming the default drafting handles it.');
+        var blocking = rows.filter(function(r){ return r.status === 'REVIEW' && r.sev === 'block'; }).length;
+        var notes = rows.filter(function(r){ return r.status === 'REVIEW' && r.sev === 'note'; }).length;
+        return { rows: rows, blocking: blocking, notes: notes };
+      }
+      function renderScan(){
+        var s = computeScan();
+        var h = s.rows.map(function(r){
+          return '<div class="scan-row"><div class="scan-pill ' + (r.status === 'PASS' ? 'pass' : 'review') + '">' + r.status + '</div><div><b>' + esc(r.title) + '</b><span>' + esc(r.reason) + '</span></div></div>';
+        }).join('');
+        if(s.blocking === 0)
+          h += '<div class="scan-verdict ok"><b>No blocking flags — ready to implement.</b><br/>Every structural check passed' + (s.notes ? ', with ' + s.notes + ' advisory note' + (s.notes === 1 ? '' : 's') + ' worth reading above' : '') + '. That means the structure is coherent on paper — it is not a legal opinion. Scroll to step 4 to save this plan and draft the real indenture in the Builder.</div>';
+        else
+          h += '<div class="scan-verdict no"><b>Review the flagged items first.</b><br/>' + s.blocking + ' blocking flag' + (s.blocking === 1 ? '' : 's') + ' above must be fixed before this structure can operate the way it is drawn' + (s.notes ? ' (plus ' + s.notes + ' advisory note' + (s.notes === 1 ? '' : 's') + ')' : '') + '. Fix them in the Build step, then scan again.</div>';
+        el('pgScanOut').innerHTML = h;
+        return s;
+      }
+
+      /* ==================== IMPLEMENT ==================== */
+      function doImplement(){
+        var s = computeScan(), out = el('pgImplementOut');
+        if(s.blocking > 0){
+          var flags = s.rows.filter(function(r){ return r.status === 'REVIEW' && r.sev === 'block'; });
+          out.innerHTML = '<div class="impl-panel bad"><h4>Not yet — ' + s.blocking + ' blocking flag' + (s.blocking === 1 ? '' : 's') + ' to fix first</h4>' +
+            '<p>The Scanner found structure problems that would stop this design from operating as drawn:</p><ul>' +
+            flags.map(function(r){ return '<li><b>' + esc(r.title) + ':</b> ' + esc(r.reason) + '</li>'; }).join('') +
+            '</ul><p>Fix them in the <a href="#build">Build step</a>, <a href="#scan">re-scan</a>, and implement from a clean report.</p></div>';
+          out.scrollIntoView();
+          return;
+        }
+        var plan = {
+          savedAt: new Date().toISOString(),
+          source: 'Build A Trust 24 — Trust Fund Playground',
+          trust: { name: state.trust.name, type: state.trust.type, typeName: typeName(state.trust.type), state: state.trust.state, stateName: stateName(state.trust.state), grantor: state.trust.grantor, trustee: state.trust.trustee, totalUnits: state.trust.totalUnits, fundingNote: state.trust.fundingNote },
+          holding: state.holding ? { name: state.holding.name } : null,
+          businesses: state.ops.map(function(o){ return { kind: o.kind, role: o.role, name: o.name, monthlyRevenue: o.rev, monthlyExpenses: o.exp }; }),
+          beneficiaries: state.bens.map(function(b){ return { kind: b.kind, name: b.name, units: b.units }; }),
+          scan: { blocking: 0, advisoryNotes: s.notes, verdict: 'No blocking flags — ready to implement' },
+          ledgerSummary: { entries: state.ledger.length, monthsRun: state.months, totalRevenue: state.totals.revenue, totalExpenses: state.totals.expenses, totalFlowedToTrust: state.totals.up, totalDistributed: state.totals.distributed,
+            balances: { trust: state.trust.balance, holding: state.holding ? state.holding.balance : null,
+              businesses: state.ops.map(function(o){ return { name: o.name, balance: o.balance }; }),
+              beneficiariesReceived: state.bens.map(function(b){ return { name: b.name, received: b.received }; }) } }
+        };
+        try { localStorage.setItem('bat24-playground-plan', JSON.stringify(plan)); } catch(e){}
+        out.innerHTML = '<div class="impl-panel"><h4>Plan saved — now build it for real</h4>' +
+          '<p>Your structure &mdash; <b>' + esc(state.trust.name) + '</b>, ' + (state.holding ? 'its holding company, ' : '') + state.ops.length + ' operating piece' + (state.ops.length === 1 ? '' : 's') + ' and ' + state.bens.length + ' beneficiar' + (state.bens.length === 1 ? 'y' : 'ies') + ' &mdash; is saved on this device as your implementation plan.</p>' +
+          '<p>The playground proves the design. The <b>real Builder</b> is where the actual Trust Indenture Agreement is drafted — standard provisions, your state\u2019s governing-law article, Schedules A and B, and the bond-paper certificates. The Builder membership gate applies there as usual.</p>' +
+          '<div class="doc-actions"><a class="btn primary" href="index.html#builder">Open the Real Builder &rarr;</a></div></div>';
+        out.scrollIntoView();
+      }
+
+      /* ==================== RESET / INIT ==================== */
+      function loadState(fresh){
+        syncTrustInputs();
+        renderStateNote(); renderStructLabel(); renderCards(); renderEntitySelects();
+        renderLedger(); updateComputed(); renderSummary();
+        if(fresh){
+          el('pgScanOut').innerHTML = '';
+          el('pgImplementOut').innerHTML = '';
+          setMsg('pgRunMsg', '', false); setMsg('pgActionMsg', '', false);
+          setMsg('pgPaletteMsg', 'Reset complete — the Example Family Trust is loaded again, exactly as it started.', false);
+        }
+      }
+      function resetAll(){
+        state = presetState();
+        pushLedger('Playground', 'Books opened — “The Example Family Trust” preset loaded', null, null);
+        loadState(true);
+      }
+      function wireStatic(){
+        TILES.forEach(function(t){
+          hook(el(t.btn), 'click', function(){ tileAction(t.key); });
+        });
+        ['pgTrustName','pgGrantor','pgTrustee','pgFundingNote','pgTotalUnits'].forEach(function(id){
+          hook(el(id), 'input', readTrust);
+        });
+        hook(el('pgTrustType'), 'change', readTrust);
+        hook(el('pgState'), 'change', readTrust);
+        hook(el('pgRunMonth'), 'click', function(){ runMonth(false); });
+        hook(el('pgRunYear'), 'click', function(){
+          for(var i = 0; i < 12; i++) runMonth(true);
+          highlightTiers();
+          setMsg('pgRunMsg', 'A full year ran: 12 months through the waterfall. The Year View and the ledger below hold the whole story.', false);
+        });
+        hook(el('pgIncBtn'), 'click', doIncome);
+        hook(el('pgExpBtn'), 'click', doExpense);
+        hook(el('pgDistBtn'), 'click', doDistribute);
+        hook(el('pgCertBtn'), 'click', doCertificate);
+        hook(el('pgScanBtn'), 'click', function(){ renderScan(); });
+        hook(el('pgImplementBtn'), 'click', doImplement);
+        hook(el('pgReset'), 'click', resetAll);
+      }
+      renderTrustOptions();
+      renderPalette();
+      state = presetState();
+      pushLedger('Playground', 'Books opened — “The Example Family Trust” preset loaded', null, null);
+      wireStatic();
+      loadState(false);
+    })();
+    </script>
+  </body>
+</html>
