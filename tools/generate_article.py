@@ -9,6 +9,12 @@ WHAT IT DOES (for Madison, in one read):
     2. a full article page in news/<slug>.html, in the site's exact design
     3. the article added to the news index (news.html)
     4. the latest article featured in the homepage "Trust News" section
+    5. social sharing, automatically: every article page, the news index,
+       and every article card carries a share row (Facebook, X, LinkedIn,
+       copy-link, and the phone's native Share sheet when available), and
+       every page carries Open Graph / Twitter preview meta so a shared
+       link shows the page's image. The index gets its own 1200x630 share
+       graphic at assets/news/trust-news-share.png (SVG source alongside).
 
 HOW TO USE:
   1. Copy tools/articles/plr-202641001.json to tools/articles/<new-slug>.json
@@ -28,6 +34,7 @@ the taxpayer who requested it (IRC 6110(k)(3)).
 import html
 import json
 import pathlib
+import urllib.parse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ARTICLES_DIR = ROOT / "tools" / "articles"
@@ -99,7 +106,27 @@ def scripts_block(prefix):
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
     <script src="__P__trust-config.js"></script>
-    <script src="__P__newsletter.js"></script>""".replace("__P__", prefix)
+    <script src="__P__newsletter.js"></script>
+    <script src="__P__share.js"></script>""".replace("__P__", prefix)
+
+
+def share_row(url, title, center=False, page_share=False):
+    """Black-and-gold share row: Facebook / X / LinkedIn intent links
+    (URL-encoded), a copy-link button, and a native Share button that
+    share.js reveals only when navigator.share exists. No widgets."""
+    eu = urllib.parse.quote(url, safe="")
+    et = urllib.parse.quote(title, safe="")
+    cls = "share-row" + (" center" if center else "") + (" page-share" if page_share else "")
+    return (
+        '<div class="' + cls + '" aria-label="Share this page">'
+        '<span class="share-k">Share</span>'
+        '<a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=' + eu + '" target="_blank" rel="noopener">Facebook</a>'
+        '<a class="share-btn" href="https://twitter.com/intent/tweet?url=' + eu + "&text=" + et + '" target="_blank" rel="noopener">X</a>'
+        '<a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=' + eu + '" target="_blank" rel="noopener">LinkedIn</a>'
+        '<button type="button" class="share-btn" data-copy-link="' + esc(url) + '">Copy link</button>'
+        '<button type="button" class="share-btn" data-share-native data-share-url="' + esc(url) + '" data-share-title="' + esc(title) + '" hidden>Share &#8599;</button>'
+        "</div>"
+    )
 
 
 # ---------------------------------------------------------------- graphics
@@ -216,6 +243,79 @@ def render_png(spec, out_path):
     img.save(out_path, "PNG")
 
 
+# ------------------------------------------------- index share graphic
+INDEX_SHARE_TITLE = "TRUST NEWS & INSIGHTS"
+INDEX_SHARE_SUB = "Rulings & Trust Law, In Plain Language"
+INDEX_SHARE_CHIPS = ["IRS PRIVATE LETTER RULINGS", "TRUST LAW DEVELOPMENTS", "PLAIN-LANGUAGE BREAKDOWNS"]
+INDEX_SHARE_FOOTER = "TRUST.PRIVATEMONEYRIGHTSPLAYBOOK.XYZ/NEWS"
+
+
+def render_index_share_svg():
+    chips = ""
+    for i, label in enumerate(INDEX_SHARE_CHIPS):
+        x = 110 + i * 340
+        chips += (
+            '<rect x="' + str(x) + '" y="452" width="300" height="56" rx="10" fill="#17130a" stroke="' + GOLD + '" stroke-width="2"/>'
+            '<text x="' + str(x + 150) + '" y="487" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" '
+            'font-size="17" letter-spacing="1" fill="#f4ecd7">' + esc(label) + "</text>\n  "
+        )
+    return """<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#241b08"/>
+      <stop offset="55%" stop-color="#0a0805"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="18" y="18" width="1164" height="594" fill="none" stroke="GOLDDEEP" stroke-width="2"/>
+  <rect x="28" y="28" width="1144" height="574" fill="none" stroke="#3a2f16" stroke-width="1"/>
+  <text x="600" y="76" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="21" letter-spacing="8" fill="GOLD">BUILD A TRUST 24</text>
+  <text x="600" y="212" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="92" fill="GOLD2">TRUST NEWS</text>
+  <text x="600" y="312" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="92" fill="GOLD2">&amp; INSIGHTS</text>
+  <line x1="430" y1="356" x2="770" y2="356" stroke="GOLD" stroke-width="2"/>
+  <text x="600" y="410" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="25" letter-spacing="3" fill="#f4ecd7">RULINGS &amp; TRUST LAW, IN PLAIN LANGUAGE</text>
+  CHIPS
+  <text x="600" y="572" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="16" letter-spacing="2" fill="#9a8c66">FOOTER</text>
+</svg>
+""".replace("GOLDDEEP", GOLD_DEEP).replace("GOLD2", GOLD2).replace("GOLD", GOLD) \
+     .replace("CHIPS", chips).replace("FOOTER", esc(INDEX_SHARE_FOOTER))
+
+
+def render_index_share_png(out_path):
+    """Same index share graphic as a 1200x630 PNG (the og:image)."""
+    from PIL import Image, ImageDraw, ImageFont
+
+    SERIF_B = "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf"
+    SANS_B = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+    SANS = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+
+    def font(path, size):
+        return ImageFont.truetype(path, size)
+
+    def centered(d, y, text, fnt, fill):
+        w = d.textlength(text, font=fnt)
+        d.text(((1200 - w) / 2, y), text, font=fnt, fill=fill)
+
+    img = Image.new("RGB", (1200, 630), (10, 8, 5))
+    d = ImageDraw.Draw(img)
+    for i in range(160):
+        a = int(26 * (1 - i / 160))
+        d.line([(0, i), (1200, i)], fill=(10 + a, 8 + int(a * 0.8), 5))
+    d.rectangle([18, 18, 1181, 611], outline=(138, 109, 28), width=2)
+    d.rectangle([28, 28, 1171, 601], outline=(58, 47, 22), width=1)
+    centered(d, 52, "B U I L D   A   T R U S T   2 4", font(SANS_B, 20), (201, 162, 39))
+    centered(d, 118, "TRUST NEWS", font(SERIF_B, 88), (232, 204, 106))
+    centered(d, 218, "& INSIGHTS", font(SERIF_B, 88), (232, 204, 106))
+    d.line([(430, 356), (770, 356)], fill=(201, 162, 39), width=2)
+    centered(d, 384, "RULINGS & TRUST LAW, IN PLAIN LANGUAGE", font(SANS_B, 23), (244, 236, 215))
+    for i, label in enumerate(INDEX_SHARE_CHIPS):
+        x = 110 + i * 340
+        d.rounded_rectangle([x, 452, x + 300, 508], radius=10, fill=(23, 19, 10), outline=(201, 162, 39), width=2)
+        d.text((x + 150 - d.textlength(label, font=font(SANS_B, 14)) / 2, 473), label, font=font(SANS_B, 14), fill=(244, 236, 215))
+    centered(d, 556, INDEX_SHARE_FOOTER, font(SANS, 16), (154, 140, 102))
+    img.save(out_path, "PNG")
+
+
 # ---------------------------------------------------------------- pages
 def render_article(spec):
     css = load_css()
@@ -243,6 +343,16 @@ def render_article(spec):
     <meta property="og:title" content="HEADLINE" />
     <meta property="og:description" content="DEK" />
     <meta property="og:image" content="SITEURL/assets/news/SLUG-header.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:url" content="SITEURL/news/SLUG.html" />
+    <meta property="og:site_name" content="Build A Trust 24" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HEADLINE" />
+    <meta name="twitter:description" content="DEK" />
+    <meta name="twitter:image" content="SITEURL/assets/news/SLUG-header.png" />
+    <link rel="canonical" href="SITEURL/news/SLUG.html" />
     <title>HEADLINE | Trust News &amp; Insights — Build A Trust 24</title>
 GA
 FONTS
@@ -259,6 +369,7 @@ FONTS
         <h1>HEADLINE</h1>
         <p class="art-dek">DEK</p>
         <p class="art-meta">DATEDISPLAY &middot; Source: SOURCECIT</p>
+        SHAREROW
       </div>
       <div class="art-hero"><img src="../assets/news/SLUG-header.png" alt="HEADLINE — header graphic: one grandfathered trust dividing into three equal trusts" /></div>
       <div class="art-body">
@@ -267,6 +378,7 @@ SECTIONS
 SIGNUP
       </div>
       <div class="sources"><p style="margin-bottom:4px"><b>Sources</b></p><ul style="margin-top:0;padding-left:18px">SOURCES</ul></div>
+      <p class="more-news"><a href="../news.html">&larr; More Trust News &amp; Insights</a></p>
     </div>
 FOOTER
 SCRIPTS
@@ -280,6 +392,7 @@ SCRIPTS
         .replace("SLUG", spec["slug"])
         .replace("DATEDISPLAY", esc(spec["date_display"]))
         .replace("SOURCECIT", esc(spec["source_citation"]))
+        .replace("SHAREROW", share_row(SITE + "/news/" + spec["slug"] + ".html", spec["headline"], center=True))
         .replace("SECTIONS", sections_html)
         .replace("DISCLAIMER", DISCLAIMER)
         .replace("SOURCES", sources_html)
@@ -295,12 +408,15 @@ SCRIPTS
 def card_html(spec, prefix, lazy=True):
     lazy_attr = ' loading="lazy"' if lazy else ""
     return (
-        '<a class="article-card" href="' + prefix + "news/" + spec["slug"] + '.html">'
+        '<div class="article-card">'
+        '<a class="card-link" href="' + prefix + "news/" + spec["slug"] + '.html">'
         '<img src="' + prefix + "assets/news/" + spec["slug"] + '-header.png" alt=""' + lazy_attr + ' />'
         '<span class="k">' + esc(spec["kicker"]) + "</span>"
         "<h3>" + esc(spec["headline"]) + "</h3>"
         "<p>" + esc(spec["dek"]) + "</p>"
         '<p class="meta">' + esc(spec["date_display"]) + " &middot; " + esc(spec["source_citation"]) + "</p></a>"
+        + share_row(SITE + "/news/" + spec["slug"] + ".html", spec["headline"])
+        + "</div>"
     )
 
 
@@ -315,6 +431,21 @@ def render_index(specs):
     <meta name="color-scheme" content="dark" />
     <link rel="icon" href="data:," />
     <meta name="description" content="Trust News & Insights from Build A Trust 24: IRS rulings, trust law changes, and plain-language breakdowns for families building and administering trust funds — including how to divide a family trust and what a grandfathered GST trust can do." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Build A Trust 24" />
+    <meta property="og:title" content="Trust News &amp; Insights — Rulings &amp; Trust Law, In Plain Language" />
+    <meta property="og:description" content="Trust News & Insights from Build A Trust 24: IRS rulings, trust law changes, and plain-language breakdowns for families building and administering trust funds — including how to divide a family trust and what a grandfathered GST trust can do." />
+    <meta property="og:url" content="SITEURL/news.html" />
+    <meta property="og:image" content="SITEURL/assets/news/trust-news-share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Trust News &amp; Insights — Rulings &amp; Trust Law, In Plain Language" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Trust News &amp; Insights — Rulings &amp; Trust Law, In Plain Language" />
+    <meta name="twitter:description" content="Trust News & Insights from Build A Trust 24: IRS rulings, trust law changes, and plain-language breakdowns for families building and administering trust funds — including how to divide a family trust and what a grandfathered GST trust can do." />
+    <meta name="twitter:image" content="SITEURL/assets/news/trust-news-share.png" />
+    <link rel="canonical" href="SITEURL/news.html" />
     <title>Trust News &amp; Insights — IRS Rulings &amp; Trust Law, In Plain Language | Build A Trust 24</title>
 GA
 FONTS
@@ -329,6 +460,7 @@ FONTS
       <section>
         <div class="sec-head"><h2>Trust News &amp; Insights</h2><div class="rule"></div></div>
         <p class="sec-sub">The newsletter desk of Build A Trust 24: IRS private letter rulings, trust law developments, and strategy breakdowns — read straight from the source documents and translated into plain language. Every article is free to read. When a ruling is involved, we say exactly what the IRS approved — and what it did not.</p>
+        SHAREROW
         <div class="article-grid">
           CARDS
         </div>
@@ -342,6 +474,8 @@ SCRIPTS
 """
     return (
         page.replace("CARDS", cards)
+        .replace("SHAREROW", share_row(SITE + "/news.html", "Trust News & Insights — Rulings & Trust Law, In Plain Language", page_share=True))
+        .replace("SITEURL", SITE)
         .replace("SIGNUP", signup_block("newsletter-index"))
         .replace("FOOTER", footer_block(""))
         .replace("SCRIPTS", scripts_block(""))
@@ -407,6 +541,22 @@ def update_homepage(specs):
         tag = '<script src="trust-app.js"></script>'
         assert tag in src, "trust-app.js script tag not found"
         src = src.replace(tag, tag + '\n    <script src="newsletter.js"></script>', 1)
+    # share.js include for the news card's share row (idempotent)
+    if 'src="share.js"' not in src:
+        tag = '<script src="newsletter.js"></script>'
+        assert tag in src, "newsletter.js script tag not found"
+        src = src.replace(tag, tag + '\n    <script src="share.js"></script>', 1)
+    # share-row styles for the homepage news card (idempotent)
+    if ".share-row{" not in src:
+        style_anchor = "    </style>\n\n    <div class=\"sb24-bar\">"
+        assert style_anchor in src, "homepage style anchor not found (share css)"
+        share_css = """      .article-card .card-link{display:block;color:inherit;text-decoration:none}
+      .share-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+      .share-k{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+      .share-btn{appearance:none;border:1px solid var(--gold-deep);background:rgba(201,162,39,.06);color:var(--gold2);font:600 .8rem var(--sans);padding:7px 13px;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-block;line-height:1.25}
+      .share-btn:hover{border-color:var(--gold)}
+"""
+        src = src.replace(style_anchor, share_css + style_anchor, 1)
     # scoped styles for the homepage news block (idempotent)
     if ".nl-box{" not in src:
         style_anchor = "    </style>\n\n    <div class=\"sb24-bar\">"
@@ -436,6 +586,9 @@ def main():
         render_png(spec, ASSETS_NEWS / (slug + "-header.png"))
         (NEWS_DIR / (slug + ".html")).write_text(render_article(spec), encoding="utf-8")
         print("article:", slug)
+    (ASSETS_NEWS / "trust-news-share.svg").write_text(render_index_share_svg(), encoding="utf-8")
+    render_index_share_png(ASSETS_NEWS / "trust-news-share.png")
+    print("index share graphic: assets/news/trust-news-share.png (1200x630)")
     (ROOT / "news.html").write_text(render_index(specs), encoding="utf-8")
     print("index: news.html with", len(specs), "article(s)")
     update_homepage(specs)
