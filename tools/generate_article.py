@@ -53,7 +53,7 @@ DISCLAIMER = (
     "material from Build A Trust 24, a Gold Series product. If you do not have "
     "the knowledge of a lawyer, consult a lawyer before implementing your trust. "
     "Nothing here is legal, tax, or financial advice, and reading it does not "
-    "create an attorney-client relationship."
+    "create an attorney-client relationship. Void where prohibited by law."
 )
 
 GA = """    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY3QEL6P1S"></script>
@@ -496,7 +496,7 @@ SCRIPTS
         .replace("SHAREROW", share_row(SITE + "/news.html", "Trust News & Insights — Rulings & Trust Law, In Plain Language", page_share=True))
         .replace("SITEURL", SITE)
         .replace("SIGNUP", signup_block("newsletter-index"))
-        .replace("FOOTER", footer_block(""))
+        .replace("FOOTER", footer_block("").replace("<p>Written by human, assisted by AI.</p>", "<p>Written by human, assisted by AI.</p>\n        <p>Void where prohibited by law.</p>"))
         .replace("SCRIPTS", scripts_block(""))
         .replace("GA", GA)
         .replace("ADSENSE", ADSENSE)
