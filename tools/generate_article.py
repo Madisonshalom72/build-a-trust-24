@@ -521,7 +521,7 @@ def update_homepage(specs):
         <p class="sec-sub">From the Build A Trust 24 newsletter desk: IRS rulings and trust law developments, read from the source and explained plainly — free to read, no account needed. The latest:</p>
         <div class="article-grid">
           """
-        + card_html(latest, "", lazy=False)
+        + "\n          ".join(card_html(s, "", lazy=False) for s in specs[:2])
         + """
         </div>
         <div class="nl-box" style="margin-left:0">
@@ -596,7 +596,10 @@ def main():
     specs = []
     for p in sorted(ARTICLES_DIR.glob("*.json")):
         specs.append(json.loads(p.read_text(encoding="utf-8")))
-    specs.sort(key=lambda s: s["date"], reverse=True)
+    # Newest first. An optional "seq" in a spec breaks same-date ties
+    # (higher = newer) so a batch of same-day articles keeps its
+    # intended running order instead of falling back to filename order.
+    specs.sort(key=lambda s: (s["date"], s.get("seq", 0)), reverse=True)
     assert specs, "no article specs found"
     NEWS_DIR.mkdir(exist_ok=True)
     ASSETS_NEWS.mkdir(parents=True, exist_ok=True)
