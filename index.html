@@ -1250,7 +1250,7 @@
     <footer>
       <div class="wrap">
         <p style="font-family:var(--serif);color:var(--gold2);font-size:1rem;margin:0 0 6px">The Golden Age of Trust Funds &mdash; by Build A Trust 24, a Gold Series product.</p>
-        <p class="fine" style="border:1px solid var(--gold-deep);border-radius:10px;padding:12px 14px;color:var(--muted)"><b style="color:var(--gold2)">DISCLAIMER:</b> This site and its builder are educational tools. If you do not have the knowledge of a lawyer, consult a lawyer before implementing your trust. Nothing here is legal advice, and using this builder does not create an attorney-client relationship.</p>
+        <p class="fine" style="border:1px solid var(--gold-deep);border-radius:10px;padding:12px 14px;color:var(--muted)"><b style="color:var(--gold2)">DISCLAIMER:</b> This site and its builder are educational tools. If you do not have the knowledge of a lawyer, consult a lawyer before implementing your trust. Nothing here is legal advice, and using this builder does not create an attorney-client relationship. Void where prohibited by law.</p>
         <p class="fine">Educational U.S. overview. Trust categories can overlap, and matches shown here are general planning examples. Benefits depend on funding, drafting, administration, and governing law. A revocable trust does not by itself protect the creator from creditors or reduce taxes. Nothing on this page &mdash; including the AI Trust Specialist, the training tracks, and any document the builder generates &mdash; is legal, tax, or financial advice. Consult a licensed estate-planning attorney and tax professional in your state before executing any trust document. Sources consulted for the trust-type overview: IRS &middot; SSA &middot; Medicaid.gov &middot; The Florida Bar &middot; state trust statutes.</p>
         <p class="fine">Starting a business to hold in your trust? <a href="https://madisonshalom72.github.io/startbusiness24-site/" target="_blank" rel="noopener">StartBusiness24</a> &mdash; form your LLC or company, get your EIN, and launch.</p>
         <p class="fine">Written by human, assisted by AI.</p>
@@ -3609,15 +3609,16 @@
    * localStorage 'bat24-playground-plan'. When that plan exists, prefill
    * the wizard fields it maps cleanly to and say so. Anything whose shape
    * does not align is skipped silently; a malformed plan must never break
-   * the builder, and the freemium gate flow is untouched (prefill only
-   * sets field values inside the normal page load). */
+   * the builder. Returns true when a real plan was loaded and applied —
+   * that return value is the Playground-arrival signal the gate hook
+   * below keys on (see gatePlaygroundArrival). */
   function applyPlaygroundPlan(){
     let plan = null;
     try {
       const raw = localStorage.getItem("bat24-playground-plan");
       if(raw) plan = JSON.parse(raw);
     } catch(e) { plan = null; }
-    if(!plan || !plan.trust) return;
+    if(!plan || !plan.trust) return false;
     const pt = plan.trust;
     try {
       if(pt.type && trustById(pt.type)) pickType(pt.type);
@@ -3642,6 +3643,38 @@
         note.innerHTML = "<b style='color:var(--gold2)'>Loaded from your Playground plan.</b> <span style='color:var(--muted)'>Your structure from the Trust Fund Playground &mdash; <b style='color:var(--ink)'>" + esc(pt.name || "your trust") + "</b>" + (pt.typeName ? ", a " + esc(pt.typeName) : "") + (pt.stateName ? " under " + esc(pt.stateName) + " law" : "") + " &mdash; is filled into the builder below: the people, the state, the beneficiaries and their units" + (biz.length ? ", and the businesses on Schedule A" : "") + ". Review every step, adjust anything, then generate the real Trust Indenture Agreement.</span>";
       }
     } catch(e) { /* a playground plan must never break the builder */ }
+    return true;
+  }
+
+  /* ---- Playground arrival gate ----
+   * Madison's timing rule: the Playground is a free sandbox, and the
+   * membership pop-up belongs to the moment the visitor follows the
+   * Implement link into the real Builder — not before. A true return
+   * from applyPlaygroundPlan() means this page load IS that arrival
+   * (normal arrivals have no plan and never reach this function), so
+   * fire the existing freemium gate once, through the same
+   * TrustApp.gate.handleTrigger("builder") path the Builder buttons
+   * use. Two timing facts shape the poll: trust-app.js loads after
+   * this script, and a member's access (sign-in, then the paidAccess
+   * profile read) resolves asynchronously — so wait briefly, let
+   * access win the race at any point (access = never popped), and
+   * never stack on a modal that is already open. The gate's own
+   * hasAccess() is the only access check; nothing parallel is invented
+   * here. */
+  let pgGateDone = false;
+  function gatePlaygroundArrival(){
+    if(pgGateDone) return;
+    const started = Date.now();
+    const iv = setInterval(() => {
+      const g = window.TrustApp && window.TrustApp.gate;
+      if(g && g.hasAccess()){ pgGateDone = true; clearInterval(iv); return; }
+      if(g && (g.isOpen() || Date.now() - started >= 1500)){
+        pgGateDone = true; clearInterval(iv);
+        if(!g.isOpen()) g.handleTrigger("builder");
+        return;
+      }
+      if(!g && Date.now() - started >= 10000){ pgGateDone = true; clearInterval(iv); }
+    }, 50);
   }
 
   /* ==================== INIT ==================== */
@@ -3654,7 +3687,7 @@
   renderLibrary(); renderCompare(); renderCRM(); renderTracks(); renderArticles(); renderStateDir(); renderVault(); ltInit();
   runTax(); runMort(); runPL(); runIMTFB();
   showStep(1);
-  applyPlaygroundPlan();
+  if(applyPlaygroundPlan()) gatePlaygroundArrival();
   </script>
 
   <script>
