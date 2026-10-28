@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://trust.privatemoneyrightsplaybook.xyz/sitemap.xml
