@@ -316,6 +316,11 @@
       var name = ($("#suName") || {}).value || "";
       var email = ($("#suEmail") || {}).value || "";
       name = String(name).trim(); email = String(email).trim();
+      /* Private registry: a free signup puts the member on the
+       * registry (idempotent — the page module owns dedupe). */
+      if (window.Registry) {
+        try { Registry.memberUpsert({ name: name, email: email, source: "free-signup" }); } catch (e) {}
+      }
       if (!name || !email || !state.db) return;
       var payload = {
         name: name.slice(0, 200),
@@ -330,6 +335,36 @@
            on-page sign-up confirmation is unaffected either way. */
       });
     });
+  }
+
+  /* ---------------- private registry (Firestore sync) ----------------
+   * The page owns the registry UI + local mirrors (window.Registry).
+   * Here it is persisted to the member's own profile doc —
+   * trustUsers/{uid}.registry — which the live rules already allow
+   * the owner to write (paidAccess is never touched; merge writes
+   * leave it unchanged). No other collection is used: the rules name
+   * no registry subcollection, so the profile field is the permitted
+   * home. Best-effort: local mirrors keep it working if a write is
+   * ever refused. */
+  function syncRegistryToFirestore() {
+    if (!state.user || !state.db || !window.Registry) return;
+    var data;
+    try { data = Registry.getData(); } catch (e) { return; }
+    state.db.collection("trustUsers").doc(state.user.uid)
+      .set({ registry: data }, { merge: true })
+      .catch(function () { /* local mirror still holds it */ });
+  }
+  function loadRegistry() {
+    if (!state.user || !state.db || !window.Registry) return;
+    state.db.collection("trustUsers").doc(state.user.uid).get()
+      .then(function (snap) {
+        var d = snap.exists ? snap.data() : null;
+        if (d && d.registry) {
+          try { Registry.hydrateRemote(d.registry); } catch (e) {}
+        }
+        syncRegistryToFirestore();
+      })
+      .catch(function () { syncRegistryToFirestore(); });
   }
 
   /* ---------------- saved builds & snapshots ---------------- */
@@ -801,6 +836,15 @@
       renderAuthUI();
       if (u) {
         upsertProfile(u);
+        /* Private registry: signing in puts the member on the
+         * registry (idempotent), then load + keep it synced. */
+        if (window.Registry) {
+          try {
+            Registry.onSync(syncRegistryToFirestore);
+            Registry.attachUser({ uid: u.uid, name: u.displayName || "", email: u.email || "" });
+          } catch (e) {}
+        }
+        loadRegistry();
         loadBuilds();
         loadProgress();
         hookSignupForm();
@@ -809,6 +853,7 @@
         state.paidAccess = false;
         state.builds = [];
         renderBuilds();
+        if (window.Registry) { try { Registry.attachUser(null); } catch (e) {} }
       }
     });
     renderAuthUI();

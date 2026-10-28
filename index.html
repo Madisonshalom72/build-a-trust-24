@@ -459,6 +459,15 @@
       .detail-panel{background:var(--panel2);border:1px solid var(--gold-deep);border-radius:14px;padding:20px;margin-top:14px}
       .detail-panel h4{font-family:var(--serif);margin:0 0 4px;font-size:1.25rem;color:var(--gold2)}
       .log-list{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:.88rem}
+      /* Private Registry */
+      .reg-member{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--gold-deep);border-radius:14px;padding:18px 20px;margin-bottom:18px}
+      .reg-member h3{font-family:var(--serif);margin:0 0 4px;color:var(--gold2);font-size:1.2rem}
+      .reg-member p{color:var(--muted);margin:4px 0}
+      .reg-member .regno{color:var(--gold2);font-weight:700;letter-spacing:.04em}
+      .reg-trust{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:22px}
+      .reg-trust h3{font-family:var(--serif);margin:0 0 2px;color:var(--gold2);font-size:1.3rem}
+      .reg-trust .reg-meta{color:var(--muted);font-size:.9rem;margin:0 0 6px}
+      .reg-docs{margin:6px 0 12px;padding-left:18px;color:var(--muted);font-size:.9rem}
       /* Training */
       .track{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px}
       .track h3{font-family:var(--serif);margin:0 0 2px;font-size:1.35rem}
@@ -777,6 +786,15 @@
           <button class="btn ghost" id="crmPrint" type="button">View Registers</button>
         </div>
         <div class="print-area" id="crmPrintArea" style="display:none"></div>
+      </section>
+
+      <!-- ================= PRIVATE REGISTRY ================= -->
+      <section id="registry">
+        <div class="sec-head"><h2>Trust Registry &mdash; Private</h2><div class="rule"></div></div>
+        <p class="sec-sub">Every Build A Trust 24 account keeps its <b style="color:var(--ink)">own registry</b>. The moment you sign up or sign in, you are added to the registry and issued a registry number &mdash; and every trust you build here is entered under that number with <b style="color:var(--ink)">its own ledger</b>: certificates issued, assets scheduled, documents generated, and every funding, transfer, or distribution you log after. <b style="color:var(--ink)">This registry is private</b> &mdash; it is visible only to you, the signed-in owner. It is not published, not shared, and not a public record.</p>
+        <div id="regMember"></div>
+        <div id="regTrusts"></div>
+        <div class="print-area" id="regPrintArea" style="display:none"></div>
       </section>
 
       <!-- ================= TRAINING ================= -->
@@ -2014,6 +2032,7 @@
     });
     $$("#certOut [data-cert]").forEach(b => b.addEventListener("click", () => { const c = LASTDOC.certs.find(x => x.no === b.dataset.cert); if(c) certPDF(c, LASTDOC.w); }));
     renderGenSummary();
+    try { if (window.Registry) window.Registry.registerTrust(w, LASTDOC); } catch(e) {}
   }
   $("#genDoc").addEventListener("click", generate);
   $("#dlDoc").addEventListener("click", () => { if(!LASTDOC) return; const w = LASTDOC.w; if(flowPDF("Trust Indenture Agreement — " + w.trustName, LASTDOC.blocks.concat([{ h: "" }], LASTDOC.schedA, [{ h: "" }], LASTDOC.schedB, [{ h: "" }], LASTDOC.appendix, [{ h: "" }], LASTDOC.stateRes, LASTDOC.foot), "Trust-Indenture-Agreement.pdf")) markVaultPdf("Indenture"); });
@@ -2121,6 +2140,185 @@
     const tbl = (title, arr, extra) => "<h3>" + title + "</h3><table border='1' cellspacing='0' cellpadding='6'>" + arr.map(p => "<tr><td>" + esc(p.name) + "</td><td>" + esc(p.sub || "") + "</td><td>" + esc(p.contact || "") + "</td>" + (extra ? "<td>" + (p.units || 0) + " units</td>" : "") + "<td>" + TRAIN_LABELS[p.training || 0] + "</td></tr>").join("") + "</table>";
     printHTML("Trust Fund CRM — Registers", tbl("Beneficiaries", CRM.ben, true) + tbl("Trustees", CRM.tru) + tbl("Guardians", CRM.gua));
   });
+
+  /* ==================== PRIVATE REGISTRY CRM ====================
+   * Madison's model: every account keeps its OWN private registry.
+   * Signing up (the free form) or signing in (Google) puts the member
+   * on the registry — once, idempotently. Every trust the member
+   * builds gets a registry record with its own ledger. Nothing here
+   * is public: the registry renders only from the visitor's own
+   * store — signed-in members persist to their account (the
+   * trustUsers/{uid} profile field "registry", synced by
+   * trust-app.js) with a per-account local mirror; signed-out work
+   * lives in this browser session only, exactly like the Trust Fund
+   * CRM above. */
+  const Registry = (() => {
+    const LS_PREFIX = "bat24-registry-v1:";
+    let identity = "guest";
+    let data = { member: null, trusts: [] };
+    const syncFns = [];
+    function clone(o){ return JSON.parse(JSON.stringify(o)); }
+    function storeFor(id){
+      try { if(id === "guest"){ return window.sessionStorage || window.localStorage || null; } return window.localStorage || null; }
+      catch(e){ return null; }
+    }
+    function keyFor(id){ return LS_PREFIX + (id === "guest" ? "guest" : "u:" + id); }
+    function load(id){
+      const s = storeFor(id);
+      if(s){ try { const raw = s.getItem(keyFor(id)); if(raw){ const d = JSON.parse(raw); if(d && Array.isArray(d.trusts)) return { member: d.member || null, trusts: d.trusts }; } } catch(e){} }
+      return { member: null, trusts: [] };
+    }
+    function save(){
+      const s = storeFor(identity);
+      if(s){ try { s.setItem(keyFor(identity), JSON.stringify(data)); } catch(e){} }
+      syncFns.forEach(fn => { try { fn(clone(data)); } catch(e){} });
+    }
+    function hashStr(str){ let h = 5381; for(let i = 0; i < str.length; i++){ h = ((h << 5) + h + str.charCodeAt(i)) >>> 0; } return h.toString(36).toUpperCase().padStart(7, "0"); }
+    function regNoFor(key, joined){ return "BAT24-" + hashStr(key + "|" + joined).slice(0, 6); }
+    function memberUpsert(info){
+      info = info || {};
+      const key = String(info.uid || (info.email || "").toLowerCase()).trim();
+      if(!key) return null;
+      if(data.member && data.member.key === key){
+        if(info.name) data.member.name = info.name;
+        if(info.email) data.member.email = info.email;
+        save(); render(); return data.member;
+      }
+      const joined = todayStr();
+      data.member = { key: key, uid: info.uid || "", name: info.name || "", email: info.email || "", joined: joined, regNo: regNoFor(key, joined), source: info.source || "" };
+      save(); render(); return data.member;
+    }
+    function attachUser(user){
+      identity = user && user.uid ? String(user.uid) : "guest";
+      data = load(identity);
+      if(user) memberUpsert({ uid: user.uid, name: user.name || "", email: user.email || "", source: "sign-in" });
+      render();
+      return data.member;
+    }
+    function hydrateRemote(remote){
+      if(!remote || typeof remote !== "object") return;
+      if(!data.member && remote.member) data.member = remote.member;
+      const byId = {};
+      data.trusts.forEach(t => { byId[t.id] = t; });
+      (remote.trusts || []).forEach(rt => {
+        if(!rt || !rt.id) return;
+        if(!byId[rt.id]){ data.trusts.push(rt); byId[rt.id] = rt; return; }
+        const lt = byId[rt.id];
+        const seen = {};
+        (lt.ledger || []).forEach(e => { seen[e.date + "|" + e.type + "|" + e.desc] = 1; });
+        (rt.ledger || []).forEach(e => { const k = e.date + "|" + e.type + "|" + e.desc; if(!seen[k]){ lt.ledger.push(e); seen[k] = 1; } });
+      });
+      save(); render();
+    }
+    function slug(name){ return String(name || "trust").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "trust"; }
+    function hasEntry(t, type, desc){ return (t.ledger || []).some(e => e.type === type && e.desc === desc); }
+    function registerTrust(w, doc){
+      if(!w || !w.trustName) return null;
+      const id = slug(w.trustName);
+      const certs = (doc && doc.certs) || [];
+      const docs = ["Trust Indenture Agreement", "Schedule A — Trust Property", "Schedule B — Beneficiaries & Units", "Case Law Appendix", "Funding Checklist"];
+      if(certs.length) docs.push("Certificates of Beneficial Interest (" + certs.length + ")");
+      const fields = {
+        id: id, name: w.trustName,
+        type: (w.type && w.type.name) || "",
+        state: w.state ? stateName(w.state) : (w.state || ""),
+        created: w.date || todayStr(),
+        grantor: w.grantor || "", trustee: w.trustee || "", successor: w.successor || "",
+        totalUnits: w.totalUnits || 0,
+        bens: (w.bens || []).map(b => ({ name: b.name, rel: b.rel || "", units: b.units || 0 })),
+        docs: docs
+      };
+      let t = data.trusts.find(x => x.id === id);
+      if(!t){
+        t = Object.assign({ ledger: [] }, fields);
+        data.trusts.push(t);
+        t.ledger.push({ date: fields.created, type: "Registered", desc: "Trust registered in the owner's private registry — " + fields.type + (fields.state ? ", " + fields.state : "") + ".", amount: "" });
+      } else { Object.assign(t, fields); }
+      certs.forEach(c => {
+        const desc = "Certificate " + c.no + " issued — " + c.units + " units to " + c.ben + " (" + (c.pct != null ? c.pct.toFixed(1) : "0.0") + "% of the trust).";
+        if(!hasEntry(t, "Certificate issued", desc)) t.ledger.push({ date: fields.created, type: "Certificate issued", desc: desc, amount: String(c.units) });
+      });
+      (w.assets || []).forEach(a => {
+        const desc = "Schedule A — " + a.desc + " (" + a.cat + (a.status ? ", " + a.status : "") + ").";
+        if(!hasEntry(t, "Asset scheduled", desc)) t.ledger.push({ date: a.date || fields.created, type: "Asset scheduled", desc: desc, amount: a.val ? money(a.val) : "" });
+      });
+      const docDesc = "Documents generated: Trust Indenture Agreement, Schedule A, Schedule B, Case Law Appendix, Funding Checklist" + (certs.length ? ", " + certs.length + " certificate(s)." : ".");
+      if(!hasEntry(t, "Documents generated", docDesc)) t.ledger.push({ date: fields.created, type: "Documents generated", desc: docDesc, amount: "" });
+      save(); render();
+      return t;
+    }
+    function addEntry(trustId, entry){
+      const t = data.trusts.find(x => x.id === trustId);
+      if(!t || !entry || !String(entry.desc || "").trim()) return null;
+      const e = { date: entry.date || todayStr(), type: entry.type || "Note", desc: String(entry.desc).trim(), amount: entry.amount != null ? String(entry.amount) : "" };
+      t.ledger.push(e); save(); render();
+      return e;
+    }
+    function ledgerCSV(trustId){
+      const t = data.trusts.find(x => x.id === trustId);
+      if(!t) return "";
+      let csv = "Date,Entry,Details,Amount/Units\n";
+      t.ledger.forEach(e => { csv += [e.date, e.type, e.desc, e.amount || ""].map(v => '"' + String(v).replaceAll('"', '""') + '"').join(",") + "\n"; });
+      return csv;
+    }
+    function ledgerTable(t){
+      return "<table class='ledger'><thead><tr><th>Date</th><th>Entry</th><th>Details</th><th>Amount / Units</th></tr></thead><tbody>" +
+        (t.ledger.length ? t.ledger.map(e => "<tr><td>" + esc(e.date) + "</td><td>" + esc(e.type) + "</td><td>" + esc(e.desc) + "</td><td>" + esc(e.amount || "") + "</td></tr>").join("") : "<tr class='blank'><td colspan='4'>No ledger entries yet.</td></tr>") +
+        "</tbody></table>";
+    }
+    function render(){
+      const mHost = $("#regMember"), tHost = $("#regTrusts");
+      if(!mHost || !tHost) return;
+      if(data.member){
+        const m = data.member;
+        mHost.innerHTML = "<div class='reg-member'><h3>Member Registry</h3>" +
+          "<p><b style='color:var(--ink)'>" + esc(m.name || m.email || "Member") + "</b>" + (m.email ? " · " + esc(m.email) : "") + "</p>" +
+          "<p>Registry No. <span class='regno'>" + esc(m.regNo) + "</span> · You are on the registry as of " + esc(fmtDate(m.joined)) + ".</p>" +
+          "<p style='font-size:.85rem'>This registry is private — it lives on your account and this device, visible only to you. Nothing on this page is published or shared.</p></div>";
+      } else {
+        mHost.innerHTML = "<div class='reg-member'><h3>Member Registry</h3><p>You are not on the registry yet. <b style='color:var(--ink)'>Sign up free or sign in with Google and you are added automatically</b> — your registry number is issued on the spot and every trust you build here is entered under it.</p><p style='font-size:.85rem'>This registry is private — visible only to the account owner. Nothing here is public.</p></div>";
+      }
+      if(!data.trusts.length){
+        tHost.innerHTML = "<p style='color:var(--faint)'>No trusts on your registry yet — generate a trust in the builder above and it is entered here automatically, with its own ledger.</p>";
+        return;
+      }
+      tHost.innerHTML = data.trusts.map(t => {
+        const people = "<p class='reg-meta'>Grantor: " + esc(t.grantor || "—") + " · Trustee: " + esc(t.trustee || "—") + (t.successor ? " · Successor: " + esc(t.successor) : "") + "</p>";
+        const bens = t.bens && t.bens.length ? "<p class='reg-meta'>Beneficiaries &amp; units: " + t.bens.map(b => esc(b.name) + " — " + (b.units || 0) + " units").join(" · ") + " (of " + (t.totalUnits || 0) + " total)</p>" : "";
+        return "<div class='reg-trust'><h3>" + esc(t.name) + "</h3>" +
+          "<p class='reg-meta'>" + esc(t.type) + (t.state ? " · " + esc(t.state) : "") + " · Registered " + esc(fmtDate(t.created)) + "</p>" + people + bens +
+          "<h5 style='color:var(--gold);letter-spacing:.08em;font-size:.75rem;text-transform:uppercase;margin:14px 0 4px'>Documents on record</h5><ul class='reg-docs'>" + (t.docs || []).map(d => "<li>" + esc(d) + "</li>").join("") + "</ul>" +
+          "<h5 style='color:var(--gold);letter-spacing:.08em;font-size:.75rem;text-transform:uppercase;margin:14px 0 6px'>Trust Ledger</h5>" + ledgerTable(t) +
+          "<form class='add-form' data-reg-entry='" + esc(t.id) + "'><div class='field'><label>Date</label><input type='date' class='le-date' /></div>" +
+          "<div class='field'><label>Entry type</label><select class='le-type'><option>Funding</option><option>Transfer</option><option>Distribution</option><option>Asset added</option><option>Document</option><option>Note</option></select></div>" +
+          "<div class='field'><label>Description</label><input type='text' class='le-desc' required placeholder='e.g., Deed recorded — house into the trust' /></div>" +
+          "<div class='field'><label>Amount / units (optional)</label><input type='text' class='le-amount' placeholder='e.g., $5,000 or 10 units' /></div>" +
+          "<div class='field'><label>&nbsp;</label><button class='btn small primary' type='submit' style='width:100%'>Add Ledger Entry</button></div></form>" +
+          "<div class='doc-actions'><button class='btn small' type='button' data-reg-csv='" + esc(t.id) + "'>Export Ledger (.csv)</button><button class='btn small ghost' type='button' data-reg-print='" + esc(t.id) + "'>Print Ledger</button></div></div>";
+      }).join("");
+      $$("#regTrusts [data-reg-entry]").forEach(f => f.addEventListener("submit", e => {
+        e.preventDefault();
+        addEntry(f.dataset.regEntry, { date: f.querySelector(".le-date").value, type: f.querySelector(".le-type").value, desc: f.querySelector(".le-desc").value, amount: f.querySelector(".le-amount").value });
+      }));
+      $$("#regTrusts [data-reg-csv]").forEach(b => b.addEventListener("click", () => { const t = data.trusts.find(x => x.id === b.dataset.regCsv); if(t) downloadText("Trust-Ledger-" + t.id + ".csv", ledgerCSV(t.id)); }));
+      $$("#regTrusts [data-reg-print]").forEach(b => b.addEventListener("click", () => { const t = data.trusts.find(x => x.id === b.dataset.regPrint); if(t) printHTML("Trust Registry Ledger — " + t.name, "<p>" + esc(t.type) + (t.state ? " · " + esc(t.state) : "") + " · Registered " + esc(fmtDate(t.created)) + "</p>" + ledgerTable(t)); }));
+    }
+    data = load("guest");
+    render();
+    const sf = $("#signupForm");
+    if(sf) sf.addEventListener("submit", () => {
+      const name = ($("#suName") || {}).value || "", email = ($("#suEmail") || {}).value || "";
+      if(String(email).trim()) memberUpsert({ name: String(name).trim(), email: String(email).trim(), source: "free-signup" });
+    });
+    return {
+      memberUpsert: memberUpsert, attachUser: attachUser, hydrateRemote: hydrateRemote,
+      registerTrust: registerTrust, addEntry: addEntry, ledgerCSV: ledgerCSV, render: render,
+      onSync: function(fn){ if(typeof fn === "function") syncFns.push(fn); },
+      getData: function(){ return clone(data); },
+      getIdentity: function(){ return identity; }
+    };
+  })();
+  window.Registry = Registry;
 
   /* ==================== TRAINING ==================== */
   const TRACKS = [
