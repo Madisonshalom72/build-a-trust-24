@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#241b08"/>
+      <stop offset="55%" stop-color="#0a0805"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="18" y="18" width="1164" height="594" fill="none" stroke="#8a6d1c" stroke-width="2"/>
+  <rect x="28" y="28" width="1144" height="574" fill="none" stroke="#3a2f16" stroke-width="1"/>
+  <text x="600" y="66" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="21" letter-spacing="8" fill="#c9a227">TRUST NEWS &amp; INSIGHTS</text>
+  <text x="600" y="118" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="72" fill="#e8cc6a">MISSED THE</text>
+      <text x="600" y="200" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="72" fill="#e8cc6a">DEADLINE?</text>
+      
+  <rect x="100" y="320" width="330" height="136" rx="12" fill="#1e190e" stroke="#c9a227" stroke-width="2"/>
+  <text x="265" y="376" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="24" fill="#f4ecd7">ONE CLERICAL ERROR</text>
+  <text x="265" y="408" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="19" fill="#c4b890">The exemption nearly lost</text>
+  <text x="265" y="436" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="17" fill="#9a8c66">Relief under the 9100 rules</text>
+  <line x1="452" y1="388" x2="566" y2="300" stroke="#c9a227" stroke-width="3"/><polygon points="566,300 550,293 550,307" fill="#c9a227"/>
+      <line x1="452" y1="388" x2="566" y2="388" stroke="#c9a227" stroke-width="3"/><polygon points="566,388 550,381 550,395" fill="#c9a227"/>
+      <line x1="452" y1="388" x2="566" y2="476" stroke="#c9a227" stroke-width="3"/><polygon points="566,476 550,469 550,483" fill="#c9a227"/>
+      
+  <rect x="580" y="266" width="520" height="68" rx="10" fill="#17130a" stroke="#c9a227" stroke-width="2"/><text x="840" y="309" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="27" letter-spacing="2" fill="#f4ecd7">GST ALLOCATION SAVED</text>
+      <rect x="580" y="354" width="520" height="68" rx="10" fill="#17130a" stroke="#c9a227" stroke-width="2"/><text x="840" y="397" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="27" letter-spacing="2" fill="#f4ecd7">GST OPT-OUT UNDONE</text>
+      <rect x="580" y="442" width="520" height="68" rx="10" fill="#17130a" stroke="#c9a227" stroke-width="2"/><text x="840" y="485" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="27" letter-spacing="2" fill="#f4ecd7">QTIP ELECTION SAVED</text>
+      
+  <text x="600" y="556" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="16" letter-spacing="2" fill="#9a8c66">IRS PLRS RELEASED OCTOBER 2026 · BUILD A TRUST 24</text>
+  <text x="600" y="584" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="22" fill="#e8cc6a">120 days to fix it — good faith required</text>
+</svg>
