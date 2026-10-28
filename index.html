@@ -237,8 +237,36 @@
       /* AI Teacher (baseline training script) */
       .teacherbtn{flex:none;display:flex;align-items:center;gap:8px;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#2a2110,#1a1509);color:var(--gold2);border-radius:999px;padding:7px 13px;font:600 .78rem var(--sans);cursor:pointer}
       .teacherbtn:hover{border-color:var(--gold)}
+      .readbtn{flex:none;display:flex;align-items:center;gap:8px;border:1px solid var(--gold);background:linear-gradient(180deg,var(--gold2),var(--gold));color:#171106;border-radius:999px;padding:7px 13px;font:700 .78rem var(--sans);cursor:pointer}
+      .readbtn:hover{filter:brightness(1.07)}
       #teacherOverlay{position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;background:rgba(5,4,2,.88);padding:14px}
       #teacherOverlay[hidden]{display:none !important}
+      #readerOverlay{position:fixed;inset:0;z-index:160;display:flex;align-items:center;justify-content:center;background:rgba(5,4,2,.92);padding:12px}
+      #readerOverlay[hidden]{display:none !important}
+      .rdr-book{width:100%;max-width:460px;display:flex;flex-direction:column;align-items:stretch;gap:10px;max-height:97vh}
+      .rdr-top{display:flex;align-items:center;gap:10px}
+      .rdr-brand{font:700 .78rem var(--sans);letter-spacing:.16em;color:var(--gold);text-transform:uppercase}
+      .rdr-where{color:var(--muted);font-size:.85rem;margin-right:auto}
+      .rdr-x{appearance:none;background:none;border:none;color:var(--gold2);font-size:1.6rem;line-height:1;cursor:pointer;padding:4px 6px}
+      .rdr-page{position:relative;width:100%;aspect-ratio:3/4;max-height:74vh;background:linear-gradient(180deg,#251d0e,#161106);border:1px solid var(--gold);border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.8),inset 0 0 0 4px rgba(201,162,39,.08);padding:20px 22px 12px;display:flex;flex-direction:column;transform-origin:left center;overflow:hidden}
+      .rdr-page.flip-next{animation:rdrFlipNext .32s ease}
+      .rdr-page.flip-prev{animation:rdrFlipPrev .32s ease;transform-origin:right center}
+      @keyframes rdrFlipNext{from{transform:rotateY(-17deg);opacity:.3}to{transform:rotateY(0);opacity:1}}
+      @keyframes rdrFlipPrev{from{transform:rotateY(17deg);opacity:.3}to{transform:rotateY(0);opacity:1}}
+      @media (prefers-reduced-motion: reduce){.rdr-page.flip-next,.rdr-page.flip-prev{animation:none}}
+      .rdr-head{font:700 .7rem var(--sans);letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin:0 0 6px}
+      .rdr-title{font-family:var(--serif);font-size:1.5rem;line-height:1.25;color:var(--gold2);margin:0 0 12px}
+      .rdr-text{flex:1;overflow-y:auto;font-size:1.18rem;font-weight:700;line-height:1.75;color:var(--ink);padding-right:2px}
+      .rdr-text p{margin:0 0 1em}
+      .rdr-count{text-align:center;color:var(--gold);font:700 .8rem var(--sans);letter-spacing:.12em;margin:10px 0 2px}
+      .rdr-controls{display:flex;align-items:center;justify-content:space-between;gap:8px}
+      .rdr-nav{flex:1;border:1px solid var(--gold-deep);background:linear-gradient(180deg,#2a2110,#1a1509);color:var(--gold2);border-radius:999px;padding:11px 10px;font:700 .85rem var(--sans);cursor:pointer}
+      .rdr-nav:hover{border-color:var(--gold)}
+      .rdr-nav:disabled{opacity:.35;cursor:default}
+      .rdr-nav.listen{border-color:var(--gold);background:linear-gradient(180deg,var(--gold2),var(--gold));color:#171106}
+      .rdr-actions{display:flex;gap:8px}
+      .rdr-actions .rdr-nav{flex:1}
+      .rdr-note{color:var(--muted);font-size:.8rem;text-align:center;margin:0}
       .tchr-card{position:relative;background:linear-gradient(180deg,#241c0d,#14100a);border:1px solid var(--gold);border-radius:16px;max-width:760px;width:100%;max-height:94vh;overflow:auto;padding:22px 22px 18px;box-shadow:0 24px 70px rgba(0,0,0,.75)}
       .tchr-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
       .tchr-brand{font:700 .8rem var(--sans);letter-spacing:.16em;color:var(--gold);text-transform:uppercase}
@@ -2162,7 +2190,7 @@
         "<div class='track-badge' data-badge-for='" + t.id + "'></div>" +
         "<div class='meter'><i style='width:" + trackPct(t.id) + "%'></i></div>" +
         (t.id === "realestate" ? "<figure class='sec-art track-art'><img src='assets/real-estate-deals-web.jpg' alt='House at dusk with a deed and keys \u2014 using a land trust for subject-to and other real estate deals' loading='lazy' /></figure>" : "") +
-        t.lessons.map((l, i) => l[2] === "group" ? "<div class='lesson-group'>" + esc(l[0]) + "</div>" + (l[1] ? "<p class='lesson-group-sub'>" + esc(l[1]) + "</p>" : "") : "<div class='lesson'><div class='lesson-head'><div style='flex:1'><b>Lesson " + (++ln) + " — " + esc(l[0]) + "</b><p>" + esc(l[1]) + "</p></div><button type='button' class='checkbtn' data-track='" + t.id + "' data-lesson='" + i + "' aria-pressed='" + s.done.has(i) + "'><span class='box'>" + (s.done.has(i) ? "✓" : "") + "</span>" + (s.done.has(i) ? "Completed" : "Mark complete") + "</button><button type='button' class='teacherbtn' data-ttrack='" + t.id + "' data-tlesson='" + i + "'>🎓 Learn with the AI Teacher</button></div></div>").join("") +
+        t.lessons.map((l, i) => l[2] === "group" ? "<div class='lesson-group'>" + esc(l[0]) + "</div>" + (l[1] ? "<p class='lesson-group-sub'>" + esc(l[1]) + "</p>" : "") : "<div class='lesson'><div class='lesson-head'><div style='flex:1'><b>Lesson " + (++ln) + " — " + esc(l[0]) + "</b><p>" + esc(l[1]) + "</p></div><button type='button' class='checkbtn' data-track='" + t.id + "' data-lesson='" + i + "' aria-pressed='" + s.done.has(i) + "'><span class='box'>" + (s.done.has(i) ? "✓" : "") + "</span>" + (s.done.has(i) ? "Completed" : "Mark complete") + "</button><button type='button' class='teacherbtn' data-ttrack='" + t.id + "' data-tlesson='" + i + "'>🎓 Learn with the AI Teacher</button><button type='button' class='readbtn' data-rtrack='" + t.id + "' data-rlesson='" + i + "'>📖 Read</button></div></div>").join("") +
         "<div class='quiz'><p class='q'>Check yourself</p>" + t.quiz.map((qz, qi) => "<div style='margin-bottom:14px'><p class='q'>" + (qi + 1) + ". " + esc(qz.q) + "</p><div class='opts'>" + qz.opts.map((o, oi) => "<button type='button' class='opt' data-tq='" + t.id + "' data-qi='" + qi + "' data-oi='" + oi + "'>" + esc(o) + "</button>").join("") + "</div><p class='feedback' id='fb-" + t.id + "-" + qi + "'>" + esc(qz.why) + "</p></div>").join("") + "</div>" +
         "<div class='track-done' id='done-" + t.id + "'>Track complete — " + esc(t.title) + ". Screenshot or print your summary and file it with the trust records.</div>" +
         "<div class='doc-actions'><button class='btn small' data-trackpdf='" + t.id + "' type='button'>Download PDF — Training Summary</button></div>" +
@@ -2175,6 +2203,9 @@
     }));
     $$("#trackList .teacherbtn").forEach(b => b.addEventListener("click", () => {
       openTeacher(b.dataset.ttrack, Number(b.dataset.tlesson));
+    }));
+    $$("#trackList .readbtn").forEach(b => b.addEventListener("click", () => {
+      openReader(b.dataset.rtrack, Number(b.dataset.rlesson));
     }));
     $$("#trackList .opt").forEach(b => b.addEventListener("click", () => {
       const t = TRACKS.find(x => x.id === b.dataset.tq); const qi = Number(b.dataset.qi); const oi = Number(b.dataset.oi);
@@ -2599,6 +2630,246 @@
     slides: () => TCHR.slides,
     chunks: tchrChunks, parseTerms: tchrParseTerms,
     state: TCHR
+  };
+
+  /* ==================== FLIPBOOK READER ====================
+   * Madison's reading mode (Oct 28): every lesson also opens as a
+   * flipbook — one portrait page at a time, big bold type, pages split
+   * at sentence boundaries so nothing overflows or shrinks — with a
+   * Listen button that narrates the page in the device voice
+   * (browser speechSynthesis; no external audio). Generic over TRACKS:
+   * every track and future lesson inherits it. The gate is the same
+   * one the Teacher uses: non-members get the Full Access pop-up.
+   */
+  const RDR = { built: false, overlay: null, open: false, trackId: null, lessonIdx: 0, pages: [], idx: 0, speaking: false };
+  const RDR_PAGE_BUDGET = 420;      /* chars per page at the big bold size */
+  const RDR_FIRST_BUDGET = 330;     /* page 1 also carries the lesson title */
+  const RDR_MAX_SENTENCE = 560;     /* a longer single sentence is hard-split */
+
+  function rdrHasVoice(){
+    try { return !!(window.speechSynthesis && window.SpeechSynthesisUtterance); } catch (e) { return false; }
+  }
+  function rdrSplitSentences(text){
+    const parts = String(text).replace(/\s+/g, " ").trim().match(/[^.!?]+(?:[.!?]+["']?|$)/g) || [];
+    const out = [];
+    parts.forEach(part => {
+      let rest = part.trim();
+      while (rest.length > RDR_MAX_SENTENCE) {
+        let cut = rest.lastIndexOf(" ", RDR_PAGE_BUDGET);
+        if (cut < 120) cut = RDR_PAGE_BUDGET;
+        out.push(rest.slice(0, cut).trim());
+        rest = rest.slice(cut).trim();
+      }
+      if (rest) out.push(rest);
+    });
+    return out;
+  }
+  function rdrPaginate(text){
+    const paras = String(text == null ? "" : text).split(/\n+/).map(x => x.trim()).filter(Boolean);
+    const units = [];
+    paras.forEach((para, pi) => {
+      rdrSplitSentences(para).forEach((sent, si) => units.push({ t: sent, brk: pi > 0 && si === 0 }));
+    });
+    const pages = [];
+    let cur = "", budget = RDR_FIRST_BUDGET;
+    const flush = () => { if (cur) { pages.push(cur); cur = ""; budget = RDR_PAGE_BUDGET; } };
+    units.forEach(u => {
+      const sep = cur ? (u.brk ? "\n\n" : " ") : "";
+      if (cur && cur.length + sep.length + u.t.length > budget) { flush(); cur = u.t; }
+      else cur = cur + sep + u.t;
+    });
+    flush();
+    return pages.length ? pages : [""];
+  }
+  function buildReader(){
+    if (RDR.built) return;
+    const ov = document.createElement("div");
+    ov.id = "readerOverlay";
+    ov.hidden = true;
+    ov.setAttribute("role", "dialog");
+    ov.setAttribute("aria-modal", "true");
+    ov.setAttribute("aria-label", "Flipbook reader");
+    ov.innerHTML =
+      "<div class='rdr-book'>" +
+      "<div class='rdr-top'><span class='rdr-brand'>📖 Flipbook</span><span class='rdr-where' id='rdrWhere'></span>" +
+      "<button class='rdr-x' id='rdrExit' type='button' aria-label='Close the reader'>&times;</button></div>" +
+      "<div class='rdr-page' id='rdrPage'>" +
+      "<p class='rdr-head' id='rdrHead'></p>" +
+      "<h3 class='rdr-title' id='rdrTitle'></h3>" +
+      "<div class='rdr-text' id='rdrText'></div>" +
+      "<p class='rdr-count' id='rdrCount'></p></div>" +
+      "<div class='rdr-controls'>" +
+      "<button class='rdr-nav' id='rdrPrev' type='button'>← Prev</button>" +
+      "<button class='rdr-nav listen' id='rdrListen' type='button'>🔊 Listen</button>" +
+      "<button class='rdr-nav' id='rdrNext' type='button'>Next →</button></div>" +
+      "<div class='rdr-actions' id='rdrActions' hidden>" +
+      "<button class='rdr-nav' id='rdrDone' type='button'>Mark complete</button>" +
+      "<button class='rdr-nav' id='rdrTeacher' type='button'>🎓 Learn with the AI Teacher</button></div>" +
+      "<p class='rdr-note'>Tap 🔊 Listen and this page is read aloud in your device's voice. Swipe, tap the page edges, or use Prev / Next to turn pages.</p>" +
+      "</div>";
+    document.body.appendChild(ov);
+    RDR.overlay = ov;
+    RDR.built = true;
+    $("#rdrExit").addEventListener("click", closeReader);
+    $("#rdrPrev").addEventListener("click", () => rdrGo(RDR.idx - 1));
+    $("#rdrNext").addEventListener("click", () => rdrGo(RDR.idx + 1));
+    $("#rdrListen").addEventListener("click", rdrSpeak);
+    $("#rdrDone").addEventListener("click", rdrToggleDone);
+    $("#rdrTeacher").addEventListener("click", () => {
+      const t = RDR.trackId, i = RDR.lessonIdx;
+      closeReader();
+      openTeacher(t, i);
+    });
+    const page = $("#rdrPage");
+    if (page) {
+      let tx = null;
+      page.addEventListener("touchstart", e => {
+        try { tx = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : null; } catch (err) { tx = null; }
+      }, { passive: true });
+      page.addEventListener("touchend", e => {
+        try {
+          if (tx === null || !e.changedTouches || !e.changedTouches[0]) return;
+          const dx = e.changedTouches[0].clientX - tx;
+          if (dx <= -42) rdrGo(RDR.idx + 1);
+          else if (dx >= 42) rdrGo(RDR.idx - 1);
+        } catch (err) {}
+        tx = null;
+      }, { passive: true });
+      page.addEventListener("click", e => {
+        try {
+          if (!e || typeof e.clientX !== "number" || !page.getBoundingClientRect) return;
+          const r = page.getBoundingClientRect();
+          if (!r || !r.width) return;
+          const x = (e.clientX - r.left) / r.width;
+          if (x <= 0.22) rdrGo(RDR.idx - 1);
+          else if (x >= 0.78) rdrGo(RDR.idx + 1);
+        } catch (err) {}
+      });
+    }
+  }
+  function rdrListenLabel(){
+    const btn = $("#rdrListen");
+    if (!btn) return;
+    btn.hidden = !rdrHasVoice();
+    btn.textContent = RDR.speaking ? "⏹ Stop" : "🔊 Listen";
+  }
+  function rdrRenderActions(){
+    const last = RDR.idx === RDR.pages.length - 1;
+    const row = $("#rdrActions");
+    if (row) row.hidden = !last;
+    const doneBtn = $("#rdrDone");
+    if (doneBtn && RDR.trackId && TRAIN[RDR.trackId]) {
+      const done = TRAIN[RDR.trackId].done.has(RDR.lessonIdx);
+      doneBtn.textContent = done ? "✓ Completed — tap to undo" : "Mark complete";
+    }
+  }
+  function renderReaderPage(dir){
+    const track = TRACKS.find(x => x.id === RDR.trackId);
+    const lesson = track ? track.lessons[RDR.lessonIdx] : null;
+    if (!track || !lesson) return;
+    const w = $("#rdrWhere"); if (w) w.textContent = track.title;
+    const head = $("#rdrHead"); if (head) head.textContent = RDR.idx === 0 ? track.title : lesson[0];
+    const ttl = $("#rdrTitle");
+    if (ttl) { ttl.textContent = lesson[0]; ttl.hidden = RDR.idx !== 0; }
+    const tx = $("#rdrText");
+    if (tx) tx.innerHTML = (RDR.pages[RDR.idx] || "").split("\n\n").map(p => "<p>" + esc(p) + "</p>").join("");
+    const cnt = $("#rdrCount");
+    if (cnt) cnt.textContent = "Page " + (RDR.idx + 1) + " of " + RDR.pages.length;
+    const pv = $("#rdrPrev"); if (pv) pv.disabled = RDR.idx === 0;
+    const nx = $("#rdrNext"); if (nx) nx.disabled = RDR.idx === RDR.pages.length - 1;
+    rdrListenLabel();
+    rdrRenderActions();
+    const page = $("#rdrPage");
+    if (page && dir) {
+      try {
+        page.classList.remove("flip-next", "flip-prev");
+        void page.offsetWidth;
+        page.classList.add(dir > 0 ? "flip-next" : "flip-prev");
+        setTimeout(() => { try { page.classList.remove("flip-next", "flip-prev"); } catch (e) {} }, 380);
+      } catch (e) {}
+    }
+    if (tx) { try { tx.scrollTop = 0; } catch (e) {} }
+  }
+  function rdrGo(i){
+    if (!RDR.open || !RDR.pages.length) return;
+    const n = Math.max(0, Math.min(RDR.pages.length - 1, i));
+    if (n === RDR.idx) return;
+    rdrStopSpeech();
+    const dir = n > RDR.idx ? 1 : -1;
+    RDR.idx = n;
+    renderReaderPage(dir);
+  }
+  function openReader(trackId, lessonIdx){
+    if (window.TrustApp && window.TrustApp.gate && !window.TrustApp.gate.hasAccess()) {
+      window.TrustApp.gate.handleTrigger("lessons");
+      return false;
+    }
+    const track = TRACKS.find(x => x.id === trackId);
+    if (!track) return false;
+    const lesson = track.lessons[lessonIdx];
+    if (!lesson || lesson[2] === "group") return false;
+    buildReader();
+    rdrStopSpeech();
+    RDR.trackId = trackId; RDR.lessonIdx = lessonIdx;
+    RDR.pages = rdrPaginate(lesson[1]);
+    RDR.idx = 0; RDR.open = true;
+    RDR.overlay.hidden = false;
+    try { document.body.style.overflow = "hidden"; } catch (e) {}
+    renderReaderPage(0);
+    return true;
+  }
+  function closeReader(){
+    rdrStopSpeech();
+    RDR.open = false;
+    if (RDR.overlay) RDR.overlay.hidden = true;
+    try { document.body.style.overflow = ""; } catch (e) {}
+  }
+  function rdrToggleDone(){
+    if (!RDR.trackId || !TRAIN[RDR.trackId]) return;
+    const s = TRAIN[RDR.trackId];
+    if (s.done.has(RDR.lessonIdx)) s.done.delete(RDR.lessonIdx); else s.done.add(RDR.lessonIdx);
+    renderTracks();
+    checkTrackDone(RDR.trackId);
+    rdrRenderActions();
+  }
+  /* ---- Listen: this page, read aloud in the device voice ---- */
+  function rdrSpeak(){
+    try {
+      const ss = window.speechSynthesis;
+      if (!ss || !window.SpeechSynthesisUtterance) return false;
+      if (RDR.speaking) { rdrStopSpeech(); return true; }
+      ss.cancel();
+      const track = TRACKS.find(x => x.id === RDR.trackId);
+      const lesson = track ? track.lessons[RDR.lessonIdx] : null;
+      const pageText = (RDR.pages[RDR.idx] || "").replace(/\n\n/g, " ");
+      const text = (RDR.idx === 0 && lesson ? lesson[0] + ". " : "") + pageText;
+      if (!text.trim()) return false;
+      const u = new window.SpeechSynthesisUtterance(text);
+      RDR.speaking = true;
+      u.onend = function () { RDR.speaking = false; rdrListenLabel(); };
+      u.onerror = function () { RDR.speaking = false; rdrListenLabel(); };
+      ss.speak(u);
+      rdrListenLabel();
+      return true;
+    } catch (e) { RDR.speaking = false; return false; }
+  }
+  function rdrStopSpeech(){
+    if (RDR.speaking) {
+      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+    }
+    RDR.speaking = false;
+    if (RDR.built) rdrListenLabel();
+  }
+  window.Reader = {
+    open: openReader, close: closeReader,
+    next: () => rdrGo(RDR.idx + 1), prev: () => rdrGo(RDR.idx - 1),
+    go: rdrGo, render: () => renderReaderPage(0),
+    speak: rdrSpeak, stop: rdrStopSpeech,
+    isOpen: () => RDR.open,
+    pages: () => RDR.pages,
+    pageIndex: () => RDR.idx,
+    paginate: rdrPaginate,
+    state: RDR
   };
 
   /* ==================== CONTENT LIBRARY ==================== */
