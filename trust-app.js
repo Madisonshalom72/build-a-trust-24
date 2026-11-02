@@ -607,7 +607,7 @@
       '<button class="tg-plan primary" id="tgPlanMonthly" type="button"></button>' +
       '<button class="tg-plan" id="tgPlanAnnual" type="button"></button>' +
       "</div>" +
-      '<p class="tg-note">Limited time \u2014 the credit rises to $99/mo or $499/yr on November 7, 2026.</p>' +
+      '<p class="tg-note">Limited time \u2014 the credit rises to $99/mo or $499/yr on November 21, 2026.</p>' +
       '<p class="tg-note" id="tgNote" hidden></p>' +
       '<button class="tg-keep" id="tgKeep" type="button">Keep looking around</button>' +
       "</div>";
