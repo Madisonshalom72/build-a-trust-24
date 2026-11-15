@@ -425,10 +425,12 @@ SCRIPTS
 
 def card_html(spec, prefix, lazy=True):
     lazy_attr = ' loading="lazy"' if lazy else ""
+    card_img = spec.get("card_image") or (spec["slug"] + "-header.png")
+    card_alt = spec.get("card_alt") or spec["headline"]
     return (
         '<div class="article-card">'
         '<a class="card-link" href="' + prefix + "news/" + spec["slug"] + '.html">'
-        '<img src="' + prefix + "assets/news/" + spec["slug"] + '-header.png" alt=""' + lazy_attr + ' />'
+        '<img src="' + prefix + "assets/news/" + card_img + '" alt="' + esc(card_alt) + '"' + lazy_attr + ' />'
         '<span class="k">' + esc(spec["kicker"]) + "</span>"
         "<h3>" + esc(spec["headline"]) + "</h3>"
         "<p>" + esc(spec["dek"]) + "</p>"
@@ -577,6 +579,15 @@ def update_homepage(specs):
       .share-btn:hover{border-color:var(--gold)}
 """
         src = src.replace(style_anchor, share_css + style_anchor, 1)
+    # equalized card-image styles for the homepage news cards (idempotent)
+    if ".article-card img{" not in src:
+        style_anchor = "    </style>\n\n    <div class=\"sb24-bar\">"
+        assert style_anchor in src, "homepage style anchor not found (card img css)"
+        card_css = """      .article-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;border:1px solid var(--line);margin-bottom:12px}
+      .article-card:has(> .card-link){display:flex;flex-direction:column}
+      .article-card:has(> .card-link) .share-row{margin-top:auto}
+"""
+        src = src.replace(style_anchor, card_css + style_anchor, 1)
     # scoped styles for the homepage news block (idempotent)
     if ".nl-box{" not in src:
         style_anchor = "    </style>\n\n    <div class=\"sb24-bar\">"
